@@ -1,0 +1,25 @@
+{
+  "name": "olc-proyecto2_202004734-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JtAgu/OLC-Proyecto2_202004734-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JtAgu/OLC-Proyecto2_202004734-/issues"
+  },
+  "homepage": "https://github.com/JtAgu/OLC-Proyecto2_202004734-#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "morgan": "^1.10.0"
+  }
+}
