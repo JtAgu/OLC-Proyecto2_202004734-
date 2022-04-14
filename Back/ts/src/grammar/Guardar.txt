@@ -1,0 +1,319 @@
+
+%%
+
+INIT
+    : INSTRUCCION EOF{console.log("termine analizar, recursiva por la derecha c:"); return $1;}
+;
+
+INSTRUCCION
+    : INSTRUCCION INSTRUCCIONES {$1.push($2); $$=$1;}
+    |INSTRUCCIONES {$$=[$1];}
+;
+
+INSTRUCCIONES
+    : WHILE             {$$=$1;}
+    | DO_WHILE          {$$=$1;}
+    | FOR               {$$=$1;}
+    | IF                {$$=$1;}
+    | ELSE_IF           {$$=$1;}
+    | ELSE              {$$=$1;}
+    | SWITCH            {$$=$1;}
+    | PRINT             {$$=$1;}
+    | PRINTLN           {$$=$1;}
+    | METODO            {$$=$1;}
+    | LLAMAR_METODO     {$$=$1;}
+    | FUNCION           {$$=$1;}
+    | LLAMAR_FUNCION    {$$=$1;}
+    | PRIMITIVOS        {$$=$1;}
+    | VECTORES          {$$=$1;}
+    | BREAK             {$$=$1;}
+    | CONTINUE          {$$=$1;}
+    | RETURN            {$$=$1;}
+;
+
+
+RUN
+    : 'run' 'ParentesisA' 'ParentesisC' 'PuntoComa'
+;
+
+
+
+FUNCION
+    : 'id' 'ParentesisA' PARAMETROS 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC'
+;
+
+LLAMAR_FUNCION_METODO
+    : 'id' 'ParentesisA' PARAMETROS 'ParentesisC'
+;
+
+METODO
+    : 'id' 'ParentesisA' PARAMETROS 'ParentesisC' 'DosPuntos' 'void' 'LlaveA' INSTRUCCION 'LlaveC'
+;
+
+
+
+PARAMETROS
+    : PARAMETROS 'coma' TIPO_DATO 'id'
+    | TIPO_DATO 'id'
+;
+
+
+WHILE
+    : 'while' 'ParentesisA' EXPRESION_B 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'
+;
+
+DO_WHILE
+    :  'do' 'LlaveA' INSTRUCCION 'LlaveC' 'while' 'ParentesisA' EXPRESION_B 'ParentesisC'
+;
+
+
+
+FOR
+    : 'for' 'ParentesisA' PRIMITIVOS CONDICION 'PuntoComa' ACTUALIZACION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'
+;
+
+
+CONDICION
+    :VALOR 'mayor' VALOR
+    | VALOR 'menor' VALOR
+    | VALOR 'mayorIgual' VALOR
+    | VALOR 'menorIgual' VALOR
+    | VALOR 'igualIf' VALOR
+;
+
+ACTUALIZACION
+    : 'id' 'igual' EXPRESION_B
+    | 'id' 'mas' 'mas'
+    | 'id' 'menos' 'menos'
+;
+
+
+IF
+    : 'if' 'ParentesisA' EXPRESION_B 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'
+;
+
+
+ELSE_IF
+    : 'else' 'if' 'ParentesisA' EXPRESION_B 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'
+;
+
+ELSE
+    : 'else' 'LlaveA' INSTRUCCION 'LlaveC'
+;
+
+EXPRESION_B
+    :EXPRESION_B 'mayor' EXPRESION_B
+    | EXPRESION_B 'menor' EXPRESION_B
+    | EXPRESION_B 'mayorIgual' EXPRESION_B
+    | EXPRESION_B 'menorIgual' EXPRESION_B
+    | EXPRESION_B 'igualIf' EXPRESION_B
+    | EXPRESION_B 'mas' EXPRESION_B
+    | EXPRESION_B 'mas' 'mas' EXPRESION_B
+    | EXPRESION_B 'menos' 'menos' EXPRESION_B
+    | EXPRESION_B 'menos' EXPRESION_B
+    | EXPRESION_B 'division' EXPRESION_B
+    | EXPRESION_B 'multiplicacion' EXPRESION_B
+    | EXPRESION_B 'potencia' EXPRESION_B
+    | VALOR
+;
+
+
+
+
+SWITCH
+    : 'switch' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA'  'LlaveC'
+;
+
+TIPO_SW
+    : LISTAS_CASE 'default' 'DosPuntos' INSTRUCCION 
+    | LISTAS_CASE
+    | 'default' 'PuntoComa' INSTRUCCION 
+;
+
+LISTAS_CASE
+    : LISTAS_CASE 'case' EXPRESION 'DosPuntos' INSTRUCCION 
+    | LISTAS_CASE 'case' EXPRESION 'DosPuntos' INSTRUCCION 
+    | 'case' EXPRESION 'DosPuntos' INSTRUCCION 
+    | 'case' EXPRESION 'DosPuntos' INSTRUCCION 
+;
+
+
+
+
+
+PRINT
+    : 'Print' 'ParentesisA' EXPRESION_B 'ParentesisC' 'PuntoComa'
+;
+
+PRINTLN
+    : 'Println' 'ParentesisA' EXPRESION_B 'ParentesisC' 'PuntoComa'
+;
+
+EXPRESION_IMPRESION
+    : EXPRESION_IMPRESION 'mas' EXPRESION_IMPRESION
+    | 'cadena'
+    | 'decimal'
+    | 'entero'
+;
+
+
+PRIMITIVOS
+    :  DECLARACION {$$=$1;}
+    | DECLARACION_CASTEO
+    | ACTUALIZACION_VAR
+    | ACTU_VAR_CASTEO
+    | AUMENTO
+    | DECREMENTO
+;
+
+DECLARACION_CASTEO
+    : TIPO_DATO Id_DECLARACION 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa'
+;
+
+DECLARACION
+    : TIPO_DATO Id_DECLARACION 'igual' EXPRESION 'PuntoComa' {$$= new Declaracion();}
+    | TIPO_DATO Id_DECLARACION 'PuntoComa'
+;
+
+ACTUALIZACION_VAR
+    : Id_DECLARACION 'igual' EXPRESION 'PuntoComa'
+;
+
+ACTU_VAR_CASTEO
+    :  Id_DECLARACION 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' 
+;
+
+AUMENTO
+    : 'id' 'mas' 'mas' 'PuntoComa'
+;
+
+DECREMENTO
+    : 'id' 'menos' 'menos' 'PuntoComa'
+:
+
+
+VECTORES
+    :  TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' DECLARO_VECTOR 'PuntoComa' 
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' DECLARO_VECTOR 'PuntoComa' 
+    | POSICION_VECTOR 'igual' EXPRESION 'PuntoComa'
+;
+
+DECLARO_VECTOR
+    : 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC'
+    | 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC'
+    | 'CorcheteA' 'CorcheteA' VECTOR_LISTA 'CorcheteC' 'CorcheteC'
+    | 'CorcheteA' 'CorcheteA' VECTOR_LISTA 'CorcheteC' 'coma' 'CorcheteA' VECTOR_LISTA 'CorcheteC' 'CorcheteC'
+;
+
+VECTOR_LISTA
+    : VECTOR_LISTA 'coma' EXPRESION
+    | EXPRESION
+;
+
+POSICION_VECTOR
+    : 'id' 'CorcheteA' EXPRESION 'CorcheteC'
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC'
+;
+
+
+
+Id_DECLARACION
+    : Id_DECLARACION 'coma' 'id'
+    | 'id'
+;
+
+
+
+EXPRESION
+    : EXPRESION 'mas' EXPRESION
+    | EXPRESION 'mas' 'mas' EXPRESION
+    | EXPRESION 'menos' 'menos' EXPRESION
+    | EXPRESION 'menos' EXPRESION
+    | EXPRESION 'division' EXPRESION
+    | EXPRESION 'multiplicacion' EXPRESION
+    | EXPRESION 'potencia' EXPRESION
+    | EXPRESION 'mayor' EXPRESION 'InterrogacionC' EXPRESION_B 'DosPuntos' EXPRESION_B
+    | EXPRESION 'menor' EXPRESION 'InterrogacionC' EXPRESION_B 'DosPuntos' EXPRESION_B
+    | EXPRESION 'mayorIgual' EXPRESION 'InterrogacionC' EXPRESION_B 'DosPuntos' EXPRESION_B
+    | EXPRESION 'menorIgual' EXPRESION 'InterrogacionC' EXPRESION_B 'DosPuntos' EXPRESION_B
+    | EXPRESION 'igualIf' EXPRESION 'InterrogacionC' EXPRESION_B 'DosPuntos' EXPRESION_B
+    | VALOR
+;
+
+
+ROUND
+    : 'round' 'ParentesisA' VALOR 'ParentesisC'
+;
+
+
+
+LENGTH
+    : 'length' 'ParentesisA' VALOR 'ParentesisC'
+;
+
+
+TYPEOFF
+    : 'typeof' 'ParentesisA' VALOR 'ParentesisC'
+;
+
+TO_STRING
+    : 'ToString' 'ParentesisA' VALOR 'ParentesisC'
+;
+
+
+TOCHAR_ARRAY
+    : 'char' 'CorcheteA' 'CorcheteC' 'id' 'igual' 'toCharArray' 'ParentesisA' VALOR 'ParentesisC'
+;
+
+
+TO_UPPER
+    : 'toUpper' 'ParentesisA' EXPRESION_B 'ParentesisC'
+;
+
+TO_LOWER
+    : 'toLower' 'ParentesisA' EXPRESION_B 'ParentesisC'
+;
+
+
+VALOR   
+    :  POSICION_VECTOR
+    |'True'
+    |'False'
+    |'id'
+    |'entero'
+    |'decimal'
+    |'cadena'
+    | TO_LOWER
+    | TO_STRING
+    | TO_UPPER
+    | LENGTH
+    | ROUND
+    | TYPEOFF
+    | LLAMAR_FUNCION_METODO
+;
+
+
+TIPO_DATO
+    : 'int'
+    |'double'
+    |'char'
+    |'String'
+    |'boolean'
+;
+
+RETURN
+    : 'return' EXPRESION_B 'PuntoComa'
+    | 'return' 'PuntoComa'
+;
+
+BREAK
+    : 'break' 'PuntoComa'
+;
+
+CONTINUE
+    : 'continue' 'PuntoComa'
+;
+
+
+
+

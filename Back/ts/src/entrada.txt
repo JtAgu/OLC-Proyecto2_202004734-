@@ -1,0 +1,4 @@
+int s=0;
+s=5;
+print('s');
+println(2+true);

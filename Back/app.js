@@ -1,45 +1,18 @@
-var express= require('express');
-var morgan =require('morgan');
-var app=express();
-var cors=require('cors');
+const express = require('express')
+const morgan = require('morgan')
+const cors = require('cors')
+const routes = require('./Rutas')
 
-var Texto="Texto de prueba";
+const app = express()
 
-const routesEstablecimiento= require('./Peticiones')
+app.set('port', process.env.PORT || 9000)
 
-
-app.use(morgan('dev'));
+app.use(express.json())
 app.use(cors())
-app.use(express.urlencoded({extended:true}));
+app.use(morgan())
 
-
-
-app.listen(8080,function(){
-    console.log("Escuchando en el 8080");
+app.listen(app.get('port'), ()=>{
+    console.log('server running on port', app.get('port'))
 })
 
-
-app.get('/',function(req,res){
-    res.json({mensaje:'hola mundo'})
-});
-
-app.get('/GetTextFile',function(req,res){
-    console.log("Intente")
-    res.json({text:Texto})
-});
-
-app.post('/EnterFile',function(req,res){
-    fs.readFile(ruta,(err,data)=>{
-        if(err) throw err;
-            parser.parse(data.toString());
-            Texto=data.toString();
-    });
-    var ruta =req.body.ruta
-})
-
-app.post('/setIncremental',function(req,res){
-    incremental=req.body.dato
-    var texto =req.body.texto
-    res.json({msg:'operacion con exito'})
-})
-
+app.use('/',routes)
