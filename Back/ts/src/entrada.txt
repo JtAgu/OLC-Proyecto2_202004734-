@@ -1,6 +1,22 @@
-int v [] = new int [4];
-v[1]=1;
+int w = 1;
+IF(w==2){
+    int v [][] = [[9,8,6],[7,9,4],[1,5,2]];
 
-char w[]=['s','1'];
-w[v[3]]='l';
-print(w[v[3]]-1+" jaja");
+    v[2][2]=8;
+
+    print(v[2][2]);
+
+    
+}else IF(w<1){
+    print("Entre al else if");
+}else if(w==1){
+    print("esto es un else if");
+    print(w);
+}else{
+    print("esto es un else");
+}
+
+
+
+
+

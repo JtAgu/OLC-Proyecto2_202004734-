@@ -4,7 +4,14 @@
     const {DeclaracionTernario} = require('../instruccion/DeclaracionTernario');
     const {DeclaracionVectorNew} = require('../instruccion/DeclaracionVectorNew');
     const {DeclaracionVectorLista} = require('../instruccion/DeclaracionVectorLista');
+    const {DeclaracionMatrizNew} = require('../instruccion/DeclaracionMatrizNew');
+    const {DeclaracionMatrizLista} = require('../instruccion/DeclaracionMatrizLista');
+    
+    const {Asignacion} = require('../Instruccion/Asignacion');
+    const {AsignacionTernario} = require('../Instruccion/AsignacionTernario');
     const {AsignacionVector} = require('../instruccion/AsignacionVector');
+    const {AsignacionMatriz} = require('../instruccion/AsignacionMatriz');
+    
 
     const {Type} = require('../simbolos/Type');
     const {Arithmetic} = require('../expression/aritmeticas');
@@ -13,19 +20,21 @@
 
     const {GetId} = require('../expression/GetId');
     const {GetVector} = require('../expression/GetVector');
+    const {GetMatriz} = require('../expression/GetMatriz');
 
     const {ArithmeticOption} = require('../expression/aritmeticOption');
     const {RelacionalOption} = require('../expression/relacionalOption');
     const {LogicOption} = require('../expression/logicOption');
     const {Literal} = require('../expression/literal');
+    
     const {PrintLn} = require('../Instruccion/println');
-    const {Asignacion} = require('../Instruccion/Asignacion');
-    const {AsignacionTernario} = require('../Instruccion/AsignacionTernario');
     const {Print} = require('../Instruccion/print');
     const {Casteo} = require('../Instruccion/Casteo');
     const {CasteoAsig} = require('../Instruccion/CasteoAsig');
     const {Incremento} = require('../Instruccion/Incremento');
     const {Decremento} = require('../Instruccion/decremento');
+    const {IF} = require('../Instruccion/IF');
+    const {ELSE} = require('../Instruccion/ELSE');
     
 %}
 
@@ -413,6 +422,7 @@ INSTRUCCIONES
     | DECLARACION_VACIO     {$$=$1}
     | CASTEO_D              {$$=$1}
     | INCREMENTO_DECREMENTO {$$=$1}
+    | IF                    {$$=$1}    
 ;
 
 CASTEO_D
@@ -425,10 +435,17 @@ DECLARACION
     : TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'PuntoComa' {$$= new Declaracion($2,$1,$4,@1.first_line,@1.fisrt_column);}
     | TIPO_DATO ID_DECLARACION 'PuntoComa' {$$= new DeclaracionVacio($2,$1,@1.first_line,@1.fisrt_column);}
     | TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' {$$= new DeclaracionTernario($2,$1,$4,$6,$8,@1.first_line,@1.fisrt_column);}
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC'  'PuntoComa' {$$= new DeclaracionVectorNew($2,$1,$9,@1.first_line,@1.fisrt_column);}
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'PuntoComa'
+
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC'  'PuntoComa' {$$= new DeclaracionVectorNew($2,$1,$9,$7,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'PuntoComa' {$$= new DeclaracionMatrizNew($2,$1,$11,$14,$9,@1.first_line,@1.fisrt_column);}
+
     | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,$7,@1.first_line,@1.fisrt_column);}
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'coma' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'CorcheteC' 'PuntoComa'
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_FILAS 'CorcheteC' 'PuntoComa' {$$= new DeclaracionMatrizLista($2,$1,$9,@1.first_line,@1.fisrt_column);}
+;
+
+LISTA_FILAS
+    : LISTA_FILAS 'coma' 'CorcheteA' LISTA_VALORES 'CorcheteC' {$1.push($4); $$=$1;}
+    | 'CorcheteA' LISTA_VALORES 'CorcheteC' {$$=[$2]}
 ;
 
 LISTA_VALORES
@@ -448,6 +465,21 @@ ASIGNACION
     : 'id' 'igual'  EXPRESION  'PuntoComa' {$$= new Asignacion($1,$3, @1.first_line, @1.first_column)}
     | 'id' 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' {$$= new AsignacionTernario($1,$3,$5,$7,@1.first_line,@1.fisrt_column);}
     | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION  'PuntoComa' {$$= new AsignacionVector($1,$3,$6, @1.first_line, @1.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION  'PuntoComa' {$$= new AsignacionMatriz($1,$3,$6,$9 , @1.first_line, @1.first_column)}
+;
+
+IF
+    : 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC' 'else' IF{$$= new IF($3,$6,$9, @1.first_line, @1.first_column)}
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' 'LlaveC' 'else' IF            {$$= new IF($3,null,$8, @1.first_line, @1.first_column)}
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC' ELSE     {$$= new IF($3,$6,$8, @1.first_line, @1.first_column)}
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' 'LlaveC' ELSE                 {$$= new IF($3,null,$7, @1.first_line, @1.first_column)}
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'          {$$= new IF($3,$6,null, @1.first_line, @1.first_column)}
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' 'LlaveC'                      {$$= new IF($3,null,null, @1.first_line, @1.first_column)}
+;
+
+ELSE
+    : 'else' 'LlaveA' INSTRUCCION 'LlaveC'  {$$=new ELSE($3, @1.first_line, @1.first_column)}
+    | 'else' 'LlaveA' 'LlaveC'  {$$=new ELSE(null, @1.first_line, @1.first_column)}
 ;
 
 INCREMENTO_DECREMENTO
@@ -511,4 +543,5 @@ VALOR
 
 GET_VECTOR
     : 'id' 'CorcheteA' EXPRESION 'CorcheteC' {$$= new GetVector($1, $3 , @1.first_line, @1.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC'  {$$= new GetMatriz($1, $3 , $6, @1.first_line, @1.first_column)}
 ;

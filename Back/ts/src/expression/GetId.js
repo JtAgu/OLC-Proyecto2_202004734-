@@ -13,19 +13,19 @@ class GetId extends express_1.Expression {
             value: null,
             type: Type_1.Type.error
         };
-        if (env.getDimension_variable(this.IdName) == 1) {
-            if (env.buscar_variable(this.IdName)) {
+        if (env.buscar_variable(this.IdName)) {
+            if (env.getDimension_variable(this.IdName) == 1) {
                 result = {
                     value: env.getValue_variable(this.IdName),
                     type: env.getTipo_variable(this.IdName)
                 };
             }
             else {
-                console.log("la variable [" + this.IdName + "] no fue encontrada...");
+                console.log("la variable [" + this.IdName + "] tiene una dimension diferente...");
             }
         }
         else {
-            console.log("la variable [" + this.IdName + "] no tiene una dimension diferente...");
+            console.log("la variable [" + this.IdName + "] no fue encontrada...");
         }
         return result;
     }

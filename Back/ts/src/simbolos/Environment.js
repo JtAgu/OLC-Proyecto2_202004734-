@@ -20,38 +20,59 @@ class Environment {
         return false;
     }
     buscar_variable(nombre) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre)
-                return true;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre) {
+                    return true;
+                }
+            }
+            envActual = envActual.anterior;
         }
         return false;
     }
     getTipo_variable(nombre) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre)
-                return entry[1].tipo;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(this.tablaSimbolos.entries())) {
+                if (entry[0] == nombre)
+                    return entry[1].tipo;
+            }
+            envActual = envActual.anterior;
         }
         return Type_1.Type.error;
     }
     getValue_variable(nombre) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre)
-                return entry[1].value;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre)
+                    return entry[1].value;
+            }
+            envActual = envActual.anterior;
         }
         return Type_1.Type.error;
     }
     getDimension_variable(nombre) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre)
-                return entry[1].Dimension;
+        let envActuall = this;
+        while (envActuall != null) {
+            for (let entry of Array.from(envActuall.tablaSimbolos.entries())) {
+                if (entry[0] == nombre)
+                    return entry[1].Dimension;
+            }
+            envActuall = envActuall.anterior;
         }
         return Type_1.Type.error;
     }
     actualizar_variable(nombre, valor) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre) {
-                entry[1].value = valor;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre) {
+                    entry[1].value = valor;
+                }
             }
+            envActual = envActual.anterior;
         }
     }
     guardar_Vector(nombre, valor, type, dim1) {
@@ -63,24 +84,36 @@ class Environment {
         return false;
     }
     getValue_Vector(nombre, dim1) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre) {
-                return entry[1].value[dim1];
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre) {
+                    return entry[1].value[dim1];
+                }
             }
+            envActual = envActual.anterior;
         }
         return Type_1.Type.error;
     }
     actualizar_Vector(nombre, valor, dim1) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre) {
-                entry[1].value[dim1] = valor;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre) {
+                    entry[1].value[dim1] = valor;
+                }
             }
+            envActual = envActual.anterior;
         }
     }
     getDim1_Vector(nombre) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre)
-                return entry[1].dim1;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre)
+                    return entry[1].dim1;
+            }
+            envActual = envActual.anterior;
         }
         return Type_1.Type.error;
     }
@@ -93,30 +126,48 @@ class Environment {
         return false;
     }
     getValue_Matriz(nombre, dim1, dim2) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre)
-                return entry[1].value[dim1][dim2];
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre) {
+                    let v = entry[1].value[dim1];
+                    return v[dim2];
+                }
+            }
+            envActual = envActual.anterior;
         }
         return Type_1.Type.error;
     }
     actualizar_Matriz(nombre, valor, dim1, dim2) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre) {
-                entry[1].value[dim1][dim2] = valor;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre) {
+                    entry[1].value[dim1][dim2] = valor;
+                }
             }
+            envActual = envActual.anterior;
         }
     }
     getDim1_Matriz(nombre) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre)
-                return entry[1].dim1;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre)
+                    return entry[1].dim1;
+            }
+            envActual = envActual.anterior;
         }
         return Type_1.Type.error;
     }
     getDim2_Matriz(nombre) {
-        for (let entry of Array.from(this.tablaSimbolos.entries())) {
-            if (entry[0] == nombre)
-                return entry[1].dim1;
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre)
+                    return entry[1].dim2;
+            }
+            envActual = envActual.anterior;
         }
         return Type_1.Type.error;
     }

@@ -8,6 +8,7 @@ export class DeclaracionVectorNew extends Instruccion {
     public nombre: string,
     public tipo: Type,
     public Dim1:Expression,
+    public tipo2: Type,
     line: number,
     column: number
   ) {
@@ -17,7 +18,7 @@ export class DeclaracionVectorNew extends Instruccion {
   public execute(env: Environment) {
     
     let exp= this.Dim1.execute(env)
-      
+    if(exp.type==Type.NUMBER&&this.tipo==this.tipo2){
       if (Type.NUMBER == this.tipo||Type.DECIMAL == this.tipo){
         let valor:any=[];
         let n=Number(exp.value)
@@ -69,6 +70,10 @@ export class DeclaracionVectorNew extends Instruccion {
       }else{
         console.log("error semantico, declaracion de variable ["+this.nombre+"] no correcta");
       }
+    }else{
+      console.log("error semantico, declaracion de variable ["+this.nombre+"] no correcta");
+    }
+      
     
     
   }

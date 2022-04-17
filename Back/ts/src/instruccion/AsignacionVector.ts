@@ -29,7 +29,6 @@ export class AsignacionVector extends Instruccion {
           
         }else{
           console.log("error semantico, no se puede asignar un valor de otro tipo a la variable ["+this.nombre+"]");
-          
         }
         
       }else{
