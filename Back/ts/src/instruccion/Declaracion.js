@@ -11,17 +11,19 @@ class Declaracion extends Instruccion_1.Instruccion {
     }
     execute(env) {
         let exp = this.expresion.execute(env);
-        if (exp.type == this.tipo) {
-            const condicion = env.guardar_variable(this.nombre, exp.value, this.tipo);
-            if (condicion) {
-                console.log("variable [" + this.nombre + "] ingresada...");
+        for (const id of this.nombre) {
+            if (exp.type == this.tipo) {
+                const condicion = env.guardar_variable(id, exp.value, this.tipo);
+                if (condicion) {
+                    console.log("variable [" + id + "] ingresada...");
+                }
+                else {
+                    console.log("variable [" + id + "] no ingresada...");
+                }
             }
             else {
-                console.log("variable [" + this.nombre + "] no ingresada...");
+                console.log("error semantico, declaracion de variable [" + id + "] no correcta");
             }
-        }
-        else {
-            console.log("error semantico, declaracion de variable [" + this.nombre + "] no correcta");
         }
     }
 }

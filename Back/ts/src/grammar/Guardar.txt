@@ -139,16 +139,6 @@ LISTAS_CASE
 
 
 
-
-
-PRINT
-    : 'Print' 'ParentesisA' EXPRESION_B 'ParentesisC' 'PuntoComa'
-;
-
-PRINTLN
-    : 'Println' 'ParentesisA' EXPRESION_B 'ParentesisC' 'PuntoComa'
-;
-
 EXPRESION_IMPRESION
     : EXPRESION_IMPRESION 'mas' EXPRESION_IMPRESION
     | 'cadena'

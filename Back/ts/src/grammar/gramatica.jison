@@ -1,12 +1,32 @@
 %{
     const {Declaracion} = require('../instruccion/Declaracion');
+    const {DeclaracionVacio} = require('../instruccion/DeclaracionVacio');
+    const {DeclaracionTernario} = require('../instruccion/DeclaracionTernario');
+    const {DeclaracionVectorNew} = require('../instruccion/DeclaracionVectorNew');
+    const {DeclaracionVectorLista} = require('../instruccion/DeclaracionVectorLista');
+    const {AsignacionVector} = require('../instruccion/AsignacionVector');
+
     const {Type} = require('../simbolos/Type');
     const {Arithmetic} = require('../expression/aritmeticas');
+    const {relacional} = require('../expression/relacionales');
+    const {logic} = require('../expression/logic');
+
+    const {GetId} = require('../expression/GetId');
+    const {GetVector} = require('../expression/GetVector');
+
     const {ArithmeticOption} = require('../expression/aritmeticOption');
+    const {RelacionalOption} = require('../expression/relacionalOption');
+    const {LogicOption} = require('../expression/logicOption');
     const {Literal} = require('../expression/literal');
     const {PrintLn} = require('../Instruccion/println');
     const {Asignacion} = require('../Instruccion/Asignacion');
+    const {AsignacionTernario} = require('../Instruccion/AsignacionTernario');
     const {Print} = require('../Instruccion/print');
+    const {Casteo} = require('../Instruccion/Casteo');
+    const {CasteoAsig} = require('../Instruccion/CasteoAsig');
+    const {Incremento} = require('../Instruccion/Incremento');
+    const {Decremento} = require('../Instruccion/decremento');
+    
 %}
 
 %lex
@@ -270,20 +290,9 @@
                 console.log("reconoci el token <igualIf> con lexema : "+yytext);
                 return 'igualIf';
             }
-
-"="         {
-                console.log("reconoci el token <igual> con lexema : "+yytext);
-                return 'igual';
-            }
-
 "!="         {
-                console.log("reconoci el token <desIgual> con lexema : "+yytext);
-                return 'desIgual';
-            }
-
-"<"         {
-                console.log("reconoci el token <menor> con lexema : "+yytext);
-                return 'menor';
+                console.log("reconoci el token <diferente> con lexema : "+yytext);
+                return 'diferente';
             }
 
 "<="         {
@@ -291,15 +300,30 @@
                 return 'menorIgual';
             }
 
+">="         {
+                console.log("reconoci el token <mayorIgual> con lexema : "+yytext);
+                return 'mayorIgual';
+            }
+
+"="         {
+                console.log("reconoci el token <igual> con lexema : "+yytext);
+                return 'igual';
+            }
+
+
+"<"         {
+                console.log("reconoci el token <menor> con lexema : "+yytext);
+                return 'menor';
+            }
+
+
+
 ">"         {
                 console.log("reconoci el token <mayor> con lexema : "+yytext);
                 return 'mayor';
             }
 
-">="         {
-                console.log("reconoci el token <mayorIgual> con lexema : "+yytext);
-                return 'mayorIgual';
-            }
+
 
 "?"         {
                 console.log("reconoci el token <Interrogacion> con lexema : "+yytext);
@@ -321,9 +345,11 @@
                 return 'not';
             }
 
-\'[^\']*\'  {
-                console.log("reconoci el token <cadena> con lexema : "+yytext);
-                return 'cadena';
+
+
+\'[^\']?\'  {
+                console.log("reconoci el token <char> con lexema : "+yytext);
+                return 'ValChar';
             }
 
 \"[^\"]*\" {
@@ -358,7 +384,7 @@
 %left 'or'
 %left 'and'
 %right 'not'
-%left 'igualIf' 'desIgual' 'mayor' 'mayorIgual' 'menor' 'menorIgual'
+%left 'igualIf' 'diferente' 'mayor' 'mayorIgual' 'menor' 'menorIgual'
 %left 'mas' 'menos'
 %left 'division' 'multiplicacion' 'modulo'
 % 'potencia'
@@ -380,29 +406,60 @@ INSTRUCCION
 ;
 
 INSTRUCCIONES
-    : DECLARACION   {$$=$1}
-    | ASIGNACION    {$$=$1}
-    | PRINT         {$$=$1}
-    | PRINT_LN      {$$=$1}
+    : DECLARACION           {$$=$1}
+    | ASIGNACION            {$$=$1}
+    | PRINT                 {$$=$1}
+    | PRINT_LN              {$$=$1}
+    | DECLARACION_VACIO     {$$=$1}
+    | CASTEO_D              {$$=$1}
+    | INCREMENTO_DECREMENTO {$$=$1}
 ;
 
-
-PRIMITIVOS
-    :  DECLARACION {$$=$1;}
+CASTEO_D
+    : TIPO_DATO ID_DECLARACION 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' {$$=new Casteo($2,$1,$7,$5,@1.first_line,@1.fisrt_column)}
+    | 'id' 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' {$$=new CasteoAsig($1,$6,$4,@1.first_line,@1.fisrt_column)}
 ;
 
 
 DECLARACION
-    : TIPO_DATO 'id' 'igual' EXPRESION 'PuntoComa' {$$= new Declaracion($2,$1,$4,@1.first_line,@1.fisrt_column);}
+    : TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'PuntoComa' {$$= new Declaracion($2,$1,$4,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO ID_DECLARACION 'PuntoComa' {$$= new DeclaracionVacio($2,$1,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' {$$= new DeclaracionTernario($2,$1,$4,$6,$8,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC'  'PuntoComa' {$$= new DeclaracionVectorNew($2,$1,$9,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'PuntoComa'
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,$7,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'coma' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'CorcheteC' 'PuntoComa'
+;
+
+LISTA_VALORES
+    : LISTA_VALORES 'coma' VALOR {$1.push($3); $$=$1;}
+    | VALOR {$$=[$1]}
+;
+
+
+
+
+ID_DECLARACION
+    : ID_DECLARACION 'coma' 'id' {$1.push($3); $$=$1;}
+    | 'id' {$$=[$1]}
+;
+
+ASIGNACION
+    : 'id' 'igual'  EXPRESION  'PuntoComa' {$$= new Asignacion($1,$3, @1.first_line, @1.first_column)}
+    | 'id' 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' {$$= new AsignacionTernario($1,$3,$5,$7,@1.first_line,@1.fisrt_column);}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION  'PuntoComa' {$$= new AsignacionVector($1,$3,$6, @1.first_line, @1.first_column)}
+;
+
+INCREMENTO_DECREMENTO
+    : 'id' 'mas' 'mas' 'PuntoComa'      {$$= new Incremento($1, @1.first_line, @1.first_column)}
+    | 'id' 'menos' 'menos' 'PuntoComa'  {$$= new Decremento($1, @1.first_line, @1.first_column)}
 ;
 
 PRINT_LN
     : 'Println' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa'  {$$= new PrintLn($3, @1.first_line, @1.first_column)}
 ;
 
-ASIGNACION
-    : 'id' 'igual'  EXPRESION  'PuntoComa' {$$= new Asignacion($1,$3, @1.first_line, @1.first_column)}
-;
+
 
 PRINT
     : ''Print' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa' {$$= new Print($3, @1.first_line, @1.first_column)}
@@ -418,22 +475,40 @@ TIPO_DATO
 ;
 
 EXPRESION
-    : MENOS expresion %prec UMENOS          {$$=new Arithmetic(-1,$2,ArithmeticOption.NEGACION, @1.first_line, @1.first_column); }
+    : 'menos' EXPRESION %prec UMENOS        {$$=new Arithmetic($2,$2,ArithmeticOption.NEGACION, @1.first_line, @1.first_column); }
+    | EXPRESION 'mas' 'mas'                 {$$=new Arithmetic($1, $1,ArithmeticOption.INCR,   @1.first_line, @1.first_column)}
+    | EXPRESION 'menos' 'menos'             {$$=new Arithmetic($1, $1,ArithmeticOption.DECR,   @1.first_line, @1.first_column)}
     | EXPRESION 'mas' EXPRESION             {$$=new Arithmetic($1, $3,ArithmeticOption.MAS,   @1.first_line, @1.first_column)}
     | EXPRESION 'menos' EXPRESION           {$$=new Arithmetic($1, $3,ArithmeticOption.MENOS,   @1.first_line, @1.first_column);}
-    | EXPRESION 'division' EXPRESION        {$$=new Arithmetic($1, $3,ArithmeticOption.DIVISION,   @1.first_line, @1.first_column);}
-    | EXPRESION 'modulo' EXPRESION        {$$=new Arithmetic($1, $3,ArithmeticOption.DIVISION,   @1.first_line, @1.first_column);}
+    | EXPRESION 'division' EXPRESION        {$$=new Arithmetic($1, $3,ArithmeticOption.DIV,   @1.first_line, @1.first_column);}
+    | EXPRESION 'modulo' EXPRESION          {$$=new Arithmetic($1, $3,ArithmeticOption.MODULO,   @1.first_line, @1.first_column);}
     | EXPRESION 'multiplicacion' EXPRESION  {$$=new Arithmetic($1, $3,ArithmeticOption.MULTIPLICACION,   @1.first_line, @1.first_column);}
     | EXPRESION 'potencia' EXPRESION        {$$=new Arithmetic($1, $3,ArithmeticOption.POT,   @1.first_line, @1.first_column);}
+    | EXPRESION 'igualIf' EXPRESION         {$$=new relacional($1, $3,RelacionalOption.IGUAL,   @1.first_line, @1.first_column);}
+    | EXPRESION 'mayor' EXPRESION           {$$=new relacional($1, $3,RelacionalOption.MAYOR,   @1.first_line, @1.first_column);}
+    | EXPRESION 'menor' EXPRESION           {$$=new relacional($1, $3,RelacionalOption.MENOR,   @1.first_line, @1.first_column);}
+    | EXPRESION 'mayorIgual' EXPRESION      {$$=new relacional($1, $3,RelacionalOption.MAYORIGUAL,   @1.first_line, @1.first_column);}
+    | EXPRESION 'menorIgual' EXPRESION      {$$=new relacional($1, $3,RelacionalOption.MENORIGUAL,   @1.first_line, @1.first_column);}
+    | EXPRESION 'diferente' EXPRESION       {$$=new relacional($1, $3,RelacionalOption.DIFERENTE,   @1.first_line, @1.first_column);}
+    | EXPRESION 'and' EXPRESION             {$$=new logic($1, $3,LogicOption.AND,   @1.first_line, @1.first_column);}
+    | 'not' EXPRESION                       {$$=new logic($2, $2,LogicOption.NOT,   @1.first_line, @1.first_column);}
+    | EXPRESION 'or' EXPRESION              {$$=new logic($1, $3,LogicOption.OR,   @1.first_line, @1.first_column);}
+    | ParentesisA EXPRESION ParentesisC     { $$ = $2; }        
     | VALOR                                 {$$=$1;}
 ;
 
 
 VALOR   
-    :'True'     {$$= new Literal($1,Type.BOOLEAN,  @1.first_line, @1.first_column)}
-    |'False'    {$$= new Literal($1,Type.BOOLEAN,  @1.first_line, @1.first_column)}
-    |'entero'   {$$= new Literal($1,Type.NUMBER,  @1.first_line, @1.first_column)}
-    |'decimal'  {$$= new Literal($1,Type.DECIMAL,  @1.first_line, @1.first_column)}
-    |'cadena'   {$$= new Literal($1,Type.STRING,  @1.first_line, @1.first_column)}
-    |'char'     {$$= new Literal($1,Type.CHAR,  @1.first_line, @1.first_column)}
+    :'True'                 {$$= new Literal($1,Type.BOOLEAN,  @1.first_line, @1.first_column)}
+    |'False'                {$$= new Literal($1,Type.BOOLEAN,  @1.first_line, @1.first_column)}
+    |'entero'               {$$= new Literal($1,Type.NUMBER,  @1.first_line, @1.first_column)}
+    |'decimal'              {$$= new Literal($1,Type.DECIMAL,  @1.first_line, @1.first_column)}
+    |'cadena'               {$$= new Literal($1,Type.STRING,  @1.first_line, @1.first_column)}
+    |'ValChar'              {$$= new Literal($1,Type.CHAR,  @1.first_line, @1.first_column)}
+    |'id'                   {$$= new GetId($1,  @1.first_line, @1.first_column)}
+    | GET_VECTOR            {$$=$1}
+;
+
+GET_VECTOR
+    : 'id' 'CorcheteA' EXPRESION 'CorcheteC' {$$= new GetVector($1, $3 , @1.first_line, @1.first_column)}
 ;

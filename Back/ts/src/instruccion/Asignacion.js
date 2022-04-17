@@ -10,18 +10,23 @@ class Asignacion extends Instruccion_1.Instruccion {
     }
     execute(env) {
         let exp = this.expresion.execute(env);
-        if (env.buscar_variable(this.nombre)) {
-            //ahora toca ver que sean del mismo tipo
-            if (exp.type == env.getTipo_variable(this.nombre)) {
-                env.actualizar_variable(this.nombre, exp.value);
-                console.log("variable [" + this.nombre + "] actualizada con exito...");
+        if (env.getDimension_variable(this.nombre) == 1) {
+            if (env.buscar_variable(this.nombre)) {
+                //ahora toca ver que sean del mismo tipo
+                if (exp.type == env.getTipo_variable(this.nombre)) {
+                    env.actualizar_variable(this.nombre, exp.value);
+                    console.log("variable [" + this.nombre + "] actualizada con exito...");
+                }
+                else {
+                    console.log("error semantico, no se puede asignar un valor de otro tipo a la variable [" + this.nombre + "]");
+                }
             }
             else {
-                console.log("error semantico, no se puede asignar un valor de otro tipo a la variable [" + this.nombre + "]");
+                console.log("la variable [" + this.nombre + "] no fue encontrada...");
             }
         }
         else {
-            console.log("la variable [" + this.nombre + "] no fue encontrada...");
+            console.log("la variable [" + this.nombre + "] tiene una dimension diferente...");
         }
     }
 }

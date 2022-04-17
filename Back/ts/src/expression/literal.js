@@ -11,7 +11,8 @@ class Literal extends express_1.Expression {
     }
     execute() {
         if (this.type == Type_1.Type.NUMBER)
-            return { value: Number(this.value), type: Type_1.Type.NUMBER };
+            return { value: Number(this.value), type: Type_1.Type.NUMBER
+            };
         else if (this.type == Type_1.Type.STRING) {
             this.value = (this.value).replaceAll("\"", "");
             return { value: this.value, type: Type_1.Type.STRING };
@@ -21,6 +22,13 @@ class Literal extends express_1.Expression {
                 return { value: Boolean(true), type: Type_1.Type.BOOLEAN };
             else
                 return { value: Boolean(false), type: Type_1.Type.BOOLEAN };
+        }
+        else if (this.type == Type_1.Type.DECIMAL) {
+            return { value: Number(this.value), type: Type_1.Type.DECIMAL };
+        }
+        else if (this.type == Type_1.Type.CHAR) {
+            this.value = (this.value).replaceAll("\'", "");
+            return { value: this.value, type: Type_1.Type.CHAR };
         }
         else
             return { value: this.value, type: Type_1.Type.error };
