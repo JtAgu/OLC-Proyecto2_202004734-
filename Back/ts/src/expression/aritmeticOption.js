@@ -10,6 +10,6 @@ var ArithmeticOption;
     /*4*/ ArithmeticOption[ArithmeticOption["MODULO"] = 4] = "MODULO";
     /*5*/ ArithmeticOption[ArithmeticOption["POT"] = 5] = "POT";
     /*6*/ ArithmeticOption[ArithmeticOption["NEGACION"] = 6] = "NEGACION";
-    /*6*/ ArithmeticOption[ArithmeticOption["INCR"] = 7] = "INCR";
-    /*6*/ ArithmeticOption[ArithmeticOption["DECR"] = 8] = "DECR";
+    /*7*/ ArithmeticOption[ArithmeticOption["INCR"] = 7] = "INCR";
+    /*8*/ ArithmeticOption[ArithmeticOption["DECR"] = 8] = "DECR";
 })(ArithmeticOption = exports.ArithmeticOption || (exports.ArithmeticOption = {}));

@@ -1,22 +1,24 @@
-int w = 1;
-IF(w==2){
-    int v [][] = [[9,8,6],[7,9,4],[1,5,2]];
 
-    v[2][2]=8;
-
-    print(v[2][2]);
-
-    
-}else IF(w<1){
-    print("Entre al else if");
-}else if(w==1){
-    print("esto es un else if");
-    print(w);
-}else{
-    print("esto es un else");
-}
-
-
-
-
-
+int i=-1;
+int edad = 18;
+do{
+    switch( edad ) {
+        Case 10:
+            Println("Tengo 10 anios.");
+            // mas sentencias
+            Break;
+        Case 18:
+            Print("Tengo 18 anios.\n");
+            // mas sentencias
+        Case 25:
+            Println("Tengo 25 anios.");
+            // mas sentencias
+            Break;
+        Default:
+            Print("No se que edad tengo. :(\n");
+            // mas sentencias
+            Break;
+    }
+    i--;
+    print(i);
+}while(i>0);

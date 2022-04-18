@@ -6,6 +6,6 @@ export enum ArithmeticOption {
     /*4*/  MODULO,
     /*5*/  POT,
     /*6*/  NEGACION,
-    /*6*/  INCR,
-    /*6*/  DECR
+    /*7*/  INCR,
+    /*8*/  DECR
 }

@@ -34,7 +34,7 @@ class Environment {
     getTipo_variable(nombre) {
         let envActual = this;
         while (envActual != null) {
-            for (let entry of Array.from(this.tablaSimbolos.entries())) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
                 if (entry[0] == nombre)
                     return entry[1].tipo;
             }

@@ -27,6 +27,10 @@
     const {LogicOption} = require('../expression/logicOption');
     const {Literal} = require('../expression/literal');
     
+    const {DOWHILE} = require('../Instruccion/DoWhile');
+    const {WHILE} = require('../Instruccion/While');
+    const {SWITCHCASE} = require('../Instruccion/SwitchCase');
+    const {SWITCH} = require('../Instruccion/switch');
     const {PrintLn} = require('../Instruccion/println');
     const {Print} = require('../Instruccion/print');
     const {Casteo} = require('../Instruccion/Casteo');
@@ -44,23 +48,15 @@
 %%
 
 
-[0-9]+"."[0-9]+      {
-                console.log("reconoci el token <decimal> con lexema : "+yytext);
-                return 'decimal';
-                }
 
-[0-9]+      {
-                console.log("reconoci el token <entero> con lexema : "+yytext);
-                return 'entero';
-            }
 
 "//"[^\n]*  {
                 console.log("reconoci el token <comentario> con lexema : "+yytext);
             }
 
-"/*"[^"*/"]*"*/"    {
-                    console.log("reconoci el token <comentarioMulti> con lexema : "+yytext);
-                }
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]     {
+                                            console.log("reconoci el token <comentarioMulti> con lexema : "+yytext);
+                                        }
 
 
 
@@ -366,6 +362,16 @@
                 return 'cadena';
             }
 
+[0-9]+"."[0-9]+      {
+                console.log("reconoci el token <decimal> con lexema : "+yytext);
+                return 'decimal';
+                }
+
+[0-9]+      {
+                console.log("reconoci el token <entero> con lexema : "+yytext);
+                return 'entero';
+            }
+
 ([a-zA-ZñÑ])[a-zA-ZñÑ0-9_]* {
                                 console.log("reconoci el token <id> con lexema : "+yytext);
                                 return 'id';
@@ -422,8 +428,33 @@ INSTRUCCIONES
     | DECLARACION_VACIO     {$$=$1}
     | CASTEO_D              {$$=$1}
     | INCREMENTO_DECREMENTO {$$=$1}
-    | IF                    {$$=$1}    
+    | IF                    {$$=$1}
+    | SWITCH                {$$=$1}
+    | WHILE                 {$$=$1}
+    | DO_WHILE              {$$=$1}
 ;
+
+I_SWITCH
+    : DECLARACION           {$$=$1}
+    | ASIGNACION            {$$=$1}
+    | PRINT                 {$$=$1}
+    | PRINT_LN              {$$=$1}
+    | DECLARACION_VACIO     {$$=$1}
+    | CASTEO_D              {$$=$1}
+    | INCREMENTO_DECREMENTO {$$=$1}
+    | IF                    {$$=$1}    
+    | SWITCH                {$$=$1}
+;
+
+DO_WHILE
+    : 'do' 'LlaveA' INSTRUCCION 'LlaveC' 'while' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa' {$$=new DOWHILE($3,$7,@1.first_line,@1.fisrt_column)}
+;
+
+
+WHILE
+    : 'while' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC' {$$=new WHILE($3,$6,@1.first_line,@1.fisrt_column)}
+;
+
 
 CASTEO_D
     : TIPO_DATO ID_DECLARACION 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' {$$=new Casteo($2,$1,$7,$5,@1.first_line,@1.fisrt_column)}
@@ -479,12 +510,42 @@ IF
 
 ELSE
     : 'else' 'LlaveA' INSTRUCCION 'LlaveC'  {$$=new ELSE($3, @1.first_line, @1.first_column)}
-    | 'else' 'LlaveA' 'LlaveC'  {$$=new ELSE(null, @1.first_line, @1.first_column)}
+    | 'else' 'LlaveA' 'LlaveC'              {$$=new ELSE(null, @1.first_line, @1.first_column)}
 ;
 
+SWITCH
+    : 'switch' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' TIPO_SW DEFAULT 'LlaveC'  {$$=new SWITCH($3,$6,$7 ,@1.first_line, @1.first_column)}
+    | 'switch' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' TIPO_SW 'LlaveC'          {$$=new SWITCH($3,$6,null,@1.first_line, @1.first_column)}
+    | 'switch' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' DEFAULT 'LlaveC'          {$$=new SWITCH($3,null,$6 ,@1.first_line, @1.first_column)}
+;
+
+TIPO_SW
+    : TIPO_SW  'case' EXPRESION 'DosPuntos' INSTRUCCION 'break' 'PuntoComa'     {$1.push(new SWITCHCASE($3,$5,$6)); $$=$1;}
+    | TIPO_SW  'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'                 {$1.push(new SWITCHCASE($3,$5,$6)); $$=$1;}
+
+    | TIPO_SW 'case' EXPRESION 'DosPuntos' INSTRUCCION                          {$1.push(new SWITCHCASE($3,$5,null)); $$=$1;}
+    | TIPO_SW 'case' EXPRESION 'DosPuntos'                                      {$1.push(new SWITCHCASE($3,null,null)); $$=$1;}
+
+    | 'case' EXPRESION 'DosPuntos' INSTRUCCION                                  {$$=[new SWITCHCASE($2,$4,null)]}
+    | 'case' EXPRESION 'DosPuntos'                                              {$$=[new SWITCHCASE($2,null,null)]}
+
+    | 'case' EXPRESION 'DosPuntos' INSTRUCCION 'break' 'PuntoComa'              {$$=[new SWITCHCASE($2,$4,$5)]}
+    | 'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'                          {$$=[new SWITCHCASE($2,null,$5)]}
+;
+
+DEFAULT
+    : 'default' 'DosPuntos' INSTRUCCION 'break' 'PuntoComa'                     {$$=$3;}
+    | 'default' 'DosPuntos' 'break' 'PuntoComa'                                 {$$=null;}
+;
+
+
 INCREMENTO_DECREMENTO
-    : 'id' 'mas' 'mas' 'PuntoComa'      {$$= new Incremento($1, @1.first_line, @1.first_column)}
-    | 'id' 'menos' 'menos' 'PuntoComa'  {$$= new Decremento($1, @1.first_line, @1.first_column)}
+    : 'id' 'mas' 'mas' 'PuntoComa'                                                                          {$$= new Incremento($1,null,null, @1.first_line, @1.first_column)}
+    | 'id' 'menos' 'menos' 'PuntoComa'                                                                      {$$= new Decremento($1,null ,null,@1.first_line, @1.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'mas' 'mas' 'PuntoComa'                                        {$$= new Incremento($1,$3,null, @1.first_line, @1.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'menos' 'menos' 'PuntoComa'                                    {$$= new Decremento($1,$3,null, @1.first_line, @1.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'mas' 'mas' 'PuntoComa'      {$$= new Incremento($1,$3,$6, @1.first_line, @1.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'menos' 'menos' 'PuntoComa'  {$$= new Decremento($1,$3,$6, @1.first_line, @1.first_column)}
 ;
 
 PRINT_LN
@@ -525,7 +586,7 @@ EXPRESION
     | EXPRESION 'and' EXPRESION             {$$=new logic($1, $3,LogicOption.AND,   @1.first_line, @1.first_column);}
     | 'not' EXPRESION                       {$$=new logic($2, $2,LogicOption.NOT,   @1.first_line, @1.first_column);}
     | EXPRESION 'or' EXPRESION              {$$=new logic($1, $3,LogicOption.OR,   @1.first_line, @1.first_column);}
-    | ParentesisA EXPRESION ParentesisC     { $$ = $2; }        
+    | ParentesisA EXPRESION ParentesisC     {$$=$2;}        
     | VALOR                                 {$$=$1;}
 ;
 
@@ -544,4 +605,8 @@ VALOR
 GET_VECTOR
     : 'id' 'CorcheteA' EXPRESION 'CorcheteC' {$$= new GetVector($1, $3 , @1.first_line, @1.first_column)}
     | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC'  {$$= new GetMatriz($1, $3 , $6, @1.first_line, @1.first_column)}
+;
+
+BREAK
+    : 'break' 'PuntoComa'
 ;

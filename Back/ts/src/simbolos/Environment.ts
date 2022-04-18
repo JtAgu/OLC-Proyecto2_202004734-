@@ -37,7 +37,7 @@ export class Environment {
   public getTipo_variable(nombre: string): Type {
     let envActual: Environment | null = this;
     while (envActual != null) {
-      for (let entry of Array.from(this.tablaSimbolos.entries())) {
+      for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
         if (entry[0] == nombre) return entry[1].tipo;
       }
       envActual = envActual.anterior;
