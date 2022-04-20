@@ -5,7 +5,7 @@ import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
 import { Literal } from "./literal"
 
-export class GetId extends Expression {
+export class GetId2 extends Expression {
 
     constructor(
         private IdName: any,
@@ -28,9 +28,20 @@ export class GetId extends Expression {
                     value:env.getValue_variable(this.IdName),
                     type:env.getTipo_variable(this.IdName)
                 }
-            }else{
+            }else if(env.getDimension_variable(this.IdName)==2){
                 
-                console.log("la variable ["+this.IdName+"] tiene una dimension diferente...");
+                result={
+                    value:env.getDim1_Vector(this.IdName),
+                    type:Type.ID
+                }
+            }else{
+                var d1=env.getDim1_Matriz(this.IdName);
+                var d2=env.getDim2_Matriz(this.IdName);
+                var d:Number=Number(d1)*Number(d2);
+                result={
+                    value:d,
+                    type:Type.ID
+                }
             }
         }else{
             console.log("la variable ["+this.IdName+"] no fue encontrada...");

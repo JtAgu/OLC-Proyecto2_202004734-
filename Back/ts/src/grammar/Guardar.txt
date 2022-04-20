@@ -82,27 +82,7 @@ CONDICION
 ;
 
 
-SWITCH
-    : 'switch' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' TIPO_SW 'LlaveC'
-;
 
-TIPO_SW
-    : 'case' EXPRESION 'DosPuntos' INSTRUCCION 'break' 'PuntoComa' TIPO_SW 
-    | 'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa' TIPO_SW 
-
-    | 'case' EXPRESION 'DosPuntos' INSTRUCCION 'break' 'PuntoComa'
-    | 'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'
-
-    | 'case' EXPRESION 'DosPuntos' INSTRUCCION TIPO_SW 
-    | 'case' EXPRESION 'DosPuntos' TIPO_SW 
-
-    | 'case' EXPRESION 'DosPuntos' INSTRUCCION 
-    | 'case' EXPRESION 'DosPuntos' 
-
-    | 'default' 'DosPuntos' INSTRUCCION 'break' 'PuntoComa'
-    | 'default' 'DosPuntos' INSTRUCCION 'break' 'PuntoComa'
-    | 'default' 'DosPuntos'
-;
 
 
 

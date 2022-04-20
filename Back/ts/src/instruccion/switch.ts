@@ -1,7 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
 import { Environment } from "../simbolos/Environment";
-import { Type } from "../simbolos/Type";
 import { SWITCHCASE } from "./SwitchCase";
 
 export class SWITCH extends Instruccion {

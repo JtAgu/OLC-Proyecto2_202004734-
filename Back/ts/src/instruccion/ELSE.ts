@@ -15,7 +15,14 @@ export class ELSE extends Instruccion {
         if(this.Intrucciones!=null){
             const envElse = new Environment(env);
             for(const x of this.Intrucciones){
-                x.execute(envElse);
+              var x2 =x.execute(envElse);
+              if(x2!=undefined){
+                  if(x2){
+                      return true;
+                  }else{
+                      return false;
+                  }
+              }
             }
         }
     }

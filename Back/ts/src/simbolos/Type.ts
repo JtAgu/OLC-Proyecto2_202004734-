@@ -4,5 +4,6 @@ export enum Type{
     CHAR,
     STRING,
     BOOLEAN,
+    ID,
     error
 }

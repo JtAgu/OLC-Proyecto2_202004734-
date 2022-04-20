@@ -14,5 +14,6 @@ export class PrintLn extends Instruccion {
   public execute(env: Environment) {
     let exp= this.expresion.execute(env)
     console.log(exp.value);
+    return exp.value+"\n"
   }
 }

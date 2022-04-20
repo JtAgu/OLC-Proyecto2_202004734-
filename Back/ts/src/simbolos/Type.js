@@ -8,5 +8,6 @@ var Type;
     Type[Type["CHAR"] = 2] = "CHAR";
     Type[Type["STRING"] = 3] = "STRING";
     Type[Type["BOOLEAN"] = 4] = "BOOLEAN";
-    Type[Type["error"] = 5] = "error";
+    Type[Type["ID"] = 5] = "ID";
+    Type[Type["error"] = 6] = "error";
 })(Type = exports.Type || (exports.Type = {}));

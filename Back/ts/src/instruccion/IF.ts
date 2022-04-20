@@ -21,7 +21,14 @@ export class IF extends Instruccion {
                 if(this.Intrucciones!=null){
                     const envIf = new Environment(env);
                     for(const x of this.Intrucciones){
-                        x.execute(envIf);
+                        var x2 = x.execute(envIf);
+                        if(x2!=undefined){
+                            if(x2){
+                                return true;
+                            }else{
+                                return false;
+                            }
+                        }
                     }
                 }
             }else{

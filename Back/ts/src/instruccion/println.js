@@ -10,6 +10,7 @@ class PrintLn extends Instruccion_1.Instruccion {
     execute(env) {
         let exp = this.expresion.execute(env);
         console.log(exp.value);
+        return exp.value + "\n";
     }
 }
 exports.PrintLn = PrintLn;
