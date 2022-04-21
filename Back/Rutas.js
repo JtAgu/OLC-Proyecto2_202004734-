@@ -1,7 +1,7 @@
 const express=require('express')
 const routes=express.Router()
 var entrada='';
-var salida='';
+var salidaMSG='';
 
 routes.get('/',function(req,res){
     res.json({msg:entrada})
@@ -18,20 +18,29 @@ routes.get('/Ejecutar',function(req,res){
     const parser = require("./ts/src/grammar/gramatica");
     const ast = parser.parse(entrada.toString());
     const env = new Environment_1.Environment(null);
-    //recorrer las instrucciones y ejecutarlas
-    for (const instruccion of ast) {
-        try {
-            var s=instruccion.execute(env);
-            if(s!=undefined){
-                salida+=s;
-            }
+    var salida=new Singleton();
+  //recorrer las instrucciones y ejecutarlas
+  
+  var i=0,j=[];
+  for (const instruccion of ast) {
+    try {
+      i++;
+      let ins=instruccion.execute(env,salida);
+      if(ins!=undefined){
+        if(ins=="RUN"){
+          j.push(instruccion);
         }
-        catch (error) {
-            console.log(error);
-        }
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-    res.json({msg:salida})
+  }
+  for(const run of j){
+    run.execute2(env,salida);
+  }
+  
+    salidaMSG=salida.getMsg();
+    res.json({msg:salidaMSG})
 })
 
 module.exports=routes

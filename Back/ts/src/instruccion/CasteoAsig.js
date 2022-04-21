@@ -10,9 +10,11 @@ class CasteoAsig extends Instruccion_1.Instruccion {
         this.expresion = expresion;
         this.TipoCambio = TipoCambio;
     }
-    execute(env) {
+    execute2(env) {
+    }
+    execute(env, sn) {
         let Aceptado = false;
-        let exp = this.expresion.execute(env);
+        let exp = this.expresion.execute(env, sn);
         if (env.buscar_variable(this.nombre)) {
             //ahora toca ver que sean del mismo tipo
             if (exp.type == Type_1.Type.NUMBER && this.TipoCambio == Type_1.Type.DECIMAL) {

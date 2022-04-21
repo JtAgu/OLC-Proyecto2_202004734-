@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
+import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
 
@@ -14,9 +15,9 @@ export class GetMatriz extends Expression {
         super(line, column)
     }
 
-    public execute(env: Environment): Retorno {
-        let exp = this.num.execute(env)
-        let exp2 = this.num2.execute(env)
+    public execute(env: Environment,sn:Singleton): Retorno {
+        let exp = this.num.execute(env,sn)
+        let exp2 = this.num2.execute(env,sn)
 
         let result: Retorno = {
             value: null,

@@ -11,13 +11,13 @@ class relacional extends express_1.Expression {
         this.right = right;
         this.type = type;
     }
-    execute(env) {
+    execute(env, sn) {
         let result = {
             value: null,
             type: Type_1.Type.error
         };
-        const nodoIzq = this.left.execute(env);
-        const nodoDer = this.right.execute(env);
+        const nodoIzq = this.left.execute(env, sn);
+        const nodoDer = this.right.execute(env, sn);
         //const val:number= nodoIzq.value? 1:0
         if (this.type == relacionalOption_1.RelacionalOption.IGUAL) {
             if (nodoIzq.type == Type_1.Type.NUMBER && nodoDer.type == Type_1.Type.NUMBER

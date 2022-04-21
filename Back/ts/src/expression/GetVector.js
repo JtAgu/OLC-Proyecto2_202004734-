@@ -9,8 +9,8 @@ class GetVector extends express_1.Expression {
         this.IdName = IdName;
         this.num = num;
     }
-    execute(env) {
-        let exp = this.num.execute(env);
+    execute(env, sn) {
+        let exp = this.num.execute(env, sn);
         let result = {
             value: null,
             type: Type_1.Type.error

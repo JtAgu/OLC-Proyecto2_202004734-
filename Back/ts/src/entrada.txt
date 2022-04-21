@@ -1,13 +1,30 @@
-string s="MAYUSCULA";
+run funcion1();
 
-s=toLower(s);
 
-println(s);
+funcion1():void{
+    Println("hola");
+    Print("Ejemplo de llamada a método");
+    holamundo();
+}
 
-s=toUpper(s);
+holamundo(): void {
+Print("Hola mundo");
+Int num = suma(3,2); // a = 11
+for(int i=0;i<num;i++){
+    if(i==3){
+        break;
+    }else{
+        println(i);
+    }
+}
+println("sigo vivo");
+Print("El valor de a es: " + num);
+}
 
-println(length(s));
+suma(int num1, int num2):int {
+    Println("Aquí puede venir cualquier sentencia :D");
+    return num1 + num2;
+    Println("Aquí pueden venir más sentencias, pero no se ejecutarán por
+    la sentencia RETURN D:"); //Print en una línea
+}
 
-int l[]=new int[4];
-
-println(length(l));

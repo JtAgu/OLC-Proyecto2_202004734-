@@ -11,10 +11,12 @@ class AsignacionTernario extends Instruccion_1.Instruccion {
         this.expresionV = expresionV;
         this.expresionF = expresionF;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
-        let expV = this.expresionV.execute(env);
-        let expF = this.expresionF.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.expresion.execute(env, sn);
+        let expV = this.expresionV.execute(env, sn);
+        let expF = this.expresionF.execute(env, sn);
         if (env.getDimension_variable(this.nombre) == 1) {
             if (env.buscar_variable(this.nombre)) {
                 //ahora toca ver que sean del mismo tipo

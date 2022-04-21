@@ -10,9 +10,9 @@ class GetMatriz extends express_1.Expression {
         this.num = num;
         this.num2 = num2;
     }
-    execute(env) {
-        let exp = this.num.execute(env);
-        let exp2 = this.num2.execute(env);
+    execute(env, sn) {
+        let exp = this.num.execute(env, sn);
+        let exp2 = this.num2.execute(env, sn);
         let result = {
             value: null,
             type: Type_1.Type.error

@@ -1,6 +1,9 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Retorno } from "../abstract/Retorno";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
+import { Type } from "../simbolos/Type";
 
 export class BREAK extends Instruccion {
     constructor(        
@@ -10,7 +13,13 @@ export class BREAK extends Instruccion {
         super(line, column);
     }
 
-    public execute(env: Environment):Boolean {
-        return true;
+    public execute2(env: Environment) {
+    }
+    public execute(env: Environment,sn:Singleton):Retorno {
+        let val={
+            value:true,
+            type:Type.BREAK
+        }
+        return val;
     }
 }

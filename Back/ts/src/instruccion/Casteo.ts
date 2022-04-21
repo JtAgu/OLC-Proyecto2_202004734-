@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -14,10 +15,11 @@ export class Casteo extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
+  public execute2(env: Environment) {
+}
+  public execute(env: Environment,sn:Singleton) {
     let Aceptado=false;
-    let exp= this.expresion.execute(env)
+    let exp= this.expresion.execute(env,sn)
     
     
     if(exp.type==Type.NUMBER && this.TipoCambio==Type.DECIMAL){

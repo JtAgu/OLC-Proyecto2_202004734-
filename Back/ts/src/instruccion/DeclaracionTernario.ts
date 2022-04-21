@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -15,12 +16,13 @@ export class DeclaracionTernario extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton) {
     
-    let exp= this.expresion.execute(env)
-    let expV= this.expresionV.execute(env)
-    let expF= this.expresionF.execute(env)
+    let exp= this.expresion.execute(env,sn)
+    let expV= this.expresionV.execute(env,sn)
+    let expF= this.expresionF.execute(env,sn)
     
     
     if (expV.type == this.tipo&&expF.type == this.tipo){

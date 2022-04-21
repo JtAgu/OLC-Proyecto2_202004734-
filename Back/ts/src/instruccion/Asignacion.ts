@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 
 export class Asignacion extends Instruccion {
@@ -11,10 +12,11 @@ export class Asignacion extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton) {
     
-    let exp= this.expresion.execute(env)
+    let exp= this.expresion.execute(env,sn)
 
     if(env.getDimension_variable(this.nombre)==1){
       if(env.buscar_variable(this.nombre)){

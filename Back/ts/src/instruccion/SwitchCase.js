@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SWITCHCASE = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
+const Type_1 = require("../simbolos/Type");
 class SWITCHCASE extends Instruccion_1.Instruccion {
     constructor(ExpresionC, ListaIns, PBreak, line, column) {
         super(line, column);
@@ -9,16 +10,26 @@ class SWITCHCASE extends Instruccion_1.Instruccion {
         this.ListaIns = ListaIns;
         this.PBreak = PBreak;
     }
-    execute(env) {
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let result = {
+            value: null,
+            type: Type_1.Type.error
+        };
         if (this.ListaIns != null) {
             for (const x of this.ListaIns) {
-                x.execute(env);
+                x.execute(env, sn);
             }
         }
         if (this.PBreak != null) {
-            return true;
+            result = {
+                value: null,
+                type: Type_1.Type.BREAK
+            };
+            return result;
         }
-        return false;
+        return result;
     }
 }
 exports.SWITCHCASE = SWITCHCASE;

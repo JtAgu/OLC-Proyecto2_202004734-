@@ -1,5 +1,6 @@
 import { Retorno } from "./Retorno"
 import { Environment } from "../simbolos/Environment"
+import { Singleton } from "../patrondiseno/singleton"
 
 export abstract class Expression {
 
@@ -8,6 +9,6 @@ export abstract class Expression {
         this.column = column + 1
     }
 
-    public abstract execute(environment: Environment): Retorno
+    public abstract execute(environment: Environment,sn:Singleton): Retorno
     
 }

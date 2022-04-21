@@ -11,8 +11,10 @@ class DeclaracionVectorNew extends Instruccion_1.Instruccion {
         this.Dim1 = Dim1;
         this.tipo2 = tipo2;
     }
-    execute(env) {
-        let exp = this.Dim1.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.Dim1.execute(env, sn);
         if (exp.type == Type_1.Type.NUMBER && this.tipo == this.tipo2) {
             if (Type_1.Type.NUMBER == this.tipo || Type_1.Type.DECIMAL == this.tipo) {
                 let valor = [];

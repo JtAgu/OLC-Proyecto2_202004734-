@@ -5,7 +5,7 @@ export class Singleton{
 
     private message:string=""
 
-    private constructor(){}
+    constructor(){}
 
     public static getInstance():Singleton{
         if(!Singleton.instance){
@@ -14,7 +14,7 @@ export class Singleton{
         return Singleton.instance;
     }
 
-    public addMsg(data:string){
+    public addMsg(data:any){
         this.message+=data
     }
 

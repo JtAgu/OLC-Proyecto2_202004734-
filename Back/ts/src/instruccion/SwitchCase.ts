@@ -1,6 +1,7 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
 import { Retorno } from "../abstract/Retorno";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -14,17 +15,26 @@ export class SWITCHCASE extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment):boolean{
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton):Retorno{
+    let result:Retorno={
+      value:null,
+      type:Type.error
+    }
     if(this.ListaIns!=null){
         for(const x of this.ListaIns){
-            x.execute(env);
+            x.execute(env,sn);
         }
     }
     if(this.PBreak!=null){
-        return true;
+      result={
+        value:null,
+        type:Type.BREAK
+      }
+        return result;
     }
 
-    return false
+    return result
   }
 }

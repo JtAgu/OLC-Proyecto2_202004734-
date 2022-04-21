@@ -8,8 +8,10 @@ class Asignacion extends Instruccion_1.Instruccion {
         this.nombre = nombre;
         this.expresion = expresion;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.expresion.execute(env, sn);
         if (env.getDimension_variable(this.nombre) == 1) {
             if (env.buscar_variable(this.nombre)) {
                 //ahora toca ver que sean del mismo tipo

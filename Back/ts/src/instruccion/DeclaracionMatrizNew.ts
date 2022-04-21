@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -15,11 +16,12 @@ export class DeclaracionMatrizNew extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton) {
     
-    let exp= this.Dim1.execute(env);
-    let exp2= this.Dim2.execute(env);
+    let exp= this.Dim1.execute(env,sn);
+    let exp2= this.Dim2.execute(env,sn);
       if(exp.type==Type.NUMBER&&exp2.type==Type.NUMBER&&this.tipo==this.tipo2){
         if (Type.NUMBER == this.tipo||Type.DECIMAL == this.tipo){
             

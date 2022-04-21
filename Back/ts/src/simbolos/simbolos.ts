@@ -1,3 +1,5 @@
+import { Instruccion } from "../abstract/Instruccion";
+import { Declaracion } from "../instruccion/Declaracion";
 import { Type } from "./Type";
 
 export class simbolos{
@@ -7,6 +9,8 @@ export class simbolos{
         public tipo: Type,
         public Dimension:Number,
         public dim1:Number,
-        public dim2:Number
+        public dim2:Number,
+        public Instrucciones: Array<Instruccion>|null,
+        public Parametros: Array<Declaracion>|null
     ){}
 }

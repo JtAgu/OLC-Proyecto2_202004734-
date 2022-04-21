@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -13,8 +14,9 @@ export class DeclaracionMatrizLista extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton) {
     
     let Concordancia=true;
     let val:Array<any> = [];
@@ -26,7 +28,7 @@ export class DeclaracionMatrizLista extends Instruccion {
       i++;
       for(const y of x ){
         j++;
-        let exp= y.execute(env);
+        let exp= y.execute(env,sn);
         if(exp.type==this.tipo){
             val2.push(exp.value);
         }else{

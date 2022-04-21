@@ -1,4 +1,5 @@
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -11,8 +12,9 @@ export class DeclaracionVacio extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton) {
     for (const id of this.nombre){
 
       if (this.tipo==Type.NUMBER){

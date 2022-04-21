@@ -12,9 +12,11 @@ class DeclaracionMatrizNew extends Instruccion_1.Instruccion {
         this.Dim2 = Dim2;
         this.tipo2 = tipo2;
     }
-    execute(env) {
-        let exp = this.Dim1.execute(env);
-        let exp2 = this.Dim2.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.Dim1.execute(env, sn);
+        let exp2 = this.Dim2.execute(env, sn);
         if (exp.type == Type_1.Type.NUMBER && exp2.type == Type_1.Type.NUMBER && this.tipo == this.tipo2) {
             if (Type_1.Type.NUMBER == this.tipo || Type_1.Type.DECIMAL == this.tipo) {
                 let n = Number(exp.value);

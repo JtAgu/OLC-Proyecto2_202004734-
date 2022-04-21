@@ -1,6 +1,7 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
 import { Retorno } from "../abstract/Retorno";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -12,9 +13,10 @@ export class ROUND extends Instruccion {
   ) {
     super(line, column);
   }
-
-    public execute(env: Environment) {
-        let exp=this.expresion.execute(env);
+  public execute2(env: Environment) {
+  }
+    public execute(env: Environment,sn:Singleton) {
+        let exp=this.expresion.execute(env,sn);
         let result:Retorno = {
             value: null,
             type: Type.error

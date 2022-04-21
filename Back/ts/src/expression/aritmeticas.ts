@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
+import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
 import { ArithmeticOption } from "./aritmeticOption"
@@ -15,14 +16,14 @@ export class Arithmetic extends Expression {
         super(line, column)
     }
 
-    public execute(env: Environment): Retorno {
+    public execute(env: Environment,sn:Singleton): Retorno {
 
         let result: Retorno ={
             value:null,
             type:Type.error
         }
-        const nodoIzq = this.left.execute(env)
-        const nodoDer = this.right.execute(env)
+        const nodoIzq = this.left.execute(env,sn)
+        const nodoDer = this.right.execute(env,sn)
         
 
         if (this.type == ArithmeticOption.MAS) {

@@ -11,10 +11,12 @@ class AsignacionMatriz extends Instruccion_1.Instruccion {
         this.expresionN2 = expresionN2;
         this.expresion = expresion;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
-        let n = this.expresionN.execute(env);
-        let n2 = this.expresionN2.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.expresion.execute(env, sn);
+        let n = this.expresionN.execute(env, sn);
+        let n2 = this.expresionN2.execute(env, sn);
         if (env.buscar_variable(this.nombre)) {
             if (env.getDimension_variable(this.nombre) == 3) {
                 //ahora toca ver que sean del mismo tipo

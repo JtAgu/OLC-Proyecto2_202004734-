@@ -9,20 +9,24 @@ class Declaracion extends Instruccion_1.Instruccion {
         this.tipo = tipo;
         this.expresion = expresion;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
-        for (const id of this.nombre) {
-            if (exp.type == this.tipo) {
-                const condicion = env.guardar_variable(id, exp.value, this.tipo);
-                if (condicion) {
-                    console.log("variable [" + id + "] ingresada...");
+    execute2(env) {
+    }
+    execute(env, sn) {
+        if (this.expresion != null) {
+            let exp = this.expresion.execute(env, sn);
+            for (const id of this.nombre) {
+                if (exp.type == this.tipo) {
+                    const condicion = env.guardar_variable(id, exp.value, this.tipo);
+                    if (condicion) {
+                        console.log("variable [" + id + "] ingresada...");
+                    }
+                    else {
+                        console.log("variable [" + id + "] no ingresada...");
+                    }
                 }
                 else {
-                    console.log("variable [" + id + "] no ingresada...");
+                    console.log("error semantico, declaracion de variable [" + id + "] no correcta");
                 }
-            }
-            else {
-                console.log("error semantico, declaracion de variable [" + id + "] no correcta");
             }
         }
     }

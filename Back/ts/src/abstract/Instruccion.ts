@@ -1,3 +1,4 @@
+import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 
 export abstract class Instruccion{
@@ -7,5 +8,6 @@ export abstract class Instruccion{
         this.column=column
     }
     
-    public abstract execute(env:Environment):any
+    public abstract execute(env:Environment,sn:Singleton):any
+    public abstract execute2(env:Environment,sn:Singleton):any
 }

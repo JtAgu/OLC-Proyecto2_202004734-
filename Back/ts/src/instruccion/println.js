@@ -7,10 +7,12 @@ class PrintLn extends Instruccion_1.Instruccion {
         super(line, column);
         this.expresion = expresion;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
-        console.log(exp.value);
-        return exp.value + "\n";
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.expresion.execute(env, sn);
+        sn.addMsg(exp.value + '\n');
+        //return exp.value+"\n"
     }
 }
 exports.PrintLn = PrintLn;

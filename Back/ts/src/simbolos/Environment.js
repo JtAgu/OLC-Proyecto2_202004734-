@@ -13,7 +13,15 @@ class Environment {
     }
     guardar_variable(nombre, valor, type) {
         if (!this.buscar_variable(nombre)) {
-            this.tablaSimbolos.set(nombre, new simbolos_1.simbolos(valor, nombre, type, 1, 0, 0));
+            this.tablaSimbolos.set(nombre, new simbolos_1.simbolos(valor, nombre, type, 1, 0, 0, null, null));
+            return true;
+        }
+        console.log("esta variable [" + nombre + "] ya existe...");
+        return false;
+    }
+    guardar_Funcion(nombre, type, Ins, Param) {
+        if (!this.buscar_variable(nombre)) {
+            this.tablaSimbolos.set(nombre, new simbolos_1.simbolos(null, nombre, type, 1, 0, 0, Ins, Param));
             return true;
         }
         console.log("esta variable [" + nombre + "] ya existe...");
@@ -41,6 +49,28 @@ class Environment {
             envActual = envActual.anterior;
         }
         return Type_1.Type.error;
+    }
+    getParam_variable(nombre) {
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre)
+                    return entry[1].Parametros;
+            }
+            envActual = envActual.anterior;
+        }
+        return null;
+    }
+    getIns_variable(nombre) {
+        let envActual = this;
+        while (envActual != null) {
+            for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+                if (entry[0] == nombre)
+                    return entry[1].Instrucciones;
+            }
+            envActual = envActual.anterior;
+        }
+        return null;
     }
     getValue_variable(nombre) {
         let envActual = this;
@@ -77,7 +107,7 @@ class Environment {
     }
     guardar_Vector(nombre, valor, type, dim1) {
         if (!this.buscar_variable(nombre)) {
-            this.tablaSimbolos.set(nombre, new simbolos_1.simbolos(valor, nombre, type, 2, dim1, 0));
+            this.tablaSimbolos.set(nombre, new simbolos_1.simbolos(valor, nombre, type, 2, dim1, 0, null, null));
             return true;
         }
         console.log("esta variable [" + nombre + "] ya existe...");
@@ -119,7 +149,7 @@ class Environment {
     }
     guardar_Matriz(nombre, valor, type, dim1, dim2) {
         if (!this.buscar_variable(nombre)) {
-            this.tablaSimbolos.set(nombre, new simbolos_1.simbolos(valor, nombre, type, 3, dim1, dim2));
+            this.tablaSimbolos.set(nombre, new simbolos_1.simbolos(valor, nombre, type, 3, dim1, dim2, null, null));
             return true;
         }
         console.log("esta variable [" + nombre + "] ya existe...");

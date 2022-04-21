@@ -9,7 +9,9 @@ class DeclaracionVacio extends Instruccion_1.Instruccion {
         this.nombre = nombre;
         this.tipo = tipo;
     }
-    execute(env) {
+    execute2(env) {
+    }
+    execute(env, sn) {
         for (const id of this.nombre) {
             if (this.tipo == Type_1.Type.NUMBER) {
                 const condicion = env.guardar_variable(id, Number(0), this.tipo);

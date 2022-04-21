@@ -10,9 +10,11 @@ class AsignacionVector extends Instruccion_1.Instruccion {
         this.expresionN = expresionN;
         this.expresion = expresion;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
-        let n = this.expresionN.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.expresion.execute(env, sn);
+        let n = this.expresionN.execute(env, sn);
         if (env.buscar_variable(this.nombre)) {
             if (env.getDimension_variable(this.nombre) == 2) {
                 //ahora toca ver que sean del mismo tipo

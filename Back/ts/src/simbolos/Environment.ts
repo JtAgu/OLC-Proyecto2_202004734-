@@ -1,11 +1,15 @@
+import { Instruccion } from "../abstract/Instruccion";
+import { Declaracion } from "../instruccion/Declaracion";
 import { simbolos } from "./simbolos";
 import { Type } from "./Type";
 
 export class Environment {
-  private tablaSimbolos: Map<string, simbolos>
+  private tablaSimbolos: Map<string, simbolos>|Map<string,simbolos>
   constructor(public anterior: Environment | null) {
     this.tablaSimbolos = new Map();
   }
+
+  
 
   public getEnv() {
     return this.tablaSimbolos
@@ -13,12 +17,22 @@ export class Environment {
 
   public guardar_variable(nombre: string, valor: any, type: Type): boolean {
     if (!this.buscar_variable(nombre)) {
-      this.tablaSimbolos.set(nombre, new simbolos(valor, nombre, type, 1, 0, 0));
+      this.tablaSimbolos.set(nombre, new simbolos(valor, nombre, type, 1, 0, 0,null,null));
       return true
     }
     console.log("esta variable [" + nombre + "] ya existe...");
     return false
   }
+
+  public guardar_Funcion(nombre: string, type: Type,Ins:Array<Instruccion>,Param:Array<Declaracion>|null): boolean {
+    if (!this.buscar_variable(nombre)) {
+      this.tablaSimbolos.set(nombre, new simbolos(null, nombre, type, 1, 0, 0,Ins,Param));
+      return true
+    }
+    console.log("esta variable [" + nombre + "] ya existe...");
+    return false
+  }
+
 
   public buscar_variable(nombre: string): boolean {
 
@@ -44,6 +58,29 @@ export class Environment {
     }
     return Type.error
   }
+
+  public getParam_variable(nombre: string): Array<Declaracion>|null {
+    let envActual: Environment | null = this;
+    while (envActual != null) {
+      for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+        if (entry[0] == nombre) return entry[1].Parametros;
+      }
+      envActual = envActual.anterior;
+    }
+    return null
+  }
+
+  public getIns_variable(nombre: string): Array<Instruccion>|null {
+    let envActual: Environment | null = this;
+    while (envActual != null) {
+      for (let entry of Array.from(envActual.tablaSimbolos.entries())) {
+        if (entry[0] == nombre) return entry[1].Instrucciones;
+      }
+      envActual = envActual.anterior;
+    }
+    return null
+  }
+
 
   public getValue_variable(nombre: string): Type {
     let envActual: Environment | null = this;
@@ -83,7 +120,7 @@ export class Environment {
   public guardar_Vector(nombre: string, valor: any, type: Type, dim1: Number): boolean {
 
     if (!this.buscar_variable(nombre)) {
-      this.tablaSimbolos.set(nombre, new simbolos(valor, nombre, type, 2, dim1, 0));
+      this.tablaSimbolos.set(nombre, new simbolos(valor, nombre, type, 2, dim1, 0,null,null));
       return true
     }
 
@@ -130,7 +167,7 @@ export class Environment {
   public guardar_Matriz(nombre: string, valor: any, type: Type, dim1: any, dim2: any): boolean {
 
     if (!this.buscar_variable(nombre)) {
-      this.tablaSimbolos.set(nombre, new simbolos(valor, nombre, type, 3, dim1, dim2));
+      this.tablaSimbolos.set(nombre, new simbolos(valor, nombre, type, 3, dim1, dim2,null,null));
       return true
     }
     console.log("esta variable [" + nombre + "] ya existe...");

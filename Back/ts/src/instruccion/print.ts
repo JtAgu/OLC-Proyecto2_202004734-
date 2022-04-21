@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 
 export class Print extends Instruccion {
@@ -10,12 +11,14 @@ export class Print extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton) {
     
-    let exp= this.expresion.execute(env)
+    let exp= this.expresion.execute(env,sn)
     console.log(exp.value);
+    sn.addMsg(exp.value)
     //pueden usar patron singleton para capturar todas las saliddas de consola
-    return exp.value
+    //return exp.value
   }
 }

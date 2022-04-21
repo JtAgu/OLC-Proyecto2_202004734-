@@ -11,28 +11,25 @@ class IF extends Instruccion_1.Instruccion {
         this.Intrucciones = Intrucciones;
         this.SigIf = SigIf;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.expresion.execute(env, sn);
         if (exp.type == Type_1.Type.BOOLEAN) {
             if (Boolean(exp.value) == Boolean(true)) {
                 if (this.Intrucciones != null) {
                     const envIf = new Environment_1.Environment(env);
                     for (const x of this.Intrucciones) {
-                        var x2 = x.execute(envIf);
-                        if (x2 != undefined) {
-                            if (x2) {
-                                return true;
-                            }
-                            else {
-                                return false;
-                            }
+                        var corte = x.execute(envIf, sn);
+                        if (corte != undefined) {
+                            return corte;
                         }
                     }
                 }
             }
             else {
                 if (this.SigIf != null) {
-                    this.SigIf.execute(env);
+                    this.SigIf.execute(env, sn);
                 }
             }
         }

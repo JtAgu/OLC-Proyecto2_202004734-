@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
+import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
 import { RelacionalOption } from "./relacionalOption"
@@ -15,14 +16,14 @@ export class relacional extends Expression {
         super(line, column)
     }
 
-    public execute(env: Environment): Retorno {
+    public execute(env: Environment,sn:Singleton): Retorno {
 
         let result: Retorno ={
             value:null,
             type:Type.error
         }
-        const nodoIzq = this.left.execute(env)
-        const nodoDer = this.right.execute(env)
+        const nodoIzq = this.left.execute(env,sn)
+        const nodoDer = this.right.execute(env,sn)
         
         //const val:number= nodoIzq.value? 1:0
         if (this.type == RelacionalOption.IGUAL) {

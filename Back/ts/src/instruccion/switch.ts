@@ -1,6 +1,9 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Retorno } from "../abstract/Retorno";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
+import { Type } from "../simbolos/Type";
 import { SWITCHCASE } from "./SwitchCase";
 
 export class SWITCH extends Instruccion {
@@ -13,27 +16,29 @@ export class SWITCH extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton) {
     if(this.ListaCase!=null){
         const envSw = new Environment(env);
-        let expN=this.Expresion.execute(env);
+        let expN=this.Expresion.execute(env,sn);
         let br=false;
         for(const x of this.ListaCase){
-            let exp;
-            
-                exp=x.ExpresionC.execute(env);
+            let exp=x.ExpresionC.execute(env,sn);
                 if(exp.type==expN.type&&exp.value==expN.value){
-                    br=x.execute(envSw);
+                    var corte:Retorno=x.execute(envSw,sn);
+                    expN=this.Expresion.execute(env,sn);
+                    if(corte.type==Type.BREAK){
+                      br=true;
+                      break;
+                  }
                 }
-                if(br){
-                    break;
-                }
+            
         }
         if(!br){
             if(this.Default!=null){
                 for(const x of this.Default){
-                    x.execute(envSw)
+                    x.execute(envSw,sn)
                 }
             }
             

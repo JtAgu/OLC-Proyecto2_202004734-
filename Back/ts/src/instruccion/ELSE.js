@@ -8,11 +8,13 @@ class ELSE extends Instruccion_1.Instruccion {
         super(line, column);
         this.Intrucciones = Intrucciones;
     }
-    execute(env) {
+    execute2(env) {
+    }
+    execute(env, sn) {
         if (this.Intrucciones != null) {
             const envElse = new Environment_1.Environment(env);
             for (const x of this.Intrucciones) {
-                var x2 = x.execute(envElse);
+                var x2 = x.execute(envElse, sn);
                 if (x2 != undefined) {
                     if (x2) {
                         return true;

@@ -5,5 +5,9 @@ export enum Type{
     STRING,
     BOOLEAN,
     ID,
+    BREAK,
+    RETURN,
+    CONTINUE,
+    VOID,
     error
 }

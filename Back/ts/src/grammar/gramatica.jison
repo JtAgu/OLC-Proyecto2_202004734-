@@ -28,6 +28,12 @@
     const {LogicOption} = require('../expression/logicOption');
     const {Literal} = require('../expression/literal');
     
+    const {RUN} = require('../Instruccion/Run');
+    const {LLAMADA} = require('../Instruccion/Llamada');
+    const {Funcion} = require('../Instruccion/Funcion');
+    const {TYPEOFF} = require('../Instruccion/TypeOFF');
+    const {TO_STRING} = require('../Instruccion/To_String');
+    const {RETURN} = require('../Instruccion/Return');
     const {ROUND} = require('../Instruccion/Round');
     const {LENGTH} = require('../Instruccion/Length');
     const {TO_UPPER} = require('../Instruccion/To_Upper');
@@ -96,6 +102,12 @@
                 console.log("reconoci el token <do> con lexema : "+yytext);
                 return 'do';
             }
+
+"return"         {
+                console.log("reconoci el token <return> con lexema : "+yytext);
+                return 'return';
+            }
+
 
 "break"         {
                 console.log("reconoci el token <break> con lexema : "+yytext);
@@ -198,22 +210,22 @@
                }
 
 "double"         {
-                console.log("reconoci el token <run> con lexema : "+yytext);
+                console.log("reconoci el token <double> con lexema : "+yytext);
                 return 'double';
                }
 
 "char"         {
-                console.log("reconoci el token <run> con lexema : "+yytext);
+                console.log("reconoci el token <char> con lexema : "+yytext);
                 return 'char';
                }
 
 "boolean"      {
-                console.log("reconoci el token <run> con lexema : "+yytext);
+                console.log("reconoci el token <boolean> con lexema : "+yytext);
                 return 'boolean';
                }
 
 "string"        {
-                console.log("reconoci el token <run> con lexema : "+yytext);
+                console.log("reconoci el token <string> con lexema : "+yytext);
                 return 'String';
                }
 
@@ -443,10 +455,42 @@ INSTRUCCIONES
     | FOR                   {$$=$1}
     | BREAK                 {$$=$1}
     | CONTINUE              {$$=$1}
-    | TOCHAR_ARRAY          {$$=$1}
+    | RETURN                {$$=$1}
+    | LLAMADA 'PuntoComa'   {$$=$1}
+    | METODO_FUNCION        {$$=$1}
+    | RUN                   {$$=$1}
+;
+
+METODO_FUNCION
+    : 'id' 'ParentesisA' PARAMETROS 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC' {$$=new Funcion($1,$3,$8,$6,@1.first_line,@1.fisrt_column);}
+    | 'id' 'ParentesisA' 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC'            {$$=new Funcion($1,null,$7,$5,@1.first_line,@1.fisrt_column);}
+;
+
+PARAMETROS
+    : PARAMETROS 'coma' DECLARACION_VACIO  {$1.push($3); $$=$1;}
+    | DECLARACION_VACIO                    {$$=[$1]}
+;
+
+DECLARACION_VACIO
+    : TIPO_DATO 'id' {$$= new Declaracion($2,$1,null,@1.first_line,@1.fisrt_column);}
+;
+
+LLAMADA
+    : 'id' 'ParentesisA' PARAMETROS_LLAMADA 'ParentesisC'   {$$=new LLAMADA($1,$3,@1.first_line,@1.fisrt_column);}
+    | 'id' 'ParentesisA' 'ParentesisC'                      {$$=new LLAMADA($1,null,@1.first_line,@1.fisrt_column);}
+;
+
+PARAMETROS_LLAMADA
+    : PARAMETROS_LLAMADA 'coma' VALOR   {$1.push($3); $$=$1;}
+    | VALOR                             {$$=[$1]}
 ;
 
 I_SWITCH
+    : I_SWITCH INS_SWITCH {$1.push($2); $$=$1;}
+    |INS_SWITCH {$$=[$1]}
+;
+
+INS_SWITCH
     : DECLARACION           {$$=$1}
     | ASIGNACION            {$$=$1}
     | PRINT                 {$$=$1}
@@ -457,6 +501,7 @@ I_SWITCH
     | IF                    {$$=$1}    
     | SWITCH                {$$=$1}
     | FOR                   {$$=$1}
+    | RETURN                {$$=$1}
 ;
 
 FOR
@@ -499,7 +544,8 @@ DECLARACION
     | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC'  'PuntoComa' {$$= new DeclaracionVectorNew($2,$1,$9,$7,@1.first_line,@1.fisrt_column);}
     | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'PuntoComa' {$$= new DeclaracionMatrizNew($2,$1,$11,$14,$9,@1.first_line,@1.fisrt_column);}
 
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,$7,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,$7,null,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'toCharArray' 'ParentesisA' VALOR 'ParentesisC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,null,$8,@1.first_line,@1.fisrt_column);}
     | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_FILAS 'CorcheteC' 'PuntoComa' {$$= new DeclaracionMatrizLista($2,$1,$9,@1.first_line,@1.fisrt_column);}
 ;
 
@@ -601,6 +647,7 @@ TIPO_DATO
     |'char'     {$$=Type.CHAR}
     |'String'   {$$=Type.STRING}
     |'boolean'  {$$=Type.BOOLEAN}
+    |'void'  {$$=Type.VOID}
 ;
 
 EXPRESION
@@ -642,6 +689,7 @@ VALOR
     | TO_LOWER               {$$=$1}
     | TO_UPPER               {$$=$1}
     | TO_STRING              {$$=$1}
+    | LLAMADA                {$$=$1}
 ;
 
 
@@ -660,8 +708,8 @@ CONTINUE
 ;
 
 RETURN
-    : 'return' 'PuntoComa'
-    | 'return' EXPRESION 'PuntoComa'
+    : 'return' 'PuntoComa'          {$$= new RETURN(null,@1.first_line, @1.first_column)}
+    | 'return' EXPRESION 'PuntoComa'{$$= new RETURN($2,@1.first_line, @1.first_column)}
 ;
 
 
@@ -669,7 +717,10 @@ ROUND
     : 'round' 'ParentesisA' VALOR 'ParentesisC' {$$=new ROUND($3,@1.first_line, @1.first_column)}
 ;
 
-
+RUN
+    : 'run' 'id' 'ParentesisA' PARAMETROS_LLAMADA 'ParentesisC' 'PuntoComa' {$$=new RUN($2,$4,@1.first_line,@1.fisrt_column);}
+    | 'run' 'id' 'ParentesisA' 'ParentesisC' 'PuntoComa'                    {$$=new RUN($2,null,@1.first_line,@1.fisrt_column);}
+;
 
 LENGTH
     : 'length' 'ParentesisA' VALOR_L 'ParentesisC' {$$=new LENGTH($3,@1.first_line, @1.first_column)}
@@ -691,20 +742,18 @@ VALOR_L
     | TO_LOWER               {$$=$1}
     | TO_UPPER               {$$=$1}
     | TO_STRING              {$$=$1}
+    | LLAMADA                {$$=$1}
 ;
 
 TYPEOFF
-    : 'typeof' 'ParentesisA' VALOR 'ParentesisC' {$$=new ROUND($3,@1.first_line, @1.first_column)}
+    : 'typeof' 'ParentesisA' VALOR_L 'ParentesisC' {$$=new TYPEOFF($3,@1.first_line, @1.first_column)}
 ;
 
 TO_STRING
-    : 'ToString' 'ParentesisA' VALOR 'ParentesisC' {$$=new ROUND($3,@1.first_line, @1.first_column)}
+    : 'ToString' 'ParentesisA' VALOR 'ParentesisC' {$$=new TO_STRING($3,@1.first_line, @1.first_column)}
 ;
 
 
-TOCHAR_ARRAY
-    : 'char' 'CorcheteA' 'CorcheteC' 'id' 'igual' 'toCharArray' 'ParentesisA' VALOR 'ParentesisC' {}
-;
 
 
 TO_UPPER
@@ -714,4 +763,3 @@ TO_UPPER
 TO_LOWER
     : 'toLower' 'ParentesisA' EXPRESION 'ParentesisC' {$$=new TO_LOWER($3,@1.first_line, @1.first_column)}
 ;
-

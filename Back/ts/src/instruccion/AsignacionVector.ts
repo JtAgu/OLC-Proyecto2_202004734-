@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -13,11 +14,13 @@ export class AsignacionVector extends Instruccion {
   ) {
     super(line, column);
   }
+  public execute2(env: Environment) {
+  }
 
-  public execute(env: Environment) {
+  public execute(env: Environment,sn:Singleton) {
     
-    let exp= this.expresion.execute(env)
-    let n= this.expresionN.execute(env)
+    let exp= this.expresion.execute(env,sn)
+    let n= this.expresionN.execute(env,sn)
 
     
       if(env.buscar_variable(this.nombre)){

@@ -8,8 +8,10 @@ class TO_UPPER extends Instruccion_1.Instruccion {
         super(line, column);
         this.expresion = expresion;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.expresion.execute(env, sn);
         let result = {
             value: null,
             type: Type_1.Type.error

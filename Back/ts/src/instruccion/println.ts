@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 
 export class PrintLn extends Instruccion {
@@ -10,10 +11,11 @@ export class PrintLn extends Instruccion {
   ) {
     super(line, column);
   }
-
-  public execute(env: Environment) {
-    let exp= this.expresion.execute(env)
-    console.log(exp.value);
-    return exp.value+"\n"
+  public execute2(env: Environment) {
+  }
+  public execute(env: Environment,sn:Singleton) {
+    let exp= this.expresion.execute(env,sn)
+    sn.addMsg(exp.value+'\n');
+    //return exp.value+"\n"
   }
 }

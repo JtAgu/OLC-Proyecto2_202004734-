@@ -9,7 +9,9 @@ class DeclaracionMatrizLista extends Instruccion_1.Instruccion {
         this.tipo = tipo;
         this.valores = valores;
     }
-    execute(env) {
+    execute2(env) {
+    }
+    execute(env, sn) {
         let Concordancia = true;
         let val = [];
         var i = 0;
@@ -20,7 +22,7 @@ class DeclaracionMatrizLista extends Instruccion_1.Instruccion {
             i++;
             for (const y of x) {
                 j++;
-                let exp = y.execute(env);
+                let exp = y.execute(env, sn);
                 if (exp.type == this.tipo) {
                     val2.push(exp.value);
                 }

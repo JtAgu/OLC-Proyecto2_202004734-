@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express";
 import { Instruccion } from "../abstract/Instruccion";
+import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
 
@@ -13,27 +14,24 @@ export class IF extends Instruccion {
   ) {
     super(line, column);
   }
-
-    public execute(env: Environment) {
-        let exp=this.expresion.execute(env);
+  public execute2(env: Environment) {
+}
+    public execute(env: Environment,sn:Singleton) {
+        let exp=this.expresion.execute(env,sn);
         if(exp.type==Type.BOOLEAN){
             if( Boolean(exp.value)==Boolean(true)){
                 if(this.Intrucciones!=null){
                     const envIf = new Environment(env);
                     for(const x of this.Intrucciones){
-                        var x2 = x.execute(envIf);
-                        if(x2!=undefined){
-                            if(x2){
-                                return true;
-                            }else{
-                                return false;
-                            }
+                        var corte = x.execute(envIf,sn);
+                        if(corte!=undefined){
+                            return corte
                         }
                     }
                 }
             }else{
                 if(this.SigIf!=null){
-                    this.SigIf.execute(env);
+                    this.SigIf.execute(env,sn);
                 }
             }
         }   

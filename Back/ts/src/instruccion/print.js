@@ -7,11 +7,14 @@ class Print extends Instruccion_1.Instruccion {
         super(line, column);
         this.expresion = expresion;
     }
-    execute(env) {
-        let exp = this.expresion.execute(env);
+    execute2(env) {
+    }
+    execute(env, sn) {
+        let exp = this.expresion.execute(env, sn);
         console.log(exp.value);
+        sn.addMsg(exp.value);
         //pueden usar patron singleton para capturar todas las saliddas de consola
-        return exp.value;
+        //return exp.value
     }
 }
 exports.Print = Print;
