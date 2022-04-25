@@ -4,6 +4,7 @@ exports.IF = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Environment_1 = require("../simbolos/Environment");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class IF extends Instruccion_1.Instruccion {
     constructor(expresion, Intrucciones, SigIf, line, column) {
         super(line, column);
@@ -32,6 +33,9 @@ class IF extends Instruccion_1.Instruccion {
                     this.SigIf.execute(env, sn);
                 }
             }
+        }
+        else {
+            sn.addError(new Error_1.Error(" Condicion de IF debe ser boolean", "SEMANTICO", this.line, this.column));
         }
     }
 }

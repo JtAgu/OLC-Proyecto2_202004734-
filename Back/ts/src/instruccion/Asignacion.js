@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Asignacion = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
+const Error_1 = require("./Error");
 class Asignacion extends Instruccion_1.Instruccion {
     constructor(nombre, expresion, line, column) {
         super(line, column);
@@ -12,23 +13,23 @@ class Asignacion extends Instruccion_1.Instruccion {
     }
     execute(env, sn) {
         let exp = this.expresion.execute(env, sn);
-        if (env.getDimension_variable(this.nombre) == 1) {
-            if (env.buscar_variable(this.nombre)) {
+        if (env.buscar_variable(this.nombre)) {
+            if (env.getDimension_variable(this.nombre) == 1) {
                 //ahora toca ver que sean del mismo tipo
                 if (exp.type == env.getTipo_variable(this.nombre)) {
                     env.actualizar_variable(this.nombre, exp.value);
                     console.log("variable [" + this.nombre + "] actualizada con exito...");
                 }
                 else {
-                    console.log("error semantico, no se puede asignar un valor de otro tipo a la variable [" + this.nombre + "]");
+                    sn.addError(new Error_1.Error("Expresion de tipo distinro a  [" + this.nombre + "]", "SEMANTICO", this.line, this.column));
                 }
             }
             else {
-                console.log("la variable [" + this.nombre + "] no fue encontrada...");
+                sn.addError(new Error_1.Error("Variable [" + this.nombre + "] con dimension distinta", "SEMANTICO", this.line, this.column));
             }
         }
         else {
-            console.log("la variable [" + this.nombre + "] tiene una dimension diferente...");
+            sn.addError(new Error_1.Error("variable [" + this.nombre + "] no fue encontrada", "SEMANTICO", this.line, this.column));
         }
     }
 }

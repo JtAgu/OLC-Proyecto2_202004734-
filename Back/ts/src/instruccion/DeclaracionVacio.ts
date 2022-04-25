@@ -2,6 +2,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class DeclaracionVacio extends Instruccion {
   constructor(
@@ -53,7 +54,7 @@ export class DeclaracionVacio extends Instruccion {
             console.log("variable ["+id+"] no ingresada...");
           }
       }else{
-        console.log("error semantico, declaracion de variable ["+id+"] no correcta");
+        sn.addError(new Error("Declaracion de ["+id+"] incorrecta", "SEMANTICO", this.line, this.column));
       }
     }    
     

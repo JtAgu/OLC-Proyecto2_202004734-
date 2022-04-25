@@ -1,6 +1,8 @@
 import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
+import { Error } from "../instruccion/Error"
 import { LENGTH } from "../instruccion/Length"
+import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
 import { Literal } from "./literal"
@@ -14,7 +16,7 @@ export class GetId extends Expression {
         super(line, column)
     }
 
-    public execute(env: Environment): Retorno {
+    public execute(env: Environment,sn:Singleton): Retorno {
 
         let result: Retorno ={
             value:null,
@@ -29,14 +31,12 @@ export class GetId extends Expression {
                     type:env.getTipo_variable(this.IdName)
                 }
             }else{
-                
-                console.log("la variable ["+this.IdName+"] tiene una dimension diferente...");
+                    sn.addError(new Error("la variable ["+this.IdName+"] tiene una dimension diferente...", "SEMANTICO", this.line, this.column));
+                //console.log("la variable ["+this.IdName+"] tiene una dimension diferente...");
             }
         }else{
-            console.log("la variable ["+this.IdName+"] no fue encontrada...");
+            sn.addError(new Error("la variable ["+this.IdName+"] no fue encontrada...", "SEMANTICO", this.line, this.column));
         }
         return result;
     }
-
-
 }

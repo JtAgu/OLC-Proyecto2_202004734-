@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeclaracionVectorLista = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class DeclaracionVectorLista extends Instruccion_1.Instruccion {
     constructor(nombre, tipo, valores, valorS, line, column) {
         super(line, column);
@@ -24,7 +25,7 @@ class DeclaracionVectorLista extends Instruccion_1.Instruccion {
                     val.push(exp.value);
                 }
                 else {
-                    console.log("error semantico, declaracion de variable [" + this.nombre + "] no correcta");
+                    sn.addError(new Error_1.Error("Declaracion de [" + this.nombre + "] con tipo incorrecto", "SEMANTICO", this.line, this.column));
                     Concordancia = false;
                     break;
                 }

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeclaracionMatrizLista = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
+const Error_1 = require("./Error");
 class DeclaracionMatrizLista extends Instruccion_1.Instruccion {
     constructor(nombre, tipo, valores, line, column) {
         super(line, column);
@@ -27,7 +28,7 @@ class DeclaracionMatrizLista extends Instruccion_1.Instruccion {
                     val2.push(exp.value);
                 }
                 else {
-                    console.log("error semantico, declaracion de variable [" + this.nombre + "] no correcta");
+                    sn.addError(new Error_1.Error(" Expresion con tipo diferente a [" + this.nombre + "]", "SEMANTICO", this.line, this.column));
                     Concordancia = false;
                     break;
                 }
@@ -45,6 +46,9 @@ class DeclaracionMatrizLista extends Instruccion_1.Instruccion {
             else {
                 console.log("variable [" + this.nombre + "] no ingresada...");
             }
+        }
+        else {
+            sn.addError(new Error_1.Error(" Expresion con tipo diferente a [" + this.nombre + "]", "SEMANTICO", this.line, this.column));
         }
     }
 }

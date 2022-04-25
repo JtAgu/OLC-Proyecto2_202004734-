@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
+import { Error } from "../instruccion/Error"
 import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
@@ -21,10 +22,10 @@ export class GetVector extends Expression {
             value: null,
             type: Type.error
         }
-        if (env.getDimension_variable(this.IdName) == 2) {
+        if (env.buscar_variable(this.IdName)) {
             if (exp.type == Type.NUMBER && exp.value < env.getDim1_Vector(this.IdName)) {
 
-                if (env.buscar_variable(this.IdName)) {
+                if (env.getDimension_variable(this.IdName) == 2) {
 
                     result = {
                         value: env.getValue_Vector(this.IdName, Number(exp.value)),
@@ -32,14 +33,14 @@ export class GetVector extends Expression {
                     }
 
                 } else {
-                    console.log("la variable [" + this.IdName + "] no fue encontrada...");
+                    sn.addError(new Error("la variable ["+this.IdName+"] tiene una dimension diferente...", "SEMANTICO", this.line, this.column));
                 }
             } else {
-                console.log("el valor de [" + this.IdName + "] no fue solicitado correctamente...");
+                sn.addError(new Error("la variable ["+this.IdName+"] no se efectuo corrextamente...", "SEMANTICO", this.line, this.column));
             }
 
         } else {
-            console.log("la variable [" + this.IdName + "] no tiene una dimension diferente...");
+            sn.addError(new Error("la variable ["+this.IdName+"] no fue encontrada...", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

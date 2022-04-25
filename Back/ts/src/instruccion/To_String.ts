@@ -4,6 +4,7 @@ import { Retorno } from "../abstract/Retorno";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class TO_STRING extends Instruccion {
   constructor(
@@ -27,8 +28,8 @@ export class TO_STRING extends Instruccion {
                 type: Type.STRING
             }
             return result;
-        }else{
-            console.log("Error semantico")
+        }else {
+            sn.addError(new Error(" VALOR ERRONEA PARA TO_STRING", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

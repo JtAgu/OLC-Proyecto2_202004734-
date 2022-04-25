@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TO_STRING = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class TO_STRING extends Instruccion_1.Instruccion {
     constructor(expresion, line, column) {
         super(line, column);
@@ -24,7 +25,7 @@ class TO_STRING extends Instruccion_1.Instruccion {
             return result;
         }
         else {
-            console.log("Error semantico");
+            sn.addError(new Error_1.Error(" VALOR ERRONEA PARA TO_STRING", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

@@ -3,6 +3,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class DeclaracionTernario extends Instruccion {
   constructor(
@@ -42,9 +43,11 @@ export class DeclaracionTernario extends Instruccion {
             console.log("variable ["+this.nombre+"] no ingresada...");
           }
         }
+      }else{
+        sn.addError(new Error("Declaracion de ["+this.nombre+"] incorrecta", "SEMANTICO", this.line, this.column));
       } 
     }else{
-      console.log("error semantico, declaracion de variable ["+this.nombre+"] no correcta");
+      sn.addError(new Error("Variable ["+this.nombre+"] con tipo distinto", "SEMANTICO", this.line, this.column));
     }
     
   }

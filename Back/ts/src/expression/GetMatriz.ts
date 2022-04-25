@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
+import { Error } from "../instruccion/Error"
 import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
@@ -23,10 +24,10 @@ export class GetMatriz extends Expression {
             value: null,
             type: Type.error
         }
-        if (env.getDimension_variable(this.IdName) == 3) {
+        if (env.buscar_variable(this.IdName)) {
             if (exp.type == Type.NUMBER && exp2.type == Type.NUMBER && exp.value < env.getDim1_Matriz(this.IdName) && exp2.value < env.getDim2_Matriz(this.IdName)) {
 
-                if (env.buscar_variable(this.IdName)) {
+                if (env.getDimension_variable(this.IdName) == 3) {
 
                     result = {
                         value: env.getValue_Matriz(this.IdName, Number(exp.value), Number(exp2.value)),
@@ -34,14 +35,14 @@ export class GetMatriz extends Expression {
                     }
 
                 } else {
-                    console.log("la variable [" + this.IdName + "] no fue encontrada...");
+                    sn.addError(new Error("la variable ["+this.IdName+"] tiene una dimencion diferente...", "SEMANTICO", this.line, this.column));
                 }
             } else {
-                console.log("el valor de [" + this.IdName + "] no fue solicitado correctamente...");
+                sn.addError(new Error("la llamda de ["+this.IdName+"] no se efectuo corrextamente...", "SEMANTICO", this.line, this.column));
             }
 
         } else {
-            console.log("la variable [" + this.IdName + "] tiene una dimension diferente...");
+            sn.addError(new Error("la variable ["+this.IdName+"] no fue encontrada...", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

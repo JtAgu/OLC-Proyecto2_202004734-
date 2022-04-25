@@ -2,13 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetId2 = void 0;
 const express_1 = require("../abstract/express");
+const Error_1 = require("../instruccion/Error");
 const Type_1 = require("../simbolos/Type");
 class GetId2 extends express_1.Expression {
     constructor(IdName, line, column) {
         super(line, column);
         this.IdName = IdName;
     }
-    execute(env) {
+    execute(env, sn) {
         let result = {
             value: null,
             type: Type_1.Type.error
@@ -37,7 +38,7 @@ class GetId2 extends express_1.Expression {
             }
         }
         else {
-            console.log("la variable [" + this.IdName + "] no fue encontrada...");
+            sn.addError(new Error_1.Error("la variable [" + this.IdName + "] no fue encontrada...", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

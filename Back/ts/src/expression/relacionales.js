@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.relacional = void 0;
 const express_1 = require("../abstract/express");
+const Error_1 = require("../instruccion/Error");
 const Type_1 = require("../simbolos/Type");
 const relacionalOption_1 = require("./relacionalOption");
 class relacional extends express_1.Expression {
@@ -41,6 +42,7 @@ class relacional extends express_1.Expression {
                         value: Boolean(false),
                         type: Type_1.Type.BOOLEAN
                     };
+                    sn.addError(new Error_1.Error("Valores incorrectos para 'igual relacional'", "SEMANTICO", this.line, this.column));
                 }
             }
         }
@@ -125,6 +127,9 @@ class relacional extends express_1.Expression {
                     };
                 }
             }
+            else {
+                sn.addError(new Error_1.Error("Valores incorrectos para 'menor relacional'", "SEMANTICO", this.line, this.column));
+            }
         }
         else if (this.type == relacionalOption_1.RelacionalOption.MAYOR) {
             if (nodoIzq.type == Type_1.Type.NUMBER && nodoDer.type == Type_1.Type.NUMBER
@@ -206,6 +211,9 @@ class relacional extends express_1.Expression {
                         type: Type_1.Type.BOOLEAN
                     };
                 }
+            }
+            else {
+                sn.addError(new Error_1.Error("Valores incorrectos para 'mayor relacional'", "SEMANTICO", this.line, this.column));
             }
         }
         else if (this.type == relacionalOption_1.RelacionalOption.MENORIGUAL) {
@@ -289,6 +297,9 @@ class relacional extends express_1.Expression {
                     };
                 }
             }
+            else {
+                sn.addError(new Error_1.Error("Valores incorrectos para 'menor igual relacional'", "SEMANTICO", this.line, this.column));
+            }
         }
         else if (this.type == relacionalOption_1.RelacionalOption.MAYORIGUAL) {
             if (nodoIzq.type == Type_1.Type.NUMBER && nodoDer.type == Type_1.Type.NUMBER
@@ -371,6 +382,9 @@ class relacional extends express_1.Expression {
                     };
                 }
             }
+            else {
+                sn.addError(new Error_1.Error("Valores incorrectos para 'mayor igual relacional'", "SEMANTICO", this.line, this.column));
+            }
         }
         else if (this.type == relacionalOption_1.RelacionalOption.DIFERENTE) {
             if (nodoIzq.type == Type_1.Type.NUMBER && nodoDer.type == Type_1.Type.NUMBER
@@ -395,6 +409,9 @@ class relacional extends express_1.Expression {
                         type: Type_1.Type.BOOLEAN
                     };
                 }
+            }
+            else {
+                sn.addError(new Error_1.Error("Valores incorrectos para 'diferente relacional'", "SEMANTICO", this.line, this.column));
             }
         }
         else {

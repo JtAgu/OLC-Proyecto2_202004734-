@@ -1,5 +1,6 @@
 import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
+import { Error } from "../instruccion/Error"
 import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
@@ -37,6 +38,8 @@ export class logic extends Expression {
                     value:Boolean(true),
                     type: Type.BOOLEAN
                 }
+                    sn.addError(new Error("Valores incorrectos para NOT","SEMANTICO",this.line,this.column));
+                    console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             
         }else if (this.type == LogicOption.AND) {
@@ -51,6 +54,8 @@ export class logic extends Expression {
                     value:Boolean(false),
                     type: Type.BOOLEAN
                 }
+                sn.addError(new Error("Valores incorrectos para AND","SEMANTICO",this.line,this.column));
+                    console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             
         }else if (this.type == LogicOption.OR) {
@@ -64,6 +69,8 @@ export class logic extends Expression {
                     value:Boolean(false),
                     type: Type.BOOLEAN
                 }
+                sn.addError(new Error("Valores incorrectos para OR","SEMANTICO",this.line,this.column));
+                    console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             
         }

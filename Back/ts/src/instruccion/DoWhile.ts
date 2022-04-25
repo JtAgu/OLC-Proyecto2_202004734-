@@ -4,9 +4,10 @@ import { Retorno } from "../abstract/Retorno";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class DOWHILE extends Instruccion {
-    constructor(        
+    constructor(
         public Intrucciones: Array<Instruccion> | null,
         public expresion: Expression,
         line: number,
@@ -17,35 +18,38 @@ export class DOWHILE extends Instruccion {
     public execute2(env: Environment) {
     }
 
-    public execute(env: Environment,sn:Singleton) {
-        let exp = this.expresion.execute(env,sn);
+    public execute(env: Environment, sn: Singleton) {
+        let exp = this.expresion.execute(env, sn);
+
         if (exp.type == Type.BOOLEAN) {
             do {
-                var breakOp=false
+                var breakOp = false
                 if (this.Intrucciones != null) {
-                    
+
                     const envWh = new Environment(env);
                     for (const x of this.Intrucciones) {
-                        var corte:Retorno =x.execute(envWh,sn);
-                        if(corte!=undefined){
-                            if(corte.type==Type.BREAK){
-                                breakOp=true;
+                        var corte: Retorno = x.execute(envWh, sn);
+                        if (corte != undefined) {
+                            if (corte.type == Type.BREAK) {
+                                breakOp = true;
                                 break;
-                            }else if(corte.type==Type.CONTINUE){
+                            } else if (corte.type == Type.CONTINUE) {
                                 break;
-                            }else {
+                            } else {
                                 return corte;
                             }
                         }
                     }
                 }
-                if(breakOp){
-                    breakOp=false;
+                if (breakOp) {
+                    breakOp = false;
                     break;
                 }
-                exp = this.expresion.execute(env,sn);
-            }while (exp.value)
-            
+                exp = this.expresion.execute(env, sn);
+            } while (exp.value)
+
+        }else{
+            sn.addError(new Error(" Condicion de do-While debe ser boolean", "SEMANTICO", this.line, this.column));
         }
     }
 }

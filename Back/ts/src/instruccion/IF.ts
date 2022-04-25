@@ -3,6 +3,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class IF extends Instruccion {
   constructor(
@@ -34,6 +35,8 @@ export class IF extends Instruccion {
                     this.SigIf.execute(env,sn);
                 }
             }
-        }   
+        }else{
+            sn.addError(new Error(" Condicion de IF debe ser boolean", "SEMANTICO", this.line, this.column));
+        }
     }
 }

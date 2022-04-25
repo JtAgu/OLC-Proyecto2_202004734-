@@ -4,6 +4,7 @@ exports.LLAMADA = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Environment_1 = require("../simbolos/Environment");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class LLAMADA extends Instruccion_1.Instruccion {
     constructor(NomFuncion, ListaParam, line, column) {
         super(line, column);
@@ -37,7 +38,7 @@ class LLAMADA extends Instruccion_1.Instruccion {
                                 return result;
                             }
                             else {
-                                console.log("error semantico, tipo de exp diferente a [" + this.NomFuncion + "]");
+                                sn.addError(new Error_1.Error(" tipo de exp diferente a [" + this.NomFuncion + "]", "SEMANTICO", this.line, this.column));
                             }
                         }
                     }
@@ -51,14 +52,14 @@ class LLAMADA extends Instruccion_1.Instruccion {
                             return result;
                         }
                         else {
-                            console.log("error semantico, tipo de exp diferente a [" + this.NomFuncion + "]");
+                            sn.addError(new Error_1.Error(" tipo de exp diferente a [" + this.NomFuncion + "]", "SEMANTICO", this.line, this.column));
                         }
                     }
                 }
             }
         }
         else {
-            console.log("error semantico, llamada de variable [" + this.NomFuncion + "] no existente");
+            sn.addError(new Error_1.Error(" Funcion [" + this.NomFuncion + "] inexistente", "SEMANTICO", this.line, this.column));
             return result;
         }
     }

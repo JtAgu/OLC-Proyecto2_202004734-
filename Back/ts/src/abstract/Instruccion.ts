@@ -2,7 +2,7 @@ import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 
 export abstract class Instruccion{
-    
+    public i=0;
     constructor(public line:number,public column:number){
         this.line=line
         this.column=column

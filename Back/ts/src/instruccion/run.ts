@@ -4,6 +4,7 @@ import { Retorno } from "../abstract/Retorno";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 import { SWITCHCASE } from "./SwitchCase";
 
 export class RUN extends Instruccion {
@@ -45,7 +46,7 @@ export class RUN extends Instruccion {
                             if(result.type==env.getTipo_variable(this.NomFuncion)){
                                 return result
                             }else{
-                                console.log("error semantico, tipo de exp diferente a [" + this.NomFuncion + "]");
+                                sn.addError(new Error(" tipo de exp diferente a [" + this.NomFuncion + "]", "SEMANTICO", this.line, this.column));
                             }
                             
                         }
@@ -58,14 +59,14 @@ export class RUN extends Instruccion {
                         if(result.type==env.getTipo_variable(this.NomFuncion)){
                             return result
                         }else{
-                            console.log("error semantico, tipo de exp diferente a [" + this.NomFuncion + "]");
+                            sn.addError(new Error(" tipo de exp diferente a [" + this.NomFuncion + "]", "SEMANTICO", this.line, this.column));
                         }
                         
                     }
                 }
             }
         }else{
-            console.log("error semantico, llamada de variable [" + this.NomFuncion + "] no existente");
+            sn.addError(new Error(" Funcion [" + this.NomFuncion + "] inexistente", "SEMANTICO", this.line, this.column));
             return result;
         }
         

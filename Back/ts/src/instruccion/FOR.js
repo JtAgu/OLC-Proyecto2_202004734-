@@ -4,6 +4,7 @@ exports.FOR = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Environment_1 = require("../simbolos/Environment");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class FOR extends Instruccion_1.Instruccion {
     constructor(Param1, expresionB, Param2, Intrucciones, line, column) {
         super(line, column);
@@ -46,6 +47,9 @@ class FOR extends Instruccion_1.Instruccion {
                 this.Param2.execute(envFor, sn);
                 exp = this.expresionB.execute(envFor, sn);
             }
+        }
+        else {
+            sn.addError(new Error_1.Error(" Condicion de for debe ser boolean", "SEMANTICO", this.line, this.column));
         }
     }
 }

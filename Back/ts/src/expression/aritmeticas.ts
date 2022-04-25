@@ -1,5 +1,7 @@
+import { Digraph } from "ts-graphviz"
 import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
+import { Error } from "../instruccion/Error"
 import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
@@ -118,6 +120,7 @@ export class Arithmetic extends Expression {
                     type: Type.STRING 
                 }
             }else{
+                sn.addError(new Error("Valores incorrectos para suma","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             
@@ -201,6 +204,7 @@ export class Arithmetic extends Expression {
                 }
                 //nodoDer.type == Type.CHAR && nodoIzq.type == Type.NUMBER
             }else{
+                sn.addError(new Error("Valores incorrectos para resta","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
 
@@ -254,6 +258,7 @@ export class Arithmetic extends Expression {
                 }
                 //nodoDer.type == Type.CHAR && nodoIzq.type == Type.NUMBER
             }else{
+                sn.addError(new Error("Valores incorrectos para multiplicacion","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             //en la resta unicamente quiero con numeros
@@ -310,6 +315,7 @@ export class Arithmetic extends Expression {
                 }
                 //nodoDer.type == Type.CHAR && nodoIzq.type == Type.NUMBER
             }else{
+                sn.addError(new Error("Valores incorrectos para division","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             //en la resta unicamente quiero con numeros
@@ -333,6 +339,7 @@ export class Arithmetic extends Expression {
                     type: Type.DECIMAL 
                 }
             }else{
+                sn.addError(new Error("Valores incorrectos para potencia","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             
@@ -355,7 +362,8 @@ export class Arithmetic extends Expression {
                     value: nodoIzq.value % nodoDer.value, 
                     type: Type.DECIMAL 
                 }
-            }  else{
+            } else{
+                sn.addError(new Error("Valores incorrectos para modulo","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             //en la resta unicamente quiero con numeros
@@ -372,6 +380,7 @@ export class Arithmetic extends Expression {
                     type: Type.DECIMAL 
                 }
             }else{
+                sn.addError(new Error("Valores incorrectos para negacion","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             //en la resta unicamente quiero con numeros
@@ -388,6 +397,7 @@ export class Arithmetic extends Expression {
                     type: Type.DECIMAL 
                 }
             }else{
+                sn.addError(new Error("Valores incorrectos para incremento","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             //en la resta unicamente quiero con numeros
@@ -404,6 +414,7 @@ export class Arithmetic extends Expression {
                     type: Type.DECIMAL 
                 }
             }else{
+                sn.addError(new Error("Valores incorrectos para decremento","SEMANTICO",this.line,this.column));
                 console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             //en la resta unicamente quiero con numeros
@@ -414,6 +425,17 @@ export class Arithmetic extends Expression {
 
         return result
     }
+
+    public getNode(env: Environment,sn:Singleton,g:Digraph){
+        var idnodo=this.line+this.column;
+        
+        const clave = g.createNode('ARITMETICA');
+        const println = g.createNode('println');
+        const ParA = g.createNode('(');
+        
+        const ParC = g.createNode(')');
+        const PyC = g.createNode(';');
+      }
 
 
 }

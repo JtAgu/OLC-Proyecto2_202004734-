@@ -3,6 +3,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class TO_UPPER extends Instruccion {
   constructor(
@@ -26,6 +27,8 @@ export class TO_UPPER extends Instruccion {
                 type: Type.STRING
             }
             return result;
+        }else{
+          sn.addError(new Error(" VALOR ERRONEA PARA TO_UPPER", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

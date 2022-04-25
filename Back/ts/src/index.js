@@ -11,7 +11,8 @@ try {
     var salida = new singleton_1.Singleton();
     //recorrer las instrucciones y ejecutarlas
     var i = 0, j = [];
-    for (const instruccion of ast) {
+    //console.log(salida.getError());
+    for (const instruccion of ast[0]) {
         try {
             i++;
             let ins = instruccion.execute(env, salida);
@@ -28,7 +29,12 @@ try {
     for (const run of j) {
         run.execute2(env, salida);
     }
+    console.log("L Y S");
+    console.log(ast[1]);
+    console.log("SEM");
+    console.log(salida.getError());
     console.log(salida.getMsg());
+    //console.log(env.getEnv())
 }
 catch (error) {
     console.log(error);

@@ -7,6 +7,8 @@
     const {DeclaracionMatrizNew} = require('../instruccion/DeclaracionMatrizNew');
     const {DeclaracionMatrizLista} = require('../instruccion/DeclaracionMatrizLista');
     
+
+    const {Error} = require('../Instruccion/Error');
     const {Asignacion} = require('../Instruccion/Asignacion');
     const {AsignacionTernario} = require('../Instruccion/AsignacionTernario');
     const {AsignacionVector} = require('../instruccion/AsignacionVector');
@@ -53,7 +55,8 @@
     const {Decremento} = require('../Instruccion/decremento');
     const {IF} = require('../Instruccion/IF');
     const {ELSE} = require('../Instruccion/ELSE');
-    
+    var Errores=[];
+    var Retornos=[];
 %}
 
 %lex
@@ -410,7 +413,8 @@
 <<EOF>>             return 'EOF';
 
 .           {
-                console.log('Este es un error lexico : '+yytext+", en la linea : "+yylloc.first_line+", columna : "+yylloc.fisrt_column);
+                console.log('Este es un error lexico : '+yytext+", en la linea : "+yylloc.first_line+", columna : "+yylloc.first_column);
+                Errores.push(new Error("EL CARACTER "+yytext+" no forma parte del lenguaje","LEXICO",yylloc.first_line,yylloc.first_column));
             }
 
 /lex
@@ -432,7 +436,7 @@
 %%
 
 INIT
-    : INSTRUCCION EOF{console.log("termine analizar, recursiva por la derecha c:"); return $1;}
+    : INSTRUCCION EOF{console.log("termine analizar, recursiva por la derecha c:");Retornos.push($1);Retornos.push(Errores);return Retornos;}
 ;
 
 INSTRUCCION
@@ -459,11 +463,12 @@ INSTRUCCIONES
     | LLAMADA 'PuntoComa'   {$$=$1}
     | METODO_FUNCION        {$$=$1}
     | RUN                   {$$=$1}
+    | error                 {Errores.push(new Error(" CARACTER "+yytext+" no era el esperado","SINTACTICO",@1.first_line,@1.first_column));}
 ;
 
 METODO_FUNCION
-    : 'id' 'ParentesisA' PARAMETROS 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC' {$$=new Funcion($1,$3,$8,$6,@1.first_line,@1.fisrt_column);}
-    | 'id' 'ParentesisA' 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC'            {$$=new Funcion($1,null,$7,$5,@1.first_line,@1.fisrt_column);}
+    : 'id' 'ParentesisA' PARAMETROS 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC' {$$=new Funcion($1,$3,$8,$6,@1.first_line,@1.first_column);}
+    | 'id' 'ParentesisA' 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC'            {$$=new Funcion($1,null,$7,$5,@1.first_line,@1.first_column);}
 ;
 
 PARAMETROS
@@ -472,12 +477,12 @@ PARAMETROS
 ;
 
 DECLARACION_VACIO
-    : TIPO_DATO 'id' {$$= new Declaracion($2,$1,null,@1.first_line,@1.fisrt_column);}
+    : TIPO_DATO 'id' {$$= new Declaracion($2,$1,null,@1.first_line,@1.first_column);}
 ;
 
 LLAMADA
-    : 'id' 'ParentesisA' PARAMETROS_LLAMADA 'ParentesisC'   {$$=new LLAMADA($1,$3,@1.first_line,@1.fisrt_column);}
-    | 'id' 'ParentesisA' 'ParentesisC'                      {$$=new LLAMADA($1,null,@1.first_line,@1.fisrt_column);}
+    : 'id' 'ParentesisA' PARAMETROS_LLAMADA 'ParentesisC'   {$$=new LLAMADA($1,$3,@1.first_line,@1.first_column);}
+    | 'id' 'ParentesisA' 'ParentesisC'                      {$$=new LLAMADA($1,null,@1.first_line,@1.first_column);}
 ;
 
 PARAMETROS_LLAMADA
@@ -502,11 +507,12 @@ INS_SWITCH
     | SWITCH                {$$=$1}
     | FOR                   {$$=$1}
     | RETURN                {$$=$1}
+    | error                 {Errores.push(new Error(" CARACTER "+yytext+" no era el esperado","SINTACTICO",@1.first_line,@1.first_column));}
 ;
 
 FOR
-    : 'for' 'ParentesisA' PARAMETRO1 EXPRESION 'PuntoComa' PARAMETRO2 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'   {$$=new FOR($3,$4,$6,$9,@1.first_line,@1.fisrt_column)}
-    | 'for' 'ParentesisA' PARAMETRO1 EXPRESION 'PuntoComa' PARAMETRO2 'ParentesisC' 'LlaveA'  'LlaveC'              {$$=new FOR($3,$4,$6,null,@1.first_line,@1.fisrt_column)}
+    : 'for' 'ParentesisA' PARAMETRO1 EXPRESION 'PuntoComa' PARAMETRO2 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'   {$$=new FOR($3,$4,$6,$9,@1.first_line,@1.first_column)}
+    | 'for' 'ParentesisA' PARAMETRO1 EXPRESION 'PuntoComa' PARAMETRO2 'ParentesisC' 'LlaveA'  'LlaveC'              {$$=new FOR($3,$4,$6,null,@1.first_line,@1.first_column)}
 ;
 
 PARAMETRO1
@@ -521,32 +527,32 @@ PARAMETRO2
 
 
 DO_WHILE
-    : 'do' 'LlaveA' INSTRUCCION 'LlaveC' 'while' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa' {$$=new DOWHILE($3,$7,@1.first_line,@1.fisrt_column)}
+    : 'do' 'LlaveA' INSTRUCCION 'LlaveC' 'while' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa' {$$=new DOWHILE($3,$7,@1.first_line,@1.first_column)}
 ;
 
 
 WHILE
-    : 'while' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC' {$$=new WHILE($3,$6,@1.first_line,@1.fisrt_column)}
+    : 'while' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC' {$$=new WHILE($3,$6,@1.first_line,@1.first_column)}
 ;
 
 
 CASTEO_D
-    : TIPO_DATO ID_DECLARACION 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' {$$=new Casteo($2,$1,$7,$5,@1.first_line,@1.fisrt_column)}
-    | 'id' 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' {$$=new CasteoAsig($1,$6,$4,@1.first_line,@1.fisrt_column)}
+    : TIPO_DATO ID_DECLARACION 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' {$$=new Casteo($2,$1,$7,$5,@1.first_line,@1.first_column)}
+    | 'id' 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' {$$=new CasteoAsig($1,$6,$4,@1.first_line,@1.first_column)}
 ;
 
 
 DECLARACION
-    : TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'PuntoComa' {$$= new Declaracion($2,$1,$4,@1.first_line,@1.fisrt_column);}
-    | TIPO_DATO ID_DECLARACION 'PuntoComa' {$$= new DeclaracionVacio($2,$1,@1.first_line,@1.fisrt_column);}
-    | TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' {$$= new DeclaracionTernario($2,$1,$4,$6,$8,@1.first_line,@1.fisrt_column);}
+    : TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'PuntoComa' {$$= new Declaracion($2,$1,$4,@1.first_line,@1.first_column);}
+    | TIPO_DATO ID_DECLARACION 'PuntoComa' {$$= new DeclaracionVacio($2,$1,@1.first_line,@1.first_column);}
+    | TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' {$$= new DeclaracionTernario($2,$1,$4,$6,$8,@1.first_line,@1.first_column);}
 
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC'  'PuntoComa' {$$= new DeclaracionVectorNew($2,$1,$9,$7,@1.first_line,@1.fisrt_column);}
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'PuntoComa' {$$= new DeclaracionMatrizNew($2,$1,$11,$14,$9,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC'  'PuntoComa' {$$= new DeclaracionVectorNew($2,$1,$9,$7,@1.first_line,@1.first_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'PuntoComa' {$$= new DeclaracionMatrizNew($2,$1,$11,$14,$9,@1.first_line,@1.first_column);}
 
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,$7,null,@1.first_line,@1.fisrt_column);}
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'toCharArray' 'ParentesisA' VALOR 'ParentesisC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,null,$8,@1.first_line,@1.fisrt_column);}
-    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_FILAS 'CorcheteC' 'PuntoComa' {$$= new DeclaracionMatrizLista($2,$1,$9,@1.first_line,@1.fisrt_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,$7,null,@1.first_line,@1.first_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'toCharArray' 'ParentesisA' VALOR 'ParentesisC' 'PuntoComa' {$$= new DeclaracionVectorLista($2,$1,null,$8,@1.first_line,@1.first_column);}
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_FILAS 'CorcheteC' 'PuntoComa' {$$= new DeclaracionMatrizLista($2,$1,$9,@1.first_line,@1.first_column);}
 ;
 
 LISTA_FILAS
@@ -569,14 +575,14 @@ ID_DECLARACION
 
 ASIGNACION
     : 'id' 'igual'  EXPRESION  'PuntoComa' {$$= new Asignacion($1,$3, @1.first_line, @1.first_column)}
-    | 'id' 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' {$$= new AsignacionTernario($1,$3,$5,$7,@1.first_line,@1.fisrt_column);}
+    | 'id' 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' {$$= new AsignacionTernario($1,$3,$5,$7,@1.first_line,@1.first_column);}
     | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION  'PuntoComa' {$$= new AsignacionVector($1,$3,$6, @1.first_line, @1.first_column)}
     | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION  'PuntoComa' {$$= new AsignacionMatriz($1,$3,$6,$9 , @1.first_line, @1.first_column)}
 ;
 
 ASIGNACION_FOR
     : 'id' 'igual'  EXPRESION   {$$= new Asignacion($1,$3, @1.first_line, @1.first_column)}
-    | 'id' 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION  {$$= new AsignacionTernario($1,$3,$5,$7,@1.first_line,@1.fisrt_column);}
+    | 'id' 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION  {$$= new AsignacionTernario($1,$3,$5,$7,@1.first_line,@1.first_column);}
     | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION   {$$= new AsignacionVector($1,$3,$6, @1.first_line, @1.first_column)}
     | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION   {$$= new AsignacionMatriz($1,$3,$6,$9 , @1.first_line, @1.first_column)}
 ;
@@ -637,7 +643,8 @@ PRINT_LN
 
 
 PRINT
-    : ''Print' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa' {$$= new Print($3, @1.first_line, @1.first_column)}
+    : 'Print' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa' {$$= new Print($3, @1.first_line, @1.first_column);}
+    
 ;
 
 
@@ -647,7 +654,7 @@ TIPO_DATO
     |'char'     {$$=Type.CHAR}
     |'String'   {$$=Type.STRING}
     |'boolean'  {$$=Type.BOOLEAN}
-    |'void'  {$$=Type.VOID}
+    |'void'     {$$=Type.VOID}
 ;
 
 EXPRESION
@@ -718,8 +725,8 @@ ROUND
 ;
 
 RUN
-    : 'run' 'id' 'ParentesisA' PARAMETROS_LLAMADA 'ParentesisC' 'PuntoComa' {$$=new RUN($2,$4,@1.first_line,@1.fisrt_column);}
-    | 'run' 'id' 'ParentesisA' 'ParentesisC' 'PuntoComa'                    {$$=new RUN($2,null,@1.first_line,@1.fisrt_column);}
+    : 'run' 'id' 'ParentesisA' PARAMETROS_LLAMADA 'ParentesisC' 'PuntoComa' {$$=new RUN($2,$4,@1.first_line,@1.first_column);}
+    | 'run' 'id' 'ParentesisA' 'ParentesisC' 'PuntoComa'                    {$$=new RUN($2,null,@1.first_line,@1.first_column);}
 ;
 
 LENGTH

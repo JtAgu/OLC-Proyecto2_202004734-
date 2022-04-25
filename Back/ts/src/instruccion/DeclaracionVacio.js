@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeclaracionVacio = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class DeclaracionVacio extends Instruccion_1.Instruccion {
     constructor(nombre, tipo, line, column) {
         super(line, column);
@@ -59,7 +60,7 @@ class DeclaracionVacio extends Instruccion_1.Instruccion {
                 }
             }
             else {
-                console.log("error semantico, declaracion de variable [" + id + "] no correcta");
+                sn.addError(new Error_1.Error("Declaracion de [" + id + "] incorrecta", "SEMANTICO", this.line, this.column));
             }
         }
     }

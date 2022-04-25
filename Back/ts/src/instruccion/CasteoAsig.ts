@@ -3,6 +3,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class CasteoAsig extends Instruccion {
   constructor(
@@ -53,14 +54,13 @@ export class CasteoAsig extends Instruccion {
             console.log("variable ["+this.nombre+"] actualizada con exito...");
             
           }else{
-            console.log("error semantico, no se puede asignar un valor de otro tipo a la variable ["+this.nombre+"]");
+            sn.addError(new Error(" Expresion con tipo diferente a ["+this.nombre+"]", "SEMANTICO", this.line, this.column));
           }
       }
       
       
     }else{
-      console.log("la variable ["+this.nombre+"] no fue encontrada...");
-      
+      sn.addError(new Error("variable ["+this.nombre+"] no fue encontrada", "SEMANTICO", this.line, this.column));
     }
   }
 }

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logic = void 0;
 const express_1 = require("../abstract/express");
+const Error_1 = require("../instruccion/Error");
 const Type_1 = require("../simbolos/Type");
 const logicOption_1 = require("./logicOption");
 class logic extends express_1.Expression {
@@ -30,6 +31,8 @@ class logic extends express_1.Expression {
                     value: Boolean(true),
                     type: Type_1.Type.BOOLEAN
                 };
+                sn.addError(new Error_1.Error("Valores incorrectos para NOT", "SEMANTICO", this.line, this.column));
+                console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
         }
         else if (this.type == logicOption_1.LogicOption.AND) {
@@ -44,6 +47,8 @@ class logic extends express_1.Expression {
                     value: Boolean(false),
                     type: Type_1.Type.BOOLEAN
                 };
+                sn.addError(new Error_1.Error("Valores incorrectos para AND", "SEMANTICO", this.line, this.column));
+                console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
         }
         else if (this.type == logicOption_1.LogicOption.OR) {
@@ -58,6 +63,8 @@ class logic extends express_1.Expression {
                     value: Boolean(false),
                     type: Type_1.Type.BOOLEAN
                 };
+                sn.addError(new Error_1.Error("Valores incorrectos para OR", "SEMANTICO", this.line, this.column));
+                console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
         }
         return result;

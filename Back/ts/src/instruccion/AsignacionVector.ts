@@ -3,6 +3,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class AsignacionVector extends Instruccion {
   constructor(
@@ -31,16 +32,13 @@ export class AsignacionVector extends Instruccion {
           console.log("variable ["+this.nombre+"] actualizada con exito...");
           
         }else{
-          console.log("error semantico, no se puede asignar un valor de otro tipo a la variable ["+this.nombre+"]");
+          sn.addError(new Error("valor de otro tipo a ["+this.nombre+"]", "SEMANTICO", this.line, this.column));
         }
-        
       }else{
-        
-        console.log("la variable ["+this.nombre+"] tiene una dimension diferente...");  
+        sn.addError(new Error("Variable ["+this.nombre+"] con dimension distinta", "SEMANTICO", this.line, this.column));
       }
     }else{
-      
-      console.log("la variable ["+this.nombre+"] no fue encontrada...");
+      sn.addError(new Error("variable ["+this.nombre+"] no fue encontrada", "SEMANTICO", this.line, this.column));
     }
     
 

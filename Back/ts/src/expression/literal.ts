@@ -2,6 +2,7 @@ import { Expression } from "../abstract/express"
 import { Retorno } from "../abstract/Retorno"
 import { Type } from "../simbolos/Type"
 import { Environment } from "../simbolos/Environment";
+import { Digraph } from "ts-graphviz";
 
 
 export class Literal extends Expression {
@@ -39,4 +40,9 @@ export class Literal extends Expression {
         else return { value: this.value, type: Type.error }
 
     }
+
+    public getNodo(g:Digraph){
+
+    }
+
 }

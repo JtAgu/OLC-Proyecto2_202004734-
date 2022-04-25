@@ -5,6 +5,7 @@ class Instruccion {
     constructor(line, column) {
         this.line = line;
         this.column = column;
+        this.i = 0;
         this.line = line;
         this.column = column;
     }

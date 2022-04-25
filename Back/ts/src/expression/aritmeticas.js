@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Arithmetic = void 0;
 const express_1 = require("../abstract/express");
+const Error_1 = require("../instruccion/Error");
 const Type_1 = require("../simbolos/Type");
 const aritmeticOption_1 = require("./aritmeticOption");
 class Arithmetic extends express_1.Expression {
@@ -111,6 +112,7 @@ class Arithmetic extends express_1.Expression {
                 };
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para suma", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //demas validadionces para la operaciones aritmeticas
@@ -196,6 +198,7 @@ class Arithmetic extends express_1.Expression {
                 //nodoDer.type == Type.CHAR && nodoIzq.type == Type.NUMBER
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para resta", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //en la resta unicamente quiero con numeros
@@ -253,6 +256,7 @@ class Arithmetic extends express_1.Expression {
                 //nodoDer.type == Type.CHAR && nodoIzq.type == Type.NUMBER
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para multiplicacion", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //en la resta unicamente quiero con numeros
@@ -316,6 +320,7 @@ class Arithmetic extends express_1.Expression {
                 //nodoDer.type == Type.CHAR && nodoIzq.type == Type.NUMBER
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para division", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //en la resta unicamente quiero con numeros
@@ -341,6 +346,7 @@ class Arithmetic extends express_1.Expression {
                 };
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para potencia", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //en la resta unicamente quiero con numeros
@@ -366,6 +372,7 @@ class Arithmetic extends express_1.Expression {
                 };
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para modulo", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //en la resta unicamente quiero con numeros
@@ -384,6 +391,7 @@ class Arithmetic extends express_1.Expression {
                 };
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para negacion", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //en la resta unicamente quiero con numeros
@@ -402,6 +410,7 @@ class Arithmetic extends express_1.Expression {
                 };
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para incremento", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //en la resta unicamente quiero con numeros
@@ -420,6 +429,7 @@ class Arithmetic extends express_1.Expression {
                 };
             }
             else {
+                sn.addError(new Error_1.Error("Valores incorrectos para decremento", "SEMANTICO", this.line, this.column));
                 console.log("error semantico, valores incorrectos para [" + this.type + "]");
             }
             //en la resta unicamente quiero con numeros
@@ -427,6 +437,14 @@ class Arithmetic extends express_1.Expression {
         else {
         }
         return result;
+    }
+    getNode(env, sn, g) {
+        var idnodo = this.line + this.column;
+        const clave = g.createNode('ARITMETICA');
+        const println = g.createNode('println');
+        const ParA = g.createNode('(');
+        const ParC = g.createNode(')');
+        const PyC = g.createNode(';');
     }
 }
 exports.Arithmetic = Arithmetic;

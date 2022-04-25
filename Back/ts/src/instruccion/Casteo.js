@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Casteo = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class Casteo extends Instruccion_1.Instruccion {
     constructor(nombre, tipo, expresion, TipoCambio, line, column) {
         super(line, column);
@@ -60,8 +61,11 @@ class Casteo extends Instruccion_1.Instruccion {
                 }
             }
             else {
-                console.log("error semantico, declaracion de variable [" + this.nombre + "] no correcta");
+                sn.addError(new Error_1.Error(" Expresion con tipo diferente a [" + this.nombre + "]", "SEMANTICO", this.line, this.column));
             }
+        }
+        else {
+            sn.addError(new Error_1.Error("casteo no permitido", "SEMANTICO", this.line, this.column));
         }
     }
 }

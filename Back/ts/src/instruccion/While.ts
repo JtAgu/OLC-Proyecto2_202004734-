@@ -4,6 +4,7 @@ import { Retorno } from "../abstract/Retorno";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class WHILE extends Instruccion {
     constructor(
@@ -46,6 +47,8 @@ export class WHILE extends Instruccion {
                 exp = this.expresion.execute(env,sn);
             }
             
+        }else{
+            sn.addError(new Error(" Condicion de While debe ser boolean", "SEMANTICO", this.line, this.column));
         }
     }
 }

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AsignacionMatriz = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class AsignacionMatriz extends Instruccion_1.Instruccion {
     constructor(nombre, expresionN, expresionN2, expresion, line, column) {
         super(line, column);
@@ -25,15 +26,15 @@ class AsignacionMatriz extends Instruccion_1.Instruccion {
                     console.log("variable [" + this.nombre + "] actualizada con exito...");
                 }
                 else {
-                    console.log("error semantico, no se puede asignar un valor de otro tipo a la variable [" + this.nombre + "]");
+                    sn.addError(new Error_1.Error("Asignacion a [" + this.nombre + "] erronea", "SEMANTICO", this.line, this.column));
                 }
             }
             else {
-                console.log("la variable [" + this.nombre + "] tiene una dimension diferente...");
+                sn.addError(new Error_1.Error("Variable [" + this.nombre + "] con dimension distinta", "SEMANTICO", this.line, this.column));
             }
         }
         else {
-            console.log("la variable [" + this.nombre + "] no fue encontrada...");
+            sn.addError(new Error_1.Error("variable [" + this.nombre + "] no fue encontrada", "SEMANTICO", this.line, this.column));
         }
     }
 }

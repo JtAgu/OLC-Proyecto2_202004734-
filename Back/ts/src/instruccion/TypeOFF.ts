@@ -3,6 +3,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class TYPEOFF extends Instruccion {
   constructor(
@@ -50,7 +51,9 @@ export class TYPEOFF extends Instruccion {
                 value: "boolean",
                 type: Type.STRING
             }
-        }
+        }else{
+            sn.addError(new Error(" VALOR ERRONEA PARA TYPE_OF", "SEMANTICO", this.line, this.column));
+          }
         
         
         return result;

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeclaracionTernario = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class DeclaracionTernario extends Instruccion_1.Instruccion {
     constructor(nombre, tipo, expresion, expresionV, expresionF, line, column) {
         super(line, column);
@@ -39,9 +40,12 @@ class DeclaracionTernario extends Instruccion_1.Instruccion {
                     }
                 }
             }
+            else {
+                sn.addError(new Error_1.Error("Declaracion de [" + this.nombre + "] incorrecta", "SEMANTICO", this.line, this.column));
+            }
         }
         else {
-            console.log("error semantico, declaracion de variable [" + this.nombre + "] no correcta");
+            sn.addError(new Error_1.Error("Variable [" + this.nombre + "] con tipo distinto", "SEMANTICO", this.line, this.column));
         }
     }
 }

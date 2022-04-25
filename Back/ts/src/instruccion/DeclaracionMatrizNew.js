@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeclaracionMatrizNew = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class DeclaracionMatrizNew extends Instruccion_1.Instruccion {
     constructor(nombre, tipo, Dim1, Dim2, tipo2, line, column) {
         super(line, column);
@@ -95,7 +96,7 @@ class DeclaracionMatrizNew extends Instruccion_1.Instruccion {
                 }
             }
             else {
-                console.log("error semantico, declaracion de variable [" + this.nombre + "] no correcta");
+                sn.addError(new Error_1.Error(" Tipo de declaracion incorrecto", "SEMANTICO", this.line, this.column));
             }
         }
     }

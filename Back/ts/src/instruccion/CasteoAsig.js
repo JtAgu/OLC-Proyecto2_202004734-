@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CasteoAsig = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class CasteoAsig extends Instruccion_1.Instruccion {
     constructor(nombre, expresion, TipoCambio, line, column) {
         super(line, column);
@@ -55,12 +56,12 @@ class CasteoAsig extends Instruccion_1.Instruccion {
                     console.log("variable [" + this.nombre + "] actualizada con exito...");
                 }
                 else {
-                    console.log("error semantico, no se puede asignar un valor de otro tipo a la variable [" + this.nombre + "]");
+                    sn.addError(new Error_1.Error(" Expresion con tipo diferente a [" + this.nombre + "]", "SEMANTICO", this.line, this.column));
                 }
             }
         }
         else {
-            console.log("la variable [" + this.nombre + "] no fue encontrada...");
+            sn.addError(new Error_1.Error("variable [" + this.nombre + "] no fue encontrada", "SEMANTICO", this.line, this.column));
         }
     }
 }

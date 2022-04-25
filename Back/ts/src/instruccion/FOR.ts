@@ -4,6 +4,7 @@ import { Retorno } from "../abstract/Retorno";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class FOR extends Instruccion {
     constructor(
@@ -38,7 +39,6 @@ export class FOR extends Instruccion {
                                 break;
                             } else {
                                 return corte;
-                                
                             }
                         }
                     }
@@ -50,6 +50,8 @@ export class FOR extends Instruccion {
                 this.Param2.execute(envFor,sn);
                 exp = this.expresionB.execute(envFor,sn);
             }
+        }else{
+            sn.addError(new Error(" Condicion de for debe ser boolean", "SEMANTICO", this.line, this.column));
         }
 
 

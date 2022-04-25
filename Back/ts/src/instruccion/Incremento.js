@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Incremento = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class Incremento extends Instruccion_1.Instruccion {
     constructor(nombre, dim1, dim2, line, column) {
         super(line, column);
@@ -22,7 +23,7 @@ class Incremento extends Instruccion_1.Instruccion {
                     console.log("variable [" + this.nombre + "] actualizada con exito...");
                 }
                 else {
-                    console.log("error semantico, no se puede asignar un valor de otro tipo a la variable [" + this.nombre + "]");
+                    sn.addError(new Error_1.Error(" [" + this.nombre + "] tiene valor de otro tipo", "SEMANTICO", this.line, this.column));
                 }
             }
             else if (this.dim1 != null && this.dim2 == null) {
@@ -32,7 +33,7 @@ class Incremento extends Instruccion_1.Instruccion {
                     console.log("variable [" + this.nombre + "] actualizada con exito...");
                 }
                 else {
-                    console.log("error semantico, no se puede asignar un valor de otro tipo a la variable [" + this.nombre + "]");
+                    sn.addError(new Error_1.Error(" [" + this.nombre + "] tiene valor de otro tipo", "SEMANTICO", this.line, this.column));
                 }
             }
             else {
@@ -41,12 +42,12 @@ class Incremento extends Instruccion_1.Instruccion {
                     console.log("variable [" + this.nombre + "] actualizada con exito...");
                 }
                 else {
-                    console.log("error semantico, no se puede asignar un valor de otro tipo a la variable [" + this.nombre + "]");
+                    sn.addError(new Error_1.Error(" [" + this.nombre + "] tiene valor de otro tipo", "SEMANTICO", this.line, this.column));
                 }
             }
         }
         else {
-            console.log("la variable [" + this.nombre + "] no fue encontrada...");
+            sn.addError(new Error_1.Error(" [" + this.nombre + "] no fue encontrada", "SEMANTICO", this.line, this.column));
         }
     }
 }

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeclaracionVectorNew = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class DeclaracionVectorNew extends Instruccion_1.Instruccion {
     constructor(nombre, tipo, Dim1, tipo2, line, column) {
         super(line, column);
@@ -73,11 +74,11 @@ class DeclaracionVectorNew extends Instruccion_1.Instruccion {
                 }
             }
             else {
-                console.log("error semantico, declaracion de variable [" + this.nombre + "] no correcta");
+                sn.addError(new Error_1.Error("Declaracion de [" + this.nombre + "] incorrecta", "SEMANTICO", this.line, this.column));
             }
         }
         else {
-            console.log("error semantico, declaracion de variable [" + this.nombre + "] no correcta");
+            sn.addError(new Error_1.Error("Declaracion de [" + this.nombre + "] incorrecta", "SEMANTICO", this.line, this.column));
         }
     }
 }

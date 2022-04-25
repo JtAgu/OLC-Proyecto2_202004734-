@@ -33,5 +33,7 @@ class Literal extends express_1.Expression {
         else
             return { value: this.value, type: Type_1.Type.error };
     }
+    getNodo(g) {
+    }
 }
 exports.Literal = Literal;

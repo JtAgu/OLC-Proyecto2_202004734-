@@ -11,7 +11,7 @@ class Print extends Instruccion_1.Instruccion {
     }
     execute(env, sn) {
         let exp = this.expresion.execute(env, sn);
-        console.log(exp.value);
+        //console.log(exp.value);
         sn.addMsg(exp.value);
         //pueden usar patron singleton para capturar todas las saliddas de consola
         //return exp.value

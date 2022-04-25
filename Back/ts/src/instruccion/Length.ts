@@ -4,6 +4,7 @@ import { Retorno } from "../abstract/Retorno";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class LENGTH extends Instruccion {
   constructor(
@@ -33,7 +34,7 @@ export class LENGTH extends Instruccion {
                 type: Type.NUMBER
             }
         }else{
-            console.log("Error semantico")
+            sn.addError(new Error(" VALOR ERRONEA PARA LENGTH", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

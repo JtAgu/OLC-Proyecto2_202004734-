@@ -3,6 +3,7 @@ import { Retorno } from "../abstract/Retorno";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { digraph, toDot } from 'ts-graphviz';
 
 export class CONTINUE extends Instruccion {
     constructor(        

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LENGTH = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class LENGTH extends Instruccion_1.Instruccion {
     constructor(expresion, line, column) {
         super(line, column);
@@ -30,7 +31,7 @@ class LENGTH extends Instruccion_1.Instruccion {
             };
         }
         else {
-            console.log("Error semantico");
+            sn.addError(new Error_1.Error(" VALOR ERRONEA PARA LENGTH", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

@@ -1,11 +1,18 @@
+import { Error } from "../instruccion/Error";
+
 export class Singleton{
 
 
     private static instance:Singleton
 
-    private message:string=""
+    
+    private message:Array<any>=["",Array,""]
 
-    constructor(){}
+    constructor(){
+
+        var s:Array<Error>=[]
+        this.message[1]=s;
+    }
 
     public static getInstance():Singleton{
         if(!Singleton.instance){
@@ -15,11 +22,19 @@ export class Singleton{
     }
 
     public addMsg(data:any){
-        this.message+=data
+        this.message[0]+=data
     }
 
     public getMsg():String{
-        return this.message
+        return this.message[0]
+    }
+
+    public getError():String{
+        return this.message[1]
+    }
+
+    public addError(data:Error){
+        this.message[1].push(data)
     }
 
 

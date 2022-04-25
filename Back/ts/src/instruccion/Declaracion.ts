@@ -3,6 +3,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class Declaracion extends Instruccion {
   constructor(
@@ -23,7 +24,7 @@ export class Declaracion extends Instruccion {
       for (const id of this.nombre) {
 
         if (exp.type == this.tipo) {
-
+          //console.log(exp);
           const condicion = env.guardar_variable(id, exp.value, this.tipo);
           if (condicion) {
             console.log("variable [" + id + "] ingresada...");
@@ -31,7 +32,7 @@ export class Declaracion extends Instruccion {
             console.log("variable [" + id + "] no ingresada...");
           }
         } else {
-          console.log("error semantico, declaracion de variable [" + id + "] no correcta");
+          sn.addError(new Error(" Expresion con tipo diferente a ["+id+"]", "SEMANTICO", this.line, this.column));
         }
       }
     }

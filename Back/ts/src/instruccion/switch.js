@@ -14,8 +14,8 @@ class SWITCH extends Instruccion_1.Instruccion {
     execute2(env) {
     }
     execute(env, sn) {
+        const envSw = new Environment_1.Environment(env);
         if (this.ListaCase != null) {
-            const envSw = new Environment_1.Environment(env);
             let expN = this.Expresion.execute(env, sn);
             let br = false;
             for (const x of this.ListaCase) {
@@ -35,6 +35,11 @@ class SWITCH extends Instruccion_1.Instruccion {
                         x.execute(envSw, sn);
                     }
                 }
+            }
+        }
+        else if (this.Default != null) {
+            for (const x of this.Default) {
+                x.execute(envSw, sn);
             }
         }
     }

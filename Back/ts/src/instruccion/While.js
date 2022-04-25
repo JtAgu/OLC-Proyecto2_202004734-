@@ -4,6 +4,7 @@ exports.WHILE = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Environment_1 = require("../simbolos/Environment");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class WHILE extends Instruccion_1.Instruccion {
     constructor(expresion, Intrucciones, line, column) {
         super(line, column);
@@ -41,6 +42,9 @@ class WHILE extends Instruccion_1.Instruccion {
                 }
                 exp = this.expresion.execute(env, sn);
             }
+        }
+        else {
+            sn.addError(new Error_1.Error(" Condicion de While debe ser boolean", "SEMANTICO", this.line, this.column));
         }
     }
 }

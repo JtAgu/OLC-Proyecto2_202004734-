@@ -4,6 +4,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class Decremento extends Instruccion {
   constructor(
@@ -29,7 +30,7 @@ export class Decremento extends Instruccion {
           env.actualizar_Matriz(this.nombre, Number(env.getValue_Matriz(this.nombre,exp1.value,exp2.value))-1,exp1.value,exp2.value)
           console.log("variable ["+this.nombre+"] actualizada con exito...");
         }else{
-          console.log("error semantico, no se puede asignar un valor de otro tipo a la variable ["+this.nombre+"]");
+          sn.addError(new Error(" ["+this.nombre+"] tiene valor de otro tipo", "SEMANTICO", this.line, this.column));
         }
       }else if(this.dim1!=null&&this.dim2==null){
         let exp1=this.dim1.execute(env,sn)
@@ -37,18 +38,18 @@ export class Decremento extends Instruccion {
           env.actualizar_Vector(this.nombre, Number(env.getValue_Vector(this.nombre,exp1.value))-1,exp1.value)
           console.log("variable ["+this.nombre+"] actualizada con exito...");
         }else{
-          console.log("error semantico, no se puede asignar un valor de otro tipo a la variable ["+this.nombre+"]");
+          sn.addError(new Error(" ["+this.nombre+"] tiene valor de otro tipo", "SEMANTICO", this.line, this.column));
         }
       }else{
         if (Type.NUMBER== env.getTipo_variable(this.nombre)||Type.DECIMAL== env.getTipo_variable(this.nombre)){
           env.actualizar_variable(this.nombre, Number(env.getValue_variable(this.nombre))-1)
           console.log("variable ["+this.nombre+"] actualizada con exito...");
         }else{  
-          console.log("error semantico, no se puede asignar un valor de otro tipo a la variable ["+this.nombre+"]");
+          sn.addError(new Error(" ["+this.nombre+"] tiene valor de otro tipo", "SEMANTICO", this.line, this.column));
         }
       }
     }else{
-      console.log("la variable ["+this.nombre+"] no fue encontrada...");
+      sn.addError(new Error(" ["+this.nombre+"] no fue encontrada", "SEMANTICO", this.line, this.column));
     }
   }
 }

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TO_LOWER = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Type_1 = require("../simbolos/Type");
+const Error_1 = require("./Error");
 class TO_LOWER extends Instruccion_1.Instruccion {
     constructor(expresion, line, column) {
         super(line, column);
@@ -22,6 +23,9 @@ class TO_LOWER extends Instruccion_1.Instruccion {
                 type: Type_1.Type.STRING
             };
             return result;
+        }
+        else {
+            sn.addError(new Error_1.Error(" VALOR ERRONEA PARA To_Lower", "SEMANTICO", this.line, this.column));
         }
         return result;
     }

@@ -3,6 +3,7 @@ import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
 import { Type } from "../simbolos/Type";
+import { Error } from "./Error";
 
 export class Casteo extends Instruccion {
   constructor(
@@ -58,8 +59,10 @@ export class Casteo extends Instruccion {
                     console.log("variable ["+this.nombre+"] no ingresada...");
                 }
             }else{
-                console.log("error semantico, declaracion de variable ["+this.nombre+"] no correcta");
+                sn.addError(new Error(" Expresion con tipo diferente a ["+this.nombre+"]", "SEMANTICO", this.line, this.column));
             }
+        }else{
+            sn.addError(new Error("casteo no permitido", "SEMANTICO", this.line, this.column));
         }
     }
 }
