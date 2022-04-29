@@ -1,0 +1,28 @@
+println("Ackerman 3, 0: " + ackerman(3, 0));  // 5
+
+int x = 2 + 3 * 4 + 5 - 2 * 2;
+//;;;°°°
+//¡¡¡¡
+run funcion1(2);
+ 
+ackerman(int m, int n): int{
+    if (m == 0) {
+        return n + 1;
+    } else if (m > 0 && n == 0) {
+        return 2;
+    } else {
+        return 3;
+    }
+}
+
+funcion1(int x):void{
+    print("INCREMENTO");
+    while(x<=5){
+        x++;
+        println("X vale:"+x);
+    }
+    print("DECREMENTO");
+    for(x=5;x>0;x--){
+        println("X vale:"+x);
+    }
+}

@@ -52,7 +52,7 @@ class Casteo extends Instruccion_1.Instruccion {
         if (Aceptado) {
             if (exp.type == this.tipo) {
                 console.log(exp.type);
-                const condicion = env.guardar_variable(this.nombre, exp.value, this.tipo);
+                const condicion = env.guardar_variable(this.nombre, this.line, this.column, exp.value, this.tipo);
                 if (condicion) {
                     console.log("variable [" + this.nombre + "] ingresada...");
                 }
@@ -67,6 +67,19 @@ class Casteo extends Instruccion_1.Instruccion {
         else {
             sn.addError(new Error_1.Error("casteo no permitido", "SEMANTICO", this.line, this.column));
         }
+    }
+    ast(s) {
+        const nombre_nodo = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+        ${nombre_nodo}[label="\\<Instruccion\\>\\Declaracion_Casteo"];
+        ${nombre_nodo}1[label="\\<Tipo\\>\\n${this.tipo}"];
+        ${nombre_nodo}2[label="\\<ID\\>\\n${this.nombre}"];
+        ${nombre_nodo}3[label="\\<Cambio\\>\\n${this.TipoCambio}"];
+        ${nombre_nodo}->${nombre_nodo}1;
+        ${nombre_nodo}->${nombre_nodo}2;
+        ${nombre_nodo}->${nombre_nodo}3;
+        ${nombre_nodo}->${this.expresion.ast(s)}
+        `);
     }
 }
 exports.Casteo = Casteo;

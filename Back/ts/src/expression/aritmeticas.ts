@@ -5,7 +5,7 @@ import { Error } from "../instruccion/Error"
 import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
-import { ArithmeticOption } from "./aritmeticOption"
+import { ArithmeticOption,getName,get_simbolo } from "./aritmeticOption"
 
 export class Arithmetic extends Expression {
 
@@ -426,16 +426,16 @@ export class Arithmetic extends Expression {
         return result
     }
 
-    public getNode(env: Environment,sn:Singleton,g:Digraph){
-        var idnodo=this.line+this.column;
-        
-        const clave = g.createNode('ARITMETICA');
-        const println = g.createNode('println');
-        const ParA = g.createNode('(');
-        
-        const ParC = g.createNode(')');
-        const PyC = g.createNode(';');
-      }
 
+    public ast(salida:Singleton) {
 
+        const name_nodo = `node_${this.line}_${this.column}_`
+        
+        return `
+        ${name_nodo};
+        ${name_nodo}[label="${get_simbolo(this.type)}"];
+        ${name_nodo}->${this.left.ast(salida)}
+        ${name_nodo}->${this.right.ast(salida)}
+        `
+    }
 }

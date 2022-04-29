@@ -39,7 +39,7 @@ class DeclaracionMatrizLista extends Instruccion_1.Instruccion {
             val.push(val2);
         }
         if (Concordancia) {
-            const condicion = env.guardar_Matriz(this.nombre, val, this.tipo, i, j);
+            const condicion = env.guardar_Matriz(this.nombre, this.line, this.column, val, this.tipo, i, j);
             if (condicion) {
                 console.log("variable [" + this.nombre + "] ingresada...");
             }
@@ -50,6 +50,30 @@ class DeclaracionMatrizLista extends Instruccion_1.Instruccion {
         else {
             sn.addError(new Error_1.Error(" Expresion con tipo diferente a [" + this.nombre + "]", "SEMANTICO", this.line, this.column));
         }
+    }
+    ast(s) {
+        const name_node = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${name_node}[label="\\<Instruccion\\>\\nArray Declaracion Lista"];
+    ${name_node}1[label="\\<Nombre\\>\\n{${this.nombre}}"];
+    ${name_node}2[label="\\<Tipo\\>\\n${this.tipo}"];
+    ${name_node}3[label="\\<Contenido\\>"];
+    ${name_node}->${name_node}1;
+    ${name_node}->${name_node}2;
+    ${name_node}->${name_node}3;
+    `);
+        var i = 0;
+        this.valores.forEach(element => {
+            s.add_ast(`
+        ${name_node}3->${name_node}3__${i}
+        `);
+            element.forEach(e => {
+                s.add_ast(`
+          ${name_node}3__${i}->${e.ast(s)}
+          `);
+            });
+            i++;
+        });
     }
 }
 exports.DeclaracionMatrizLista = DeclaracionMatrizLista;

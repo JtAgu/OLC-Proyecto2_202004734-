@@ -38,4 +38,14 @@ export class LENGTH extends Instruccion {
         }
         return result;
     }
+
+    public ast(s:Singleton) {
+
+        const nombreNodo = `node_${this.line}_${this.column}_`
+        return `
+        ${nombreNodo};
+        ${nombreNodo}[label="LENGTH"];
+        ${nombreNodo}->${this.expresion.ast(s)}
+        `
+    }
 }

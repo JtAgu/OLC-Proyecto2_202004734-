@@ -4,7 +4,7 @@ import { Error } from "../instruccion/Error"
 import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
-import { LogicOption } from "./logicOption"
+import { LogicOption,get_simbolo } from "./logicOption"
 
 export class logic extends Expression {
 
@@ -28,52 +28,90 @@ export class logic extends Expression {
         
 
         if (this.type == LogicOption.NOT) {
-            if(Boolean(nodoDer.value)){
-                result={
-                    value:Boolean(false),
-                    type: Type.BOOLEAN
+            if(nodoDer.type==Type.BOOLEAN){
+            
+                if(Boolean(nodoDer.value)){
+                    result={
+                        value:Boolean(false),
+                        type: Type.BOOLEAN
+                    }
+                }else{
+                    result={
+                        value:Boolean(true),
+                        type: Type.BOOLEAN
+                    }
+                        
                 }
             }else{
-                result={
-                    value:Boolean(true),
-                    type: Type.BOOLEAN
-                }
-                    sn.addError(new Error("Valores incorrectos para NOT","SEMANTICO",this.line,this.column));
-                    console.log("error semantico, valores incorrectos para ["+this.type+"]");
+                sn.addError(new Error("Valores incorrectos para NOT","SEMANTICO",this.line,this.column));
+                        console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             
+            
         }else if (this.type == LogicOption.AND) {
-
-            if(Boolean(nodoIzq.value)&&Boolean(nodoDer.value)){
-                result={
-                    value:Boolean(true),
-                    type: Type.BOOLEAN
+            if(nodoIzq.type==Type.BOOLEAN&&nodoDer.type==Type.BOOLEAN){
+                console.log(nodoIzq.value,"And",nodoDer.value);
+                if(Boolean(nodoIzq.value)&&Boolean(nodoDer.value)){
+                    console.log("Si");
+                    result={
+                        value:Boolean(true),
+                        type: Type.BOOLEAN
+                    }
+                }else{
+                    result={
+                        value:Boolean(false),
+                        type: Type.BOOLEAN
+                    }
+                    
                 }
-            }else{
-                result={
-                    value:Boolean(false),
-                    type: Type.BOOLEAN
-                }
+            }
+            else{
                 sn.addError(new Error("Valores incorrectos para AND","SEMANTICO",this.line,this.column));
-                    console.log("error semantico, valores incorrectos para ["+this.type+"]");
+                console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
             
         }else if (this.type == LogicOption.OR) {
-            if(Boolean(nodoIzq.value)||Boolean(nodoDer.value)){
-                result={
-                    value:Boolean(true),
-                    type: Type.BOOLEAN
+
+            if(nodoIzq.type==Type.BOOLEAN&&nodoDer.type==Type.BOOLEAN){
+                console.log(nodoIzq.value,"Or",nodoDer.value);
+                if(Boolean(nodoIzq.value)||Boolean(nodoDer.value)){
+                    
+                    console.log("Si");
+                    result={
+                        value:Boolean(true),
+                        type: Type.BOOLEAN
+                    }
+                }else{
+                    result={
+                        value:Boolean(false),
+                        type: Type.BOOLEAN
+                    }
+                    
                 }
             }else{
-                result={
-                    value:Boolean(false),
-                    type: Type.BOOLEAN
-                }
                 sn.addError(new Error("Valores incorrectos para OR","SEMANTICO",this.line,this.column));
-                    console.log("error semantico, valores incorrectos para ["+this.type+"]");
+                console.log("error semantico, valores incorrectos para ["+this.type+"]");
             }
+            
             
         }
         return result
+    }
+
+    public ast(salida:Singleton) {
+        const nombreNodo = `node_${this.line}_${this.column}_`
+        if(this.type!=LogicOption.NOT){
+            return `
+        ${nombreNodo};
+        ${nombreNodo}[label="${get_simbolo(this.type)}"];
+        ${nombreNodo}->${this.left.ast(salida)}
+        ${nombreNodo}->${this.right.ast(salida)}
+        `
+        }
+        return `
+        ${nombreNodo};
+        ${nombreNodo}[label="${get_simbolo(this.type)}"];
+        ${nombreNodo}->${this.left.ast(salida)}
+        `
     }
 }

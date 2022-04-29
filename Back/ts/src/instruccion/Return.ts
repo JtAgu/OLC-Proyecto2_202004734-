@@ -7,7 +7,7 @@ import { Type } from "../simbolos/Type";
 
 export class RETURN extends Instruccion {
     constructor(        
-        public expresion: Expression|null,
+        public expresion: Expression,
         line: number,
         column: number
     ) {
@@ -22,7 +22,8 @@ export class RETURN extends Instruccion {
         }
         if(this.expresion!=null){
             let exp=this.expresion.execute(env,sn);
-            let val={
+            //console.log("Return",exp);
+            val={
                 value:exp.value,
                 type:exp.type
             }
@@ -31,9 +32,21 @@ export class RETURN extends Instruccion {
 
         return val;
         
-        
+    }
 
-
+    public ast(s:Singleton) {
         
+        const name_node = `node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${name_node}[label="\\<Instruccion\\>\\nreturn"];
+        `)
+        if(this.expresion!=null){
+
+            s.add_ast(`
+            ${name_node}->${name_node}1;
+            ${name_node}1[label="\\<EXPRESION\\>"];
+            ${name_node}1->${this.expresion.ast(s)}
+            `);
+        }
     }
 }

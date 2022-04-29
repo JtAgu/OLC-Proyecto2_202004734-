@@ -50,6 +50,13 @@ export class GetId2 extends Expression {
         }
         return result;
     }
+    public ast(salida:Singleton) {
 
+        const name_nodo = `node_${this.line}_${this.column}_`
+        return `
+        ${name_nodo};
+        ${name_nodo}[label="ID_${this.IdName}"];
+        `
+    }
 
 }

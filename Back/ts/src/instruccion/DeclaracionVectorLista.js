@@ -31,7 +31,7 @@ class DeclaracionVectorLista extends Instruccion_1.Instruccion {
                 }
             }
             if (Concordancia) {
-                const condicion = env.guardar_Vector(this.nombre, val, this.tipo, val.length);
+                const condicion = env.guardar_Vector(this.nombre, this.line, this.column, val, this.tipo, val.length);
                 if (condicion) {
                     console.log("variable [" + this.nombre + "] ingresada...");
                 }
@@ -47,7 +47,7 @@ class DeclaracionVectorLista extends Instruccion_1.Instruccion {
                 for (const s of exp.value) {
                     val.push(s);
                 }
-                const condicion = env.guardar_Vector(this.nombre, val, this.tipo, val.length);
+                const condicion = env.guardar_Vector(this.nombre, this.line, this.column, val, this.tipo, val.length);
                 if (condicion) {
                     console.log("variable [" + this.nombre + "] ingresada...");
                 }
@@ -55,6 +55,25 @@ class DeclaracionVectorLista extends Instruccion_1.Instruccion {
                     console.log("variable [" + this.nombre + "] no ingresada...");
                 }
             }
+        }
+    }
+    ast(s) {
+        const name_node = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${name_node}[label="\\<Instruccion\\>\\nArray Declaracion"];
+    ${name_node}1[label="\\<Nombre\\>\\n{${this.nombre}}"];
+    ${name_node}2[label="\\<Tipo\\>\\n${this.tipo}"];
+    ${name_node}3[label="\\<Contenido\\>"];
+    ${name_node}->${name_node}1;
+    ${name_node}->${name_node}2;
+    ${name_node}->${name_node}3;
+    `);
+        if (this.valores != null) {
+            this.valores.forEach(element => {
+                s.add_ast(`
+        ${name_node}3->${element.ast(s)}
+        `);
+            });
         }
     }
 }

@@ -7,6 +7,8 @@ export class simbolos{
         public value:any,
         public id: string,
         public tipo: Type,
+        public line: number,
+        public column: number,
         public Dimension:Number,
         public dim1:Number,
         public dim2:Number,

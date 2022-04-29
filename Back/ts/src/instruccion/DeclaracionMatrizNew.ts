@@ -37,7 +37,7 @@ export class DeclaracionMatrizNew extends Instruccion {
           valor.push(val2)
         }
 
-        const condicion = env.guardar_Matriz(this.nombre, valor, this.tipo, exp.value, exp2.value);
+        const condicion = env.guardar_Matriz(this.nombre,this.line,this.column, valor, this.tipo, exp.value, exp2.value);
         if (condicion) {
           console.log("variable [" + this.nombre + "] ingresada...");
         } else {
@@ -55,7 +55,7 @@ export class DeclaracionMatrizNew extends Instruccion {
           }
           valor.push(val2)
         }
-        const condicion = env.guardar_Matriz(this.nombre, valor, this.tipo, exp.value, exp2.value);
+        const condicion = env.guardar_Matriz(this.nombre,this.line,this.column, valor, this.tipo, exp.value, exp2.value);
         if (condicion) {
           console.log("variable [" + this.nombre + "] ingresada...");
         } else {
@@ -73,7 +73,7 @@ export class DeclaracionMatrizNew extends Instruccion {
           }
           valor.push(val2)
         }
-        const condicion = env.guardar_Matriz(this.nombre, valor, this.tipo, exp.value, exp2.value);
+        const condicion = env.guardar_Matriz(this.nombre,this.line,this.column, valor, this.tipo, exp.value, exp2.value);
         if (condicion) {
           console.log("variable [" + this.nombre + "] ingresada...");
         } else {
@@ -91,7 +91,7 @@ export class DeclaracionMatrizNew extends Instruccion {
           }
           valor.push(val2)
         }
-        const condicion = env.guardar_Matriz(this.nombre, valor, this.tipo, exp.value, exp2.value);
+        const condicion = env.guardar_Matriz(this.nombre,this.line,this.column, valor, this.tipo, exp.value, exp2.value);
         if (condicion) {
           console.log("variable [" + this.nombre + "] ingresada...");
         } else {
@@ -101,8 +101,22 @@ export class DeclaracionMatrizNew extends Instruccion {
         sn.addError(new Error(" Tipo de declaracion incorrecto", "SEMANTICO", this.line, this.column));
       }
     }
-
-
+    
+  
 
   }
+
+
+  public ast(s:Singleton) {
+    
+    const name_node = `node_${this.line}_${this.column}_`
+    s.add_ast(`
+    ${name_node}[label="\\<Instruccion\\>\\Matriz Declaracion New"];
+    ${name_node}1[label="\\<Nombre\\>\\n{${this.nombre}}"];
+    ${name_node}2[label="\\<Tipo\\>\\n${this.tipo}"];
+    ${name_node}->${name_node}1;
+    ${name_node}->${name_node}2;
+    `)
+    
+}
 }

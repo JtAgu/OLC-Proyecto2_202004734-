@@ -31,7 +31,9 @@ class relacional extends express_1.Expression {
                 || nodoIzq.type == Type_1.Type.CHAR && nodoDer.type == Type_1.Type.CHAR
                 || nodoIzq.type == Type_1.Type.BOOLEAN && nodoDer.type == Type_1.Type.BOOLEAN
                 || nodoIzq.type == Type_1.Type.STRING && nodoDer.type == Type_1.Type.STRING) {
+                console.log(nodoIzq.value, "igual", nodoDer.value);
                 if (nodoIzq.value == nodoDer.value) {
+                    console.log("Si");
                     result = {
                         value: Boolean(true),
                         type: Type_1.Type.BOOLEAN
@@ -42,15 +44,19 @@ class relacional extends express_1.Expression {
                         value: Boolean(false),
                         type: Type_1.Type.BOOLEAN
                     };
-                    sn.addError(new Error_1.Error("Valores incorrectos para 'igual relacional'", "SEMANTICO", this.line, this.column));
                 }
+            }
+            else {
+                sn.addError(new Error_1.Error("Valores incorrectos para 'igual relacional'", "SEMANTICO", this.line, this.column));
             }
         }
         else if (this.type == relacionalOption_1.RelacionalOption.MENOR) {
             if (nodoIzq.type == Type_1.Type.NUMBER && nodoDer.type == Type_1.Type.NUMBER
                 || nodoIzq.type == Type_1.Type.NUMBER && nodoDer.type == Type_1.Type.DECIMAL
                 || nodoIzq.type == Type_1.Type.DECIMAL && nodoDer.type == Type_1.Type.NUMBER) {
+                console.log(nodoIzq.value, "Menor", nodoDer.value);
                 if (nodoIzq.value < nodoDer.value) {
+                    console.log("Si");
                     result = {
                         value: Boolean(true),
                         type: Type_1.Type.BOOLEAN
@@ -135,7 +141,9 @@ class relacional extends express_1.Expression {
             if (nodoIzq.type == Type_1.Type.NUMBER && nodoDer.type == Type_1.Type.NUMBER
                 || nodoIzq.type == Type_1.Type.NUMBER && nodoDer.type == Type_1.Type.DECIMAL
                 || nodoIzq.type == Type_1.Type.DECIMAL && nodoDer.type == Type_1.Type.NUMBER) {
+                console.log(nodoIzq.value, "mayor", nodoDer.value);
                 if (nodoIzq.value > nodoDer.value) {
+                    console.log("Si");
                     result = {
                         value: Boolean(true),
                         type: Type_1.Type.BOOLEAN
@@ -418,6 +426,15 @@ class relacional extends express_1.Expression {
             console.error('error');
         }
         return result;
+    }
+    ast(salida) {
+        const nombreNodo = `node_${this.line}_${this.column}_`;
+        return `
+        ${nombreNodo};
+        ${nombreNodo}[label="${(0, relacionalOption_1.get_simbolo)(this.type)}"];
+        ${nombreNodo}->${this.left.ast(salida)}
+        ${nombreNodo}->${this.right.ast(salida)}
+        `;
     }
 }
 exports.relacional = relacional;

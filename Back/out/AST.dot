@@ -1,0 +1,300 @@
+digraph structs {
+nodeOriginal[label="<\Lista_Instrucciones\>"];
+        node_1_28_ [label="\<Instruccion\>\nLlamada funcion"];
+        node_1_28_1 [label="{ackerman}"];
+        node_1_28_2 [label="<\Parametros\>"];
+        node_1_28_->node_1_28_2;
+        node_1_28_->node_1_28_1;
+        
+                node_1_28_2->
+        node_1_38_;
+        node_1_38_[label="3"];
+                
+                node_1_28_2->
+        node_1_41_;
+        node_1_41_[label="0"];
+                
+    node_1_0_[label="\<Instruccion\>\nPrintLn"];
+    node_1_0_1[label="\<VALOR\>\n"];
+    node_1_0_->node_1_0_1
+    
+    node_1_0_1->
+        node_1_27_;
+        node_1_27_[label="+"];
+        node_1_27_->
+        node_1_9_;
+        node_1_9_[label="Ackerman 3, 0: "];
+        node_1_27_->node_1_28_
+        nodeOriginal->node_1_0_;
+    node_5_0_[label="\<Instruccion\>\nDeclaracion const"];
+    
+    node_5_0_1[label="\<Nombre\>"];node_5_0_x[label="\nx"]
+;
+                node_5_0_1->node_5_0_x
+
+    node_5_0_2[label="\<Tipo\>\nINT}"];
+    node_5_0_->node_5_0_1
+    node_5_0_->node_5_0_2
+      node_5_0_->
+        node_5_23_;
+        node_5_23_[label="-"];
+        node_5_23_->
+        node_5_19_;
+        node_5_19_[label="+"];
+        node_5_19_->
+        node_5_11_;
+        node_5_11_[label="+"];
+        node_5_11_->
+        node_5_9_;
+        node_5_9_[label="2"];
+        node_5_11_->
+        node_5_15_;
+        node_5_15_[label="*"];
+        node_5_15_->
+        node_5_13_;
+        node_5_13_[label="3"];
+        node_5_15_->
+        node_5_17_;
+        node_5_17_[label="4"];
+        
+        
+        node_5_19_->
+        node_5_21_;
+        node_5_21_[label="5"];
+        
+        node_5_23_->
+        node_5_27_;
+        node_5_27_[label="*"];
+        node_5_27_->
+        node_5_25_;
+        node_5_25_[label="2"];
+        node_5_27_->
+        node_5_29_;
+        node_5_29_[label="2"];
+        
+        nodeOriginal->node_5_0_;
+        node_11_0_ [label="\<Instruccion\>\nRUN"];
+        node_11_0_1 [label="{funcion1}"];
+        node_11_0_2 [label="<\Parametros\>"];
+        node_11_0_->node_11_0_2;
+        node_11_0_->node_11_0_1;
+        
+                node_11_0_2->
+        node_11_14_;
+        node_11_14_[label="2"];
+                nodeOriginal->node_11_0_;
+        node_15_0_[label="\<Instruccion\>\nFuncion_Metodo"];
+        node_15_0_1[label="\<Nombre\>"];
+        node_15_0_1->node_15_0_3; 
+        node_15_0_3[label="\<ackerman\>"];
+        node_15_0_2[label="\<Parametros\>"];
+        node_15_0_->node_15_0_1;        
+        node_15_0_->node_15_0_2;
+        node_15_0_1->node_15_0_3;
+        
+    node_15_9_[label="\<Instruccion\>\nDeclaracion const"];
+    
+    node_15_9_1[label="\<Nombre\>"];node_15_9_m[label="\nm"]
+;
+                node_15_9_1->node_15_9_m
+
+    node_15_9_2[label="\<Tipo\>\nINT}"];
+    node_15_9_->node_15_9_1
+    node_15_9_->node_15_9_2
+                node_15_0_2->node_15_9_;        
+                
+    node_15_16_[label="\<Instruccion\>\nDeclaracion const"];
+    
+    node_15_16_1[label="\<Nombre\>"];node_15_16_n[label="\nn"]
+;
+                node_15_16_1->node_15_16_n
+
+    node_15_16_2[label="\<Tipo\>\nINT}"];
+    node_15_16_->node_15_16_1
+    node_15_16_->node_15_16_2
+                node_15_0_2->node_15_16_;        
+                
+        node_17_4_[label="\<Instruccion\>\nif"];
+        node_17_4_1[label="\<True\>"];
+        node_17_4_2[label="\<Else\>"];
+        node_17_4_->node_17_4_1;
+        node_17_4_->node_17_4_2;
+        
+                node_17_4_->node_19_8_;        
+                
+        node_19_8_[label="\<Instruccion\>\nreturn"];
+        
+            node_19_8_->node_19_8_1;
+            node_19_8_1[label="\<EXPRESION\>"];
+            node_19_8_1->
+        node_19_18_;
+        node_19_18_[label="+"];
+        node_19_18_->
+        node_19_16_;
+        node_19_16_[label="ID_n"];
+        
+        node_19_18_->
+        node_19_20_;
+        node_19_20_[label="1"];
+        
+            node_17_4_2->node_21_11_
+        node_21_11_[label="\<Instruccion\>\nif"];
+        node_21_11_1[label="\<True\>"];
+        node_21_11_2[label="\<Else\>"];
+        node_21_11_->node_21_11_1;
+        node_21_11_->node_21_11_2;
+        
+                node_21_11_->node_23_8_;        
+                
+        node_23_8_[label="\<Instruccion\>\nreturn"];
+        
+            node_23_8_->node_23_8_1;
+            node_23_8_1[label="\<EXPRESION\>"];
+            node_23_8_1->
+        node_23_16_;
+        node_23_16_[label="2"];
+            node_21_11_2->node_25_6_
+      node_25_6_[label="\<Instruccion\>\nelse"];
+            node_25_6_->node_27_8_;        
+            
+        node_27_8_[label="\<Instruccion\>\nreturn"];
+        
+            node_27_8_->node_27_8_1;
+            node_27_8_1[label="\<EXPRESION\>"];
+            node_27_8_1->
+        node_27_16_;
+        node_27_16_[label="3"];
+            
+                    node_15_0_->node_17_4_;        
+                nodeOriginal->node_15_0_;
+        node_35_0_[label="\<Instruccion\>\nFuncion_Metodo"];
+        node_35_0_1[label="\<Nombre\>"];
+        node_35_0_1->node_35_0_3; 
+        node_35_0_3[label="\<funcion1\>"];
+        node_35_0_2[label="\<Parametros\>"];
+        node_35_0_->node_35_0_1;        
+        node_35_0_->node_35_0_2;
+        node_35_0_1->node_35_0_3;
+        
+    node_35_9_[label="\<Instruccion\>\nDeclaracion const"];
+    
+    node_35_9_1[label="\<Nombre\>"];node_35_9_x[label="\nx"]
+;
+                node_35_9_1->node_35_9_x
+
+    node_35_9_2[label="\<Tipo\>\nINT}"];
+    node_35_9_->node_35_9_1
+    node_35_9_->node_35_9_2
+                node_35_0_2->node_35_9_;        
+                
+    node_37_4_[label="\<Instruccion\>\nPrint"];
+    node_37_4_1[label="\<VALOR\>\n"];
+    node_37_4_->node_37_4_1
+    
+    node_37_4_1->
+        node_37_11_;
+        node_37_11_[label="INCREMENTO"];
+                    node_35_0_->node_37_4_;        
+                
+        node_39_4_[label="\<Instruccion\>\nwhile"];
+        node_39_4_1[label="\<Condicion\>"];
+        node_39_4_->node_39_4_1;
+        node_39_4_1->
+        node_39_12_;
+        node_39_12_[label="\<="];
+        node_39_12_->
+        node_39_11_;
+        node_39_11_[label="ID_x"];
+        
+        node_39_12_->
+        node_39_14_;
+        node_39_14_[label="5"];
+                
+        
+                node_39_4_->node_41_9_;        
+                
+    /**/node_41_9_;
+    node_41_9_1[label="{x}"];
+    node_41_9_[label="INCREMENTO"];
+    node_41_9_->node_41_9_1;
+    
+                node_39_4_->node_43_8_;        
+                
+    node_43_8_[label="\<Instruccion\>\nPrintLn"];
+    node_43_8_1[label="\<VALOR\>\n"];
+    node_43_8_->node_43_8_1
+    
+    node_43_8_1->
+        node_43_26_;
+        node_43_26_[label="+"];
+        node_43_26_->
+        node_43_17_;
+        node_43_17_[label="X vale:"];
+        node_43_26_->
+        node_43_27_;
+        node_43_27_[label="ID_x"];
+        
+        
+                    node_35_0_->node_39_4_;        
+                
+    node_47_4_[label="\<Instruccion\>\nPrint"];
+    node_47_4_1[label="\<VALOR\>\n"];
+    node_47_4_->node_47_4_1
+    
+    node_47_4_1->
+        node_47_11_;
+        node_47_11_[label="DECREMENTO"];
+                    node_35_0_->node_47_4_;        
+                
+    node_49_8_[label="\<Instruccion\>\nAsignacion"];
+    node_49_8_1[label="\<Nombre\>\nx"];
+    node_49_8_->node_49_8_1;
+    node_49_8_->
+        node_49_11_;
+        node_49_11_[label="5"];
+    
+        node_49_4_[label="\<Instruccion\>\nFOR"];
+        node_49_4_1[label="\<Asignacion\>"];
+        node_49_4_2[label="\<Condicion\>"];
+        node_49_4_3[label="\<Actualizacion\>"];
+        node_49_4_->node_49_4_1;
+        node_49_4_->node_49_4_2;
+        node_49_4_->node_49_4_3;
+        node_49_4_1->undefined        
+        node_49_4_2->
+        node_49_14_;
+        node_49_14_[label="\>"];
+        node_49_14_->
+        node_49_13_;
+        node_49_13_[label="ID_x"];
+        
+        node_49_14_->
+        node_49_15_;
+        node_49_15_[label="0"];
+                
+        node_49_4_3->
+    /**/node_49_17_;
+    node_49_17_1[label="{x}"];
+    node_49_17_[label="DECREMENTO"];
+    node_49_17_->node_49_17_1;
+            
+        
+                node_49_4_->node_51_8_;        
+                
+    node_51_8_[label="\<Instruccion\>\nPrintLn"];
+    node_51_8_1[label="\<VALOR\>\n"];
+    node_51_8_->node_51_8_1
+    
+    node_51_8_1->
+        node_51_26_;
+        node_51_26_[label="+"];
+        node_51_26_->
+        node_51_17_;
+        node_51_17_[label="X vale:"];
+        node_51_26_->
+        node_51_27_;
+        node_51_27_[label="ID_x"];
+        
+        
+                    node_35_0_->node_49_4_;        
+                nodeOriginal->node_35_0_;}

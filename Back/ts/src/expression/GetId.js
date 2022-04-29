@@ -20,6 +20,7 @@ class GetId extends express_1.Expression {
                     value: env.getValue_variable(this.IdName),
                     type: env.getTipo_variable(this.IdName)
                 };
+                return result;
             }
             else {
                 sn.addError(new Error_1.Error("la variable [" + this.IdName + "] tiene una dimension diferente...", "SEMANTICO", this.line, this.column));
@@ -30,6 +31,13 @@ class GetId extends express_1.Expression {
             sn.addError(new Error_1.Error("la variable [" + this.IdName + "] no fue encontrada...", "SEMANTICO", this.line, this.column));
         }
         return result;
+    }
+    ast(salida) {
+        const name_nodo = `node_${this.line}_${this.column}_`;
+        return `
+        ${name_nodo};
+        ${name_nodo}[label="ID_${this.IdName}"];
+        `;
     }
 }
 exports.GetId = GetId;

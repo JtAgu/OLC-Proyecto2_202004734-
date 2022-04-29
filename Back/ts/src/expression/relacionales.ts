@@ -4,7 +4,7 @@ import { Error } from "../instruccion/Error"
 import { Singleton } from "../patrondiseno/singleton"
 import { Environment } from "../simbolos/Environment"
 import { Type } from "../simbolos/Type"
-import { RelacionalOption } from "./relacionalOption"
+import { RelacionalOption,get_simbolo } from "./relacionalOption"
 
 export class relacional extends Expression {
 
@@ -38,7 +38,9 @@ export class relacional extends Expression {
                 || nodoIzq.type == Type.CHAR && nodoDer.type == Type.CHAR
                 || nodoIzq.type == Type.BOOLEAN && nodoDer.type == Type.BOOLEAN
                 || nodoIzq.type == Type.STRING && nodoDer.type == Type.STRING) {
+                    console.log(nodoIzq.value,"igual",nodoDer.value);
                 if (nodoIzq.value == nodoDer.value) {
+                    console.log("Si")
                     result = {
                         value: Boolean(true),
                         type: Type.BOOLEAN
@@ -48,9 +50,11 @@ export class relacional extends Expression {
                         value: Boolean(false),
                         type: Type.BOOLEAN
                     }
-                    sn.addError(new Error("Valores incorrectos para 'igual relacional'", "SEMANTICO", this.line, this.column));
+                    
 
                 }
+            }else{
+                sn.addError(new Error("Valores incorrectos para 'igual relacional'", "SEMANTICO", this.line, this.column));
             }
 
 
@@ -58,7 +62,9 @@ export class relacional extends Expression {
             if (nodoIzq.type == Type.NUMBER && nodoDer.type == Type.NUMBER
                 || nodoIzq.type == Type.NUMBER && nodoDer.type == Type.DECIMAL
                 || nodoIzq.type == Type.DECIMAL && nodoDer.type == Type.NUMBER) {
+                    console.log(nodoIzq.value,"Menor",nodoDer.value);
                 if (nodoIzq.value < nodoDer.value) {
+                    console.log("Si")
                     result = {
                         value: Boolean(true),
                         type: Type.BOOLEAN
@@ -127,7 +133,6 @@ export class relacional extends Expression {
                 }
             } else {
                 sn.addError(new Error("Valores incorrectos para 'menor relacional'", "SEMANTICO", this.line, this.column));
-
             }
 
 
@@ -138,7 +143,9 @@ export class relacional extends Expression {
             if (nodoIzq.type == Type.NUMBER && nodoDer.type == Type.NUMBER
                 || nodoIzq.type == Type.NUMBER && nodoDer.type == Type.DECIMAL
                 || nodoIzq.type == Type.DECIMAL && nodoDer.type == Type.NUMBER) {
+                    console.log(nodoIzq.value,"mayor",nodoDer.value);
                 if (nodoIzq.value > nodoDer.value) {
+                    console.log("Si")
                     result = {
                         value: Boolean(true),
                         type: Type.BOOLEAN
@@ -398,5 +405,15 @@ export class relacional extends Expression {
             console.error('error');
         }
         return result
+    }
+
+    public ast(salida:Singleton) {
+        const nombreNodo = `node_${this.line}_${this.column}_`
+        return `
+        ${nombreNodo};
+        ${nombreNodo}[label="${get_simbolo(this.type)}"];
+        ${nombreNodo}->${this.left.ast(salida)}
+        ${nombreNodo}->${this.right.ast(salida)}
+        `
     }
 }

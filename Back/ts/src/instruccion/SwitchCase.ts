@@ -37,4 +37,22 @@ export class SWITCHCASE extends Instruccion {
 
     return result
   }
+  public ast(s:Singleton) {
+    
+    const name_node = `node_${this.line}_${this.column}_`
+    s.add_ast(`
+    ${name_node}[label="\\<Instruccion\\>\\nCase"];
+    ${name_node}1[label="\\<Condicion\\>"];
+    ${name_node}->${name_node}1;
+    ${name_node}1->${this.ExpresionC.ast(s)}        
+    `)
+    if(this.ListaIns!=null){
+        for(const x of this.ListaIns){
+            s.add_ast(`
+            ${name_node}->node_${x.line}_${x.column}_;        
+            `)
+            x.ast(s)
+        }
+    }
+}
 }

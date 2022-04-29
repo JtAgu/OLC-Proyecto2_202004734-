@@ -35,5 +35,14 @@ class AsignacionVector extends Instruccion_1.Instruccion {
             sn.addError(new Error_1.Error("variable [" + this.nombre + "] no fue encontrada", "SEMANTICO", this.line, this.column));
         }
     }
+    ast(s) {
+        const nombre_nodo = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${nombre_nodo}[label="\\<Instruccion\\>\\nAsignacionTernario"];
+    ${nombre_nodo}1[label="\\<Nombre\\>\\n${this.nombre}"];
+    ${nombre_nodo}->${nombre_nodo}1;
+    ${nombre_nodo}->${this.expresion.ast(s)}
+    `);
+    }
 }
 exports.AsignacionVector = AsignacionVector;

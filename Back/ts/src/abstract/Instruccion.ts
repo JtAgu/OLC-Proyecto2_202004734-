@@ -10,4 +10,5 @@ export abstract class Instruccion{
     
     public abstract execute(env:Environment,sn:Singleton):any
     public abstract execute2(env:Environment,sn:Singleton):any
+    public abstract ast(sn:Singleton): void
 }

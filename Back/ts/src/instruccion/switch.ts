@@ -19,7 +19,7 @@ export class SWITCH extends Instruccion {
   public execute2(env: Environment) {
   }
   public execute(env: Environment, sn: Singleton) {
-    const envSw = new Environment(env);
+    const envSw = new Environment(env,"AMBIENTE SWITCH");
     if (this.ListaCase != null) {
 
       let expN = this.Expresion.execute(env, sn);
@@ -49,6 +49,37 @@ export class SWITCH extends Instruccion {
         x.execute(envSw, sn)
       }
     }
+    sn.addEnv(envSw);
   }
+  public ast(s:Singleton) {
+    
+    const name_node = `node_${this.line}_${this.column}_`
+    s.add_ast(`
+    ${name_node}[label="\\<Instruccion\\>\\nSwitch"];
+    ${name_node}1[label="\\<Condicion\\>"];
+    ${name_node}->${name_node}1;
+    ${name_node}1->${this.Expresion.ast(s)}        
+    `)
+    if(this.ListaCase!=null){
+        for(const x of this.ListaCase){
+            s.add_ast(`
+            ${name_node}->node_${x.line}_${x.column}_;        
+            `)
+            x.ast(s)
+        }
+    }
+    if(this.Default!=null){
+      s.add_ast(`
+            ${name_node}->${name_node}Default_;            
+      `)
+      for(const x of this.Default){
+        s.add_ast(`
+          ${name_node}Default_ -> node_${x.line}_${x.column}_;        
+        `)
+        x.ast(s)
+    }
+
+    }
+}
 
 }

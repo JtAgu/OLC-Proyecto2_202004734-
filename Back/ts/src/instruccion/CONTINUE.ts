@@ -21,4 +21,11 @@ export class CONTINUE extends Instruccion {
         }
         return val;
     }
+    public ast(s:Singleton) {
+        
+        const name_node = `node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${name_node}[label="\\<Instruccion\\>\\nContinue"];
+        `)
+    }
 }

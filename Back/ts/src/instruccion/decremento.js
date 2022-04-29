@@ -50,5 +50,14 @@ class Decremento extends Instruccion_1.Instruccion {
             sn.addError(new Error_1.Error(" [" + this.nombre + "] no fue encontrada", "SEMANTICO", this.line, this.column));
         }
     }
+    ast(s) {
+        const nombre_nodo = `node_${this.line}_${this.column}_`;
+        return `
+    /**/${nombre_nodo};
+    ${nombre_nodo}1[label="{${this.nombre}}"];
+    ${nombre_nodo}[label="DECREMENTO"];
+    ${nombre_nodo}->${nombre_nodo}1;
+    `;
+    }
 }
 exports.Decremento = Decremento;

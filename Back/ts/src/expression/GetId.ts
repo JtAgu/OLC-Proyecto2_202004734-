@@ -30,6 +30,7 @@ export class GetId extends Expression {
                     value:env.getValue_variable(this.IdName),
                     type:env.getTipo_variable(this.IdName)
                 }
+                return result;
             }else{
                     sn.addError(new Error("la variable ["+this.IdName+"] tiene una dimension diferente...", "SEMANTICO", this.line, this.column));
                 //console.log("la variable ["+this.IdName+"] tiene una dimension diferente...");
@@ -38,5 +39,14 @@ export class GetId extends Expression {
             sn.addError(new Error("la variable ["+this.IdName+"] no fue encontrada...", "SEMANTICO", this.line, this.column));
         }
         return result;
+    }
+
+    public ast(salida:Singleton) {
+
+        const name_nodo = `node_${this.line}_${this.column}_`
+        return `
+        ${name_nodo};
+        ${name_nodo}[label="ID_${this.IdName}"];
+        `
     }
 }

@@ -3,6 +3,7 @@ import { Retorno } from "../abstract/Retorno"
 import { Type } from "../simbolos/Type"
 import { Environment } from "../simbolos/Environment";
 import { Digraph } from "ts-graphviz";
+import { Singleton } from "../patrondiseno/singleton";
 
 
 export class Literal extends Expression {
@@ -41,8 +42,19 @@ export class Literal extends Expression {
 
     }
 
-    public getNodo(g:Digraph){
+    public ast(salida:Singleton) {
+
+        const nombre = `node_${this.line}_${this.column}_`
+        if(this.type==Type.STRING) return `
+        ${nombre};
+        ${nombre}[label="${this.value.toString().replaceAll("\"","")}"];`
+ 
+        else return `
+        ${nombre};
+        ${nombre}[label="${this.value.toString().replaceAll("\'","")}"];`
 
     }
+
+
 
 }

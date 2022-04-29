@@ -1,0 +1,27 @@
+
+
+int i=0;
+
+run funcion1();
+
+funcion2();
+
+funcion1():void{
+    print("funcion 1");
+    int s=" esto es un error ";
+    ¡¡¡¿
+}
+
+funcion2():void{
+    print("\nfuncion 2");
+}
+
+funcion3():void{
+    print("funcion 3")
+}
+
+while(i<4){
+    println("salida");
+    i++;
+}
+

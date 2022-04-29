@@ -24,5 +24,14 @@ class PrintLn extends Instruccion_1.Instruccion {
         const ParC = g.createNode(')');
         const PyC = g.createNode(';');
     }
+    ast(s) {
+        const nombreNodo = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${nombreNodo}[label="\\<Instruccion\\>\\nPrintLn"];
+    ${nombreNodo}1[label="\\<VALOR\\>\\n"];
+    ${nombreNodo}->${nombreNodo}1
+    
+    ${nombreNodo}1->${this.expresion.ast(s)}`);
+    }
 }
 exports.PrintLn = PrintLn;

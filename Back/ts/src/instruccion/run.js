@@ -19,7 +19,7 @@ class RUN extends Instruccion_1.Instruccion {
         if (env.buscar_variable(this.NomFuncion)) {
             let Param = env.getParam_variable(this.NomFuncion);
             let Ins = env.getIns_variable(this.NomFuncion);
-            const envFc = new Environment_1.Environment(env);
+            const envFc = new Environment_1.Environment(env, "AMBIENTE FUNCION " + this.NomFuncion);
             if (Param != null && this.ListaParam != null && Ins != null) {
                 if (Param.length == this.ListaParam.length) {
                     for (var i = 0; i < Param.length; i++) {
@@ -33,12 +33,14 @@ class RUN extends Instruccion_1.Instruccion {
                         result = Instruccion.execute(envFc, sn);
                         if (result != undefined) {
                             if (result.type == env.getTipo_variable(this.NomFuncion)) {
+                                sn.addEnv(envFc);
                                 return result;
                             }
                             else {
                                 sn.addError(new Error_1.Error(" tipo de exp diferente a [" + this.NomFuncion + "]", "SEMANTICO", this.line, this.column));
                             }
                         }
+                        sn.addEnv(envFc);
                     }
                 }
             }
@@ -47,6 +49,7 @@ class RUN extends Instruccion_1.Instruccion {
                     result = Instruccion.execute(envFc, sn);
                     if (result != undefined) {
                         if (result.type == env.getTipo_variable(this.NomFuncion)) {
+                            sn.addEnv(envFc);
                             return result;
                         }
                         else {
@@ -54,6 +57,7 @@ class RUN extends Instruccion_1.Instruccion {
                         }
                     }
                 }
+                sn.addEnv(envFc);
             }
         }
         else {
@@ -63,6 +67,23 @@ class RUN extends Instruccion_1.Instruccion {
     }
     execute(env, sn) {
         return "RUN";
+    }
+    ast(s) {
+        const nombre_nodo = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+        ${nombre_nodo} [label="\\<Instruccion\\>\\nRUN"];
+        ${nombre_nodo}1 [label="{${this.NomFuncion}}"];
+        ${nombre_nodo}2 [label="<\\Parametros\\>"];
+        ${nombre_nodo}->${nombre_nodo}2;
+        ${nombre_nodo}->${nombre_nodo}1;
+        `);
+        if (this.ListaParam != null) {
+            this.ListaParam.forEach(element => {
+                s.add_ast(`
+                ${nombre_nodo}2->${element.ast(s)}
+                `);
+            });
+        }
     }
 }
 exports.RUN = RUN;

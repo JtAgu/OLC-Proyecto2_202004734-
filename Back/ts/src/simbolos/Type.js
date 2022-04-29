@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Type = void 0;
+exports.getType = exports.Type = void 0;
 var Type;
 (function (Type) {
     Type[Type["NUMBER"] = 0] = "NUMBER";
@@ -15,3 +15,22 @@ var Type;
     Type[Type["VOID"] = 9] = "VOID";
     Type[Type["error"] = 10] = "error";
 })(Type = exports.Type || (exports.Type = {}));
+function getType(objeto) {
+    switch (objeto) {
+        case 0:
+            return "INT";
+        case 1:
+            return "DOUBLE";
+        case 2:
+            return "CHAR";
+        case 3:
+            return "STRING";
+        case 4:
+            return "BOOLEAN";
+        case 9:
+            return "VOID";
+        default:
+            return "";
+    }
+}
+exports.getType = getType;

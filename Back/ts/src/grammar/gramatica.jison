@@ -486,8 +486,8 @@ LLAMADA
 ;
 
 PARAMETROS_LLAMADA
-    : PARAMETROS_LLAMADA 'coma' VALOR   {$1.push($3); $$=$1;}
-    | VALOR                             {$$=[$1]}
+    : PARAMETROS_LLAMADA 'coma' EXPRESION   {$1.push($3); $$=$1;}
+    | EXPRESION                             {$$=[$1]}
 ;
 
 I_SWITCH
@@ -628,12 +628,12 @@ DEFAULT
 
 
 INCREMENTO_DECREMENTO
-    : 'id' 'mas' 'mas'                                                                           {$$= new Incremento($1,null,null, @1.first_line, @1.first_column)}
-    | 'id' 'menos' 'menos'                                                                       {$$= new Decremento($1,null ,null,@1.first_line, @1.first_column)}
-    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'mas' 'mas'                                         {$$= new Incremento($1,$3,null, @1.first_line, @1.first_column)}
-    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'menos' 'menos'                                     {$$= new Decremento($1,$3,null, @1.first_line, @1.first_column)}
-    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'mas' 'mas'       {$$= new Incremento($1,$3,$6, @1.first_line, @1.first_column)}
-    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'menos' 'menos'   {$$= new Decremento($1,$3,$6, @1.first_line, @1.first_column)}
+    : 'id' 'mas' 'mas'                                                                           {$$= new Incremento($1,null,null, @2.first_line, @2.first_column)}
+    | 'id' 'menos' 'menos'                                                                       {$$= new Decremento($1,null ,null,@2.first_line, @2.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'mas' 'mas'                                         {$$= new Incremento($1,$3,null, @5.first_line, @5.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'menos' 'menos'                                     {$$= new Decremento($1,$3,null, @5.first_line, @5.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'mas' 'mas'       {$$= new Incremento($1,$3,$6, @8.first_line, @8.first_column)}
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'menos' 'menos'   {$$= new Decremento($1,$3,$6, @8.first_line, @8.first_column)}
 ;
 
 PRINT_LN
@@ -659,23 +659,23 @@ TIPO_DATO
 
 EXPRESION
     : 'menos' EXPRESION %prec UMENOS        {$$=new Arithmetic($2,$2,ArithmeticOption.NEGACION, @1.first_line, @1.first_column); }
-    | EXPRESION 'mas' 'mas'                 {$$=new Arithmetic($1, $1,ArithmeticOption.INCR,   @1.first_line, @1.first_column)}
-    | EXPRESION 'menos' 'menos'             {$$=new Arithmetic($1, $1,ArithmeticOption.DECR,   @1.first_line, @1.first_column)}
-    | EXPRESION 'mas' EXPRESION             {$$=new Arithmetic($1, $3,ArithmeticOption.MAS,   @1.first_line, @1.first_column)}
-    | EXPRESION 'menos' EXPRESION           {$$=new Arithmetic($1, $3,ArithmeticOption.MENOS,   @1.first_line, @1.first_column);}
-    | EXPRESION 'division' EXPRESION        {$$=new Arithmetic($1, $3,ArithmeticOption.DIV,   @1.first_line, @1.first_column);}
-    | EXPRESION 'modulo' EXPRESION          {$$=new Arithmetic($1, $3,ArithmeticOption.MODULO,   @1.first_line, @1.first_column);}
-    | EXPRESION 'multiplicacion' EXPRESION  {$$=new Arithmetic($1, $3,ArithmeticOption.MULTIPLICACION,   @1.first_line, @1.first_column);}
-    | EXPRESION 'potencia' EXPRESION        {$$=new Arithmetic($1, $3,ArithmeticOption.POT,   @1.first_line, @1.first_column);}
-    | EXPRESION 'igualIf' EXPRESION         {$$=new relacional($1, $3,RelacionalOption.IGUAL,   @1.first_line, @1.first_column);}
-    | EXPRESION 'mayor' EXPRESION           {$$=new relacional($1, $3,RelacionalOption.MAYOR,   @1.first_line, @1.first_column);}
-    | EXPRESION 'menor' EXPRESION           {$$=new relacional($1, $3,RelacionalOption.MENOR,   @1.first_line, @1.first_column);}
-    | EXPRESION 'mayorIgual' EXPRESION      {$$=new relacional($1, $3,RelacionalOption.MAYORIGUAL,   @1.first_line, @1.first_column);}
-    | EXPRESION 'menorIgual' EXPRESION      {$$=new relacional($1, $3,RelacionalOption.MENORIGUAL,   @1.first_line, @1.first_column);}
-    | EXPRESION 'diferente' EXPRESION       {$$=new relacional($1, $3,RelacionalOption.DIFERENTE,   @1.first_line, @1.first_column);}
-    | EXPRESION 'and' EXPRESION             {$$=new logic($1, $3,LogicOption.AND,   @1.first_line, @1.first_column);}
+    | EXPRESION 'mas' 'mas'                 {$$=new Arithmetic($1, $1,ArithmeticOption.INCR,   @2.first_line, @2.first_column)}
+    | EXPRESION 'menos' 'menos'             {$$=new Arithmetic($1, $1,ArithmeticOption.DECR,   @2.first_line, @2.first_column)}
+    | EXPRESION 'mas' EXPRESION             {$$=new Arithmetic($1, $3,ArithmeticOption.MAS,   @2.first_line, @2.first_column)}
+    | EXPRESION 'menos' EXPRESION           {$$=new Arithmetic($1, $3,ArithmeticOption.MENOS,   @2.first_line, @2.first_column);}
+    | EXPRESION 'division' EXPRESION        {$$=new Arithmetic($1, $3,ArithmeticOption.DIV,   @2.first_line, @2.first_column);}
+    | EXPRESION 'modulo' EXPRESION          {$$=new Arithmetic($1, $3,ArithmeticOption.MODULO,   @2.first_line, @2.first_column);}
+    | EXPRESION 'multiplicacion' EXPRESION  {$$=new Arithmetic($1, $3,ArithmeticOption.MULTIPLICACION,   @2.first_line, @2.first_column);}
+    | EXPRESION 'potencia' EXPRESION        {$$=new Arithmetic($1, $3,ArithmeticOption.POT,   @2.first_line, @2.first_column);}
+    | EXPRESION 'igualIf' EXPRESION         {$$=new relacional($1, $3,RelacionalOption.IGUAL,   @2.first_line, @2.first_column);}
+    | EXPRESION 'mayor' EXPRESION           {$$=new relacional($1, $3,RelacionalOption.MAYOR,   @2.first_line, @2.first_column);}
+    | EXPRESION 'menor' EXPRESION           {$$=new relacional($1, $3,RelacionalOption.MENOR,   @2.first_line, @2.first_column);}
+    | EXPRESION 'mayorIgual' EXPRESION      {$$=new relacional($1, $3,RelacionalOption.MAYORIGUAL,   @2.first_line, @2.first_column);}
+    | EXPRESION 'menorIgual' EXPRESION      {$$=new relacional($1, $3,RelacionalOption.MENORIGUAL,   @2.first_line, @2.first_column);}
+    | EXPRESION 'diferente' EXPRESION       {$$=new relacional($1, $3,RelacionalOption.DIFERENTE,   @2.first_line, @2.first_column);}
+    | EXPRESION 'and' EXPRESION             {$$=new logic($1, $3,LogicOption.AND,   @2.first_line, @2.first_column);}
     | 'not' EXPRESION                       {$$=new logic($2, $2,LogicOption.NOT,   @1.first_line, @1.first_column);}
-    | EXPRESION 'or' EXPRESION              {$$=new logic($1, $3,LogicOption.OR,   @1.first_line, @1.first_column);}
+    | EXPRESION 'or' EXPRESION              {$$=new logic($1, $3,LogicOption.OR,   @2.first_line, @2.first_column);}
     | ParentesisA EXPRESION ParentesisC     {$$=$2;}        
     | VALOR                                 {$$=$1;}
 ;

@@ -1,10 +1,13 @@
 import { Instruccion } from "../abstract/Instruccion";
 import { Singleton } from "../patrondiseno/singleton";
 import { Environment } from "../simbolos/Environment";
+import { Type } from "../simbolos/Type";
+import { Decremento } from "./decremento";
+import { Incremento } from "./Incremento";
 
 export class ELSE extends Instruccion {
   constructor(
-    public Intrucciones:Array<Instruccion>|null,
+    public Intrucciones: Array<Instruccion> | null,
     line: number,
     column: number
   ) {
@@ -12,20 +15,41 @@ export class ELSE extends Instruccion {
   }
   public execute2(env: Environment) {
   }
-    public execute(env: Environment,sn:Singleton) {
+  public execute(env: Environment, sn: Singleton) {
+
+    if (this.Intrucciones != null) {
+      const envElse = new Environment(env, "AMBIENTE ELSE");
+      for (const x of this.Intrucciones) {
+        var corte = x.execute(envElse, sn);
         
-        if(this.Intrucciones!=null){
-            const envElse = new Environment(env);
-            for(const x of this.Intrucciones){
-              var x2 =x.execute(envElse,sn);
-              if(x2!=undefined){
-                  if(x2){
-                      return true;
-                  }else{
-                      return false;
-                  }
-              }
-            }
+        if (corte != undefined && corte.type != Type.VOID) {
+          
+          return corte
         }
+      
     }
+    sn.addEnv(envElse);
+  }
+
+
+}
+
+    public ast(s: Singleton) {
+
+  const name_node = `node_${this.line}_${this.column}_`
+  s.add_ast(`
+      ${name_node}[label="\\<Instruccion\\>\\nelse"];`)
+
+  if (this.Intrucciones != null) {
+    for (const x of this.Intrucciones) {
+      s.add_ast(`
+            ${name_node}->node_${x.line}_${x.column}_;        
+            `)
+            var t=x.ast(s)
+            if(x instanceof Incremento||x instanceof Decremento){
+                s.add_ast(t+"");
+            }
+    }
+  }
+}
 }

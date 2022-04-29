@@ -50,4 +50,14 @@ export class Incremento extends Instruccion {
       sn.addError(new Error(" [" + this.nombre + "] no fue encontrada", "SEMANTICO", this.line, this.column));
     }
   }
+  public ast(s:Singleton) {
+    
+    const nombre_nodo=`node_${this.line}_${this.column}_`
+    return `
+    /**/${nombre_nodo};
+    ${nombre_nodo}1[label="{${this.nombre}}"];
+    ${nombre_nodo}[label="INCREMENTO"];
+    ${nombre_nodo}->${nombre_nodo}1;
+    `
+}
 }

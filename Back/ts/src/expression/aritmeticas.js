@@ -438,13 +438,14 @@ class Arithmetic extends express_1.Expression {
         }
         return result;
     }
-    getNode(env, sn, g) {
-        var idnodo = this.line + this.column;
-        const clave = g.createNode('ARITMETICA');
-        const println = g.createNode('println');
-        const ParA = g.createNode('(');
-        const ParC = g.createNode(')');
-        const PyC = g.createNode(';');
+    ast(salida) {
+        const name_nodo = `node_${this.line}_${this.column}_`;
+        return `
+        ${name_nodo};
+        ${name_nodo}[label="${(0, aritmeticOption_1.get_simbolo)(this.type)}"];
+        ${name_nodo}->${this.left.ast(salida)}
+        ${name_nodo}->${this.right.ast(salida)}
+        `;
     }
 }
 exports.Arithmetic = Arithmetic;

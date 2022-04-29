@@ -51,4 +51,23 @@ export class AsignacionTernario extends Instruccion {
     }
     
   }
+
+  public ast(s:Singleton) {
+    
+    const name_nodo = `node_${this.line}_${this.column}_`
+    s.add_ast(`
+    ${name_nodo} [label="\\<Instruccion\\>\\n Asignacion ternario"];
+    ${name_nodo}1[label="\\<ID\\>\n${name_nodo}"];
+    ${name_nodo}2[label="\\<Instruccion verdadera\\>"];
+    ${name_nodo}3[label="\\<Instruccion falsa\\>"];
+    ${name_nodo}->${name_nodo}1;
+    ${name_nodo}->${name_nodo}2;
+    ${name_nodo}->${name_nodo}3;
+    ${name_nodo}->${this.expresion.ast(s)}
+    ${name_nodo}2->node_${this.expresionV.line}_${this.expresionV.column}_;
+    ${name_nodo}3->node_${this.expresionF.line}_${this.expresionF.column}_;
+    `)
+    this.expresionV.ast(s);
+    this.expresionF.ast(s);
+}
 }

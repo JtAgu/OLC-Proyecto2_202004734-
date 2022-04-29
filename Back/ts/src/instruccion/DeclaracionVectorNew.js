@@ -23,7 +23,7 @@ class DeclaracionVectorNew extends Instruccion_1.Instruccion {
                 for (var i = 0; i < n; i++) {
                     valor[i] = 0;
                 }
-                const condicion = env.guardar_Vector(this.nombre, valor, this.tipo, exp.value);
+                const condicion = env.guardar_Vector(this.nombre, this.line, this.column, valor, this.tipo, exp.value);
                 if (condicion) {
                     console.log("variable [" + this.nombre + "] ingresada...");
                 }
@@ -37,7 +37,7 @@ class DeclaracionVectorNew extends Instruccion_1.Instruccion {
                 for (var i = 0; i < n; i++) {
                     valor[i] = '0';
                 }
-                const condicion = env.guardar_Vector(this.nombre, valor, this.tipo, exp.value);
+                const condicion = env.guardar_Vector(this.nombre, this.line, this.column, valor, this.tipo, exp.value);
                 if (condicion) {
                     console.log("variable [" + this.nombre + "] ingresada...");
                 }
@@ -51,7 +51,7 @@ class DeclaracionVectorNew extends Instruccion_1.Instruccion {
                 for (var i = 0; i < n; i++) {
                     valor[i] = Boolean(true);
                 }
-                const condicion = env.guardar_Vector(this.nombre, valor, this.tipo, exp.value);
+                const condicion = env.guardar_Vector(this.nombre, this.line, this.column, valor, this.tipo, exp.value);
                 if (condicion) {
                     console.log("variable [" + this.nombre + "] ingresada...");
                 }
@@ -65,7 +65,7 @@ class DeclaracionVectorNew extends Instruccion_1.Instruccion {
                 for (var i = 0; i < n; i++) {
                     valor[i] = "";
                 }
-                const condicion = env.guardar_Vector(this.nombre, valor, this.tipo, exp.value);
+                const condicion = env.guardar_Vector(this.nombre, this.line, this.column, valor, this.tipo, exp.value);
                 if (condicion) {
                     console.log("variable [" + this.nombre + "] ingresada...");
                 }
@@ -80,6 +80,18 @@ class DeclaracionVectorNew extends Instruccion_1.Instruccion {
         else {
             sn.addError(new Error_1.Error("Declaracion de [" + this.nombre + "] incorrecta", "SEMANTICO", this.line, this.column));
         }
+    }
+    ast(s) {
+        const name_node = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${name_node}[label="\\<Instruccion\\>\\nArray Declaracion"];
+    ${name_node}1[label="\\<Nombre\\>\\n{${this.nombre}}"];
+    ${name_node}2[label="\\<Tipo\\>\\n${this.tipo}"];
+    
+    ${name_node}->${name_node}1;
+    ${name_node}->${name_node}2;
+    
+    `);
     }
 }
 exports.DeclaracionVectorNew = DeclaracionVectorNew;

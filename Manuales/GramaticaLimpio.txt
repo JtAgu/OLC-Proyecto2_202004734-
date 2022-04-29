@@ -1,0 +1,335 @@
+INIT
+    : INSTRUCCION EOF
+;
+
+INSTRUCCION
+    : INSTRUCCION INSTRUCCIONES 
+    |INSTRUCCIONES 
+;
+
+INSTRUCCIONES
+    : DECLARACION           
+    | ASIGNACION            
+    | PRINT                 
+    | PRINT_LN              
+    | DECLARACION_VACIO     
+    | CASTEO_D              
+    | INCREMENTO_DECREMENTO 'PuntoComa'}
+    | IF                    
+    | SWITCH                
+    | WHILE                 
+    | DO_WHILE              
+    | FOR                   
+    | BREAK                 
+    | CONTINUE              
+    | RETURN                
+    | LLAMADA 'PuntoComa'   
+    | METODO_FUNCION        
+    | RUN                   
+    | error                 
+;
+
+METODO_FUNCION
+    : 'id' 'ParentesisA' PARAMETROS 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC' 
+    | 'id' 'ParentesisA' 'ParentesisC' 'DosPuntos' TIPO_DATO 'LlaveA' INSTRUCCION 'LlaveC'            
+;
+
+PARAMETROS
+    : PARAMETROS 'coma' DECLARACION_VACIO  
+    | DECLARACION_VACIO                    
+;
+
+DECLARACION_VACIO
+    : TIPO_DATO 'id' 
+;
+
+LLAMADA
+    : 'id' 'ParentesisA' PARAMETROS_LLAMADA 'ParentesisC'   
+    | 'id' 'ParentesisA' 'ParentesisC'                      
+;
+
+PARAMETROS_LLAMADA
+    : PARAMETROS_LLAMADA 'coma' VALOR   
+    | VALOR                             
+;
+
+I_SWITCH
+    : I_SWITCH INS_SWITCH 
+    |INS_SWITCH 
+;
+
+INS_SWITCH
+    : DECLARACION           
+    | ASIGNACION            
+    | PRINT                 
+    | PRINT_LN              
+    | DECLARACION_VACIO     
+    | CASTEO_D              
+    | INCREMENTO_DECREMENTO 'PuntoComa' 
+    | IF                    
+    | SWITCH                
+    | FOR                   
+    | RETURN                
+    | error                 
+;
+
+FOR
+    : 'for' 'ParentesisA' PARAMETRO1 EXPRESION 'PuntoComa' PARAMETRO2 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'   
+    | 'for' 'ParentesisA' PARAMETRO1 EXPRESION 'PuntoComa' PARAMETRO2 'ParentesisC' 'LlaveA'  'LlaveC'              
+;
+
+PARAMETRO1
+    : DECLARACION   
+    | ASIGNACION    
+;
+
+PARAMETRO2
+    : ASIGNACION_FOR        
+    | INCREMENTO_DECREMENTO 
+;
+
+
+DO_WHILE
+    : 'do' 'LlaveA' INSTRUCCION 'LlaveC' 'while' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa' 
+;
+
+
+WHILE
+    : 'while' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC' 
+;
+
+
+CASTEO_D
+    : TIPO_DATO ID_DECLARACION 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' 
+    | 'id' 'igual' 'ParentesisA' TIPO_DATO 'ParentesisC' EXPRESION 'PuntoComa' 
+;
+
+
+DECLARACION
+    : TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'PuntoComa' 
+    | TIPO_DATO ID_DECLARACION 'PuntoComa' 
+    | TIPO_DATO ID_DECLARACION 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' 
+
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC'  'PuntoComa' 
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'new' TIPO_DATO 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'PuntoComa' 
+
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_VALORES 'CorcheteC' 'PuntoComa' 
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'igual' 'toCharArray' 'ParentesisA' VALOR 'ParentesisC' 'PuntoComa' 
+    | TIPO_DATO 'id' 'CorcheteA' 'CorcheteC' 'CorcheteA' 'CorcheteC' 'igual' 'CorcheteA' LISTA_FILAS 'CorcheteC' 'PuntoComa' 
+;
+
+LISTA_FILAS
+    : LISTA_FILAS 'coma' 'CorcheteA' LISTA_VALORES 'CorcheteC' 
+    | 'CorcheteA' LISTA_VALORES 'CorcheteC' 
+;
+
+LISTA_VALORES
+    : LISTA_VALORES 'coma' VALOR 
+    | VALOR 
+;
+
+
+
+
+ID_DECLARACION
+    : ID_DECLARACION 'coma' 'id' 
+    | 'id' 
+;
+
+ASIGNACION
+    : 'id' 'igual'  EXPRESION  'PuntoComa' 
+    | 'id' 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION 'PuntoComa' 
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION  'PuntoComa' 
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION  'PuntoComa' 
+;
+
+ASIGNACION_FOR
+    : 'id' 'igual'  EXPRESION   
+    | 'id' 'igual' EXPRESION 'InterrogacionC' EXPRESION 'DosPuntos' EXPRESION  
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION   
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'igual'  EXPRESION  
+;
+
+IF
+    : 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC' 'else' IF
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' 'LlaveC' 'else' IF            
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC' ELSE     
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' 'LlaveC' ELSE                 
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' INSTRUCCION 'LlaveC'          
+    | 'if' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' 'LlaveC'                      
+;
+
+ELSE
+    : 'else' 'LlaveA' INSTRUCCION 'LlaveC'  
+    | 'else' 'LlaveA' 'LlaveC'              
+;
+
+SWITCH
+    : 'switch' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' TIPO_SW DEFAULT 'LlaveC'  
+    | 'switch' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' TIPO_SW 'LlaveC'          
+    | 'switch' 'ParentesisA' EXPRESION 'ParentesisC' 'LlaveA' DEFAULT 'LlaveC'          
+;
+
+TIPO_SW
+    : TIPO_SW  'case' EXPRESION 'DosPuntos' I_SWITCH 'break' 'PuntoComa'     
+    | TIPO_SW  'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'              
+
+    | TIPO_SW 'case' EXPRESION 'DosPuntos' I_SWITCH                          
+    | TIPO_SW 'case' EXPRESION 'DosPuntos'                                   
+
+    | 'case' EXPRESION 'DosPuntos' I_SWITCH                                 
+    | 'case' EXPRESION 'DosPuntos'                                          
+
+    | 'case' EXPRESION 'DosPuntos' I_SWITCH 'break' 'PuntoComa'              
+    | 'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'                       
+;
+
+DEFAULT
+    : 'default' 'DosPuntos' INSTRUCCION 'break' 'PuntoComa'                     
+    | 'default' 'DosPuntos' 'break' 'PuntoComa'                                 
+;
+
+
+INCREMENTO_DECREMENTO
+    : 'id' 'mas' 'mas'                                                                           
+    | 'id' 'menos' 'menos'                                                                       
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'mas' 'mas'                                         
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'menos' 'menos'                                     
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'mas' 'mas'       
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 'menos' 'menos'   
+;
+
+PRINT_LN
+    : 'Println' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa'  
+;
+
+
+
+PRINT
+    : 'Print' 'ParentesisA' EXPRESION 'ParentesisC' 'PuntoComa' 
+    
+;
+
+
+TIPO_DATO
+    : 'int'     
+    |'double'   
+    |'char'     
+    |'String'   
+    |'boolean'  
+    |'void'     
+;
+
+EXPRESION
+    : 'menos' EXPRESION %prec UMENOS        
+    | EXPRESION 'mas' 'mas'                 
+    | EXPRESION 'menos' 'menos'             
+    | EXPRESION 'mas' EXPRESION             
+    | EXPRESION 'menos' EXPRESION           
+    | EXPRESION 'division' EXPRESION        
+    | EXPRESION 'modulo' EXPRESION          
+    | EXPRESION 'multiplicacion' EXPRESION  
+    | EXPRESION 'potencia' EXPRESION        
+    | EXPRESION 'igualIf' EXPRESION         
+    | EXPRESION 'mayor' EXPRESION           
+    | EXPRESION 'menor' EXPRESION           
+    | EXPRESION 'mayorIgual' EXPRESION      
+    | EXPRESION 'menorIgual' EXPRESION      
+    | EXPRESION 'diferente' EXPRESION       
+    | EXPRESION 'and' EXPRESION             
+    | 'not' EXPRESION                       
+    | EXPRESION 'or' EXPRESION              
+    | ParentesisA EXPRESION ParentesisC     
+    | VALOR                                 
+;
+
+
+VALOR   
+    : 'True'               
+    | 'False'              
+    | 'entero'             
+    | 'decimal'            
+    | 'cadena'             
+    | 'ValChar'            
+    | 'id'                 
+    | GET_VECTOR           
+    | ROUND                
+    | LENGTH               
+    | TYPEOFF              
+    | TO_LOWER             
+    | TO_UPPER             
+    | TO_STRING            
+    | LLAMADA              
+;
+
+
+
+GET_VECTOR
+    : 'id' 'CorcheteA' EXPRESION 'CorcheteC' 
+    | 'id' 'CorcheteA' EXPRESION 'CorcheteC' 'CorcheteA' EXPRESION 'CorcheteC' 
+;
+
+BREAK
+    : 'break' 'PuntoComa'       
+;
+
+CONTINUE
+    : 'continue' 'PuntoComa'   
+;
+
+RETURN
+    : 'return' 'PuntoComa'          
+    | 'return' EXPRESION 'PuntoComa'
+;
+
+
+ROUND
+    : 'round' 'ParentesisA' VALOR 'ParentesisC' 
+;
+
+RUN
+    : 'run' 'id' 'ParentesisA' PARAMETROS_LLAMADA 'ParentesisC' 'PuntoComa' 
+    | 'run' 'id' 'ParentesisA' 'ParentesisC' 'PuntoComa'                    
+;
+
+LENGTH
+    : 'length' 'ParentesisA' VALOR_L 'ParentesisC'
+;
+
+
+VALOR_L
+    : 'True'                 
+    | 'False'                
+    | 'entero'               
+    | 'decimal'              
+    | 'cadena'               
+    | 'ValChar'              
+    | 'id'                   
+    | GET_VECTOR             
+    | ROUND                  
+    | LENGTH                 
+    | TYPEOFF                
+    | TO_LOWER               
+    | TO_UPPER               
+    | TO_STRING              
+    | LLAMADA                
+;
+
+TYPEOFF
+    : 'typeof' 'ParentesisA' VALOR_L 'ParentesisC'
+;
+
+TO_STRING
+    : 'ToString' 'ParentesisA' VALOR 'ParentesisC'
+;
+
+
+
+
+TO_UPPER
+    : 'toUpper' 'ParentesisA' EXPRESION 'ParentesisC' 
+;
+
+TO_LOWER
+    : 'toLower' 'ParentesisA' EXPRESION 'ParentesisC' 
+;

@@ -33,7 +33,16 @@ class Literal extends express_1.Expression {
         else
             return { value: this.value, type: Type_1.Type.error };
     }
-    getNodo(g) {
+    ast(salida) {
+        const nombre = `node_${this.line}_${this.column}_`;
+        if (this.type == Type_1.Type.STRING)
+            return `
+        ${nombre};
+        ${nombre}[label="${this.value.toString().replaceAll("\"", "")}"];`;
+        else
+            return `
+        ${nombre};
+        ${nombre}[label="${this.value.toString().replaceAll("\'", "")}"];`;
     }
 }
 exports.Literal = Literal;

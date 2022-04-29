@@ -32,4 +32,13 @@ export class TO_UPPER extends Instruccion {
         }
         return result;
     }
+    public ast(s:Singleton) {
+
+      const nombreNodo = `node_${this.line}_${this.column}_`
+      return `
+      ${nombreNodo};
+      ${nombreNodo}[label="To_Upper"];
+      ${nombreNodo}->${this.expresion.ast(s)}
+      `
+  }
 }

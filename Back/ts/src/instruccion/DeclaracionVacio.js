@@ -15,7 +15,7 @@ class DeclaracionVacio extends Instruccion_1.Instruccion {
     execute(env, sn) {
         for (const id of this.nombre) {
             if (this.tipo == Type_1.Type.NUMBER) {
-                const condicion = env.guardar_variable(id, Number(0), this.tipo);
+                const condicion = env.guardar_variable(id, this.line, this.column, Number(0), this.tipo);
                 if (condicion) {
                     console.log("variable [" + id + "] ingresada por defecto...");
                 }
@@ -24,7 +24,7 @@ class DeclaracionVacio extends Instruccion_1.Instruccion {
                 }
             }
             else if (this.tipo == Type_1.Type.DECIMAL) {
-                const condicion = env.guardar_variable(id, Number(0.0), this.tipo);
+                const condicion = env.guardar_variable(id, this.line, this.column, Number(0.0), this.tipo);
                 if (condicion) {
                     console.log("variable [" + id + "] ingresada por defecto...");
                 }
@@ -33,7 +33,7 @@ class DeclaracionVacio extends Instruccion_1.Instruccion {
                 }
             }
             else if (this.tipo == Type_1.Type.CHAR) {
-                const condicion = env.guardar_variable(id, '0', this.tipo);
+                const condicion = env.guardar_variable(id, this.line, this.column, '0', this.tipo);
                 if (condicion) {
                     console.log("variable [" + id + "] ingresada por defecto...");
                 }
@@ -42,7 +42,7 @@ class DeclaracionVacio extends Instruccion_1.Instruccion {
                 }
             }
             else if (this.tipo == Type_1.Type.BOOLEAN) {
-                const condicion = env.guardar_variable(id, Boolean(true), this.tipo);
+                const condicion = env.guardar_variable(id, this.line, this.column, Boolean(true), this.tipo);
                 if (condicion) {
                     console.log("variable [" + id + "] ingresada por defecto...");
                 }
@@ -51,7 +51,7 @@ class DeclaracionVacio extends Instruccion_1.Instruccion {
                 }
             }
             else if (this.tipo == Type_1.Type.STRING) {
-                const condicion = env.guardar_variable(id, '', this.tipo);
+                const condicion = env.guardar_variable(id, this.line, this.column, '', this.tipo);
                 if (condicion) {
                     console.log("variable [" + id + "] ingresada por defecto...");
                 }
@@ -63,6 +63,21 @@ class DeclaracionVacio extends Instruccion_1.Instruccion {
                 sn.addError(new Error_1.Error("Declaracion de [" + id + "] incorrecta", "SEMANTICO", this.line, this.column));
             }
         }
+    }
+    ast(s) {
+        const nombreNodo = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${nombreNodo}[label="\\<Instruccion\\>\\nDeclaracion vacio"];
+    ${nombreNodo}1[label="\\<Nombre\\>"];`);
+        for (const x of this.nombre) {
+            s.add_ast(`${nombreNodo}${x}[label="\\n${x}"]\n;
+                ${nombreNodo}1->${nombreNodo}${x}\n`);
+        }
+        s.add_ast(`
+    ${nombreNodo}2[label="\\<Tipo\\>\\n${(0, Type_1.getType)(this.tipo)}"];
+    ${nombreNodo}->${nombreNodo}1
+    ${nombreNodo}->${nombreNodo}2
+    `);
     }
 }
 exports.DeclaracionVacio = DeclaracionVacio;

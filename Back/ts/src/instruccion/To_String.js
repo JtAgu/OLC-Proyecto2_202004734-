@@ -29,5 +29,13 @@ class TO_STRING extends Instruccion_1.Instruccion {
         }
         return result;
     }
+    ast(s) {
+        const nombreNodo = `node_${this.line}_${this.column}_`;
+        return `
+      ${nombreNodo};
+      ${nombreNodo}[label="To_String"];
+      ${nombreNodo}->${this.expresion.ast(s)}
+      `;
+    }
 }
 exports.TO_STRING = TO_STRING;

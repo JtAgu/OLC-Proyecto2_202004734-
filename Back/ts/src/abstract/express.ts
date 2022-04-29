@@ -10,5 +10,5 @@ export abstract class Expression {
     }
 
     public abstract execute(environment: Environment,sn:Singleton): Retorno
-    
+    public abstract ast(sn:Singleton): void
 }

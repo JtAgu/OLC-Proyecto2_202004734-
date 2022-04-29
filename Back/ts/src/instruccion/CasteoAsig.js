@@ -64,5 +64,16 @@ class CasteoAsig extends Instruccion_1.Instruccion {
             sn.addError(new Error_1.Error("variable [" + this.nombre + "] no fue encontrada", "SEMANTICO", this.line, this.column));
         }
     }
+    ast(s) {
+        const nombre_nodo = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${nombre_nodo}[label="\\<Instruccion\\>\\Asignacion_Casteo"];
+    ${nombre_nodo}2[label="\\<ID\\>\\n${this.nombre}"];
+    ${nombre_nodo}3[label="\\<Cambio\\>\\n${this.TipoCambio}"];
+    ${nombre_nodo}->${nombre_nodo}2;
+    ${nombre_nodo}->${nombre_nodo}3;
+    ${nombre_nodo}->${this.expresion.ast(s)}
+    `);
+    }
 }
 exports.CasteoAsig = CasteoAsig;

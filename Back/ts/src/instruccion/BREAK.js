@@ -16,5 +16,11 @@ class BREAK extends Instruccion_1.Instruccion {
         };
         return val;
     }
+    ast(s) {
+        const name_node = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+        ${name_node}[label="\\<Instruccion\\>\\nbreak"];
+        `);
+    }
 }
 exports.BREAK = BREAK;

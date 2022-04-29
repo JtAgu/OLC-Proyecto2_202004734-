@@ -16,5 +16,14 @@ class Print extends Instruccion_1.Instruccion {
         //pueden usar patron singleton para capturar todas las saliddas de consola
         //return exp.value
     }
+    ast(s) {
+        const nombreNodo = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${nombreNodo}[label="\\<Instruccion\\>\\nPrint"];
+    ${nombreNodo}1[label="\\<VALOR\\>\\n"];
+    ${nombreNodo}->${nombreNodo}1
+    
+    ${nombreNodo}1->${this.expresion.ast(s)}`);
+    }
 }
 exports.Print = Print;

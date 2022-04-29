@@ -22,7 +22,7 @@ class DeclaracionTernario extends Instruccion_1.Instruccion {
         if (expV.type == this.tipo && expF.type == this.tipo) {
             if (exp.type == Type_1.Type.BOOLEAN) {
                 if (Boolean(exp.value)) {
-                    const condicion = env.guardar_variable(this.nombre, expV, this.tipo);
+                    const condicion = env.guardar_variable(this.nombre, this.line, this.column, expV, this.tipo);
                     if (condicion) {
                         console.log("variable [" + this.nombre + "] ingresada...");
                     }
@@ -31,7 +31,7 @@ class DeclaracionTernario extends Instruccion_1.Instruccion {
                     }
                 }
                 else {
-                    const condicion = env.guardar_variable(this.nombre, expF, this.tipo);
+                    const condicion = env.guardar_variable(this.nombre, this.line, this.column, expF, this.tipo);
                     if (condicion) {
                         console.log("variable [" + this.nombre + "] ingresada...");
                     }
@@ -47,6 +47,25 @@ class DeclaracionTernario extends Instruccion_1.Instruccion {
         else {
             sn.addError(new Error_1.Error("Variable [" + this.nombre + "] con tipo distinto", "SEMANTICO", this.line, this.column));
         }
+    }
+    ast(s) {
+        const name_nodo = `node_${this.line}_${this.column}_`;
+        s.add_ast(`
+    ${name_nodo} [label="\\<Instruccion\\>\\n Declaracion ternario"];
+    ${name_nodo}1[label="\\<ID\\>\n${this.nombre}"];
+    ${name_nodo}2[label="\\<Tipo\\>\n${this.tipo}"];
+    ${name_nodo}3[label="\\<Instruccion verdadera\\>"];
+    ${name_nodo}4[label="\\<Instruccion falsa\\>"];
+    ${name_nodo}->${name_nodo}1;
+    ${name_nodo}->${name_nodo}2;
+    ${name_nodo}->${name_nodo}3;
+    ${name_nodo}->${name_nodo}4;
+    ${name_nodo}->${this.expresion.ast(s)}
+    ${name_nodo}3->node_${this.expresionV.line}_${this.expresionV.column}_;
+    ${name_nodo}4->node_${this.expresionF.line}_${this.expresionF.column}_;
+    `);
+        this.expresionV.ast(s);
+        this.expresionF.ast(s);
     }
 }
 exports.DeclaracionTernario = DeclaracionTernario;

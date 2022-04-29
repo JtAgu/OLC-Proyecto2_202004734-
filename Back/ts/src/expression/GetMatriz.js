@@ -39,5 +39,12 @@ class GetMatriz extends express_1.Expression {
         }
         return result;
     }
+    ast(salida) {
+        const name_nodo = `node_${this.line}_${this.column}_`;
+        return `
+        ${name_nodo};
+        ${name_nodo}[label="ID_${this.IdName}"];
+        `;
+    }
 }
 exports.GetMatriz = GetMatriz;

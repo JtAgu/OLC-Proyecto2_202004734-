@@ -35,5 +35,13 @@ class LENGTH extends Instruccion_1.Instruccion {
         }
         return result;
     }
+    ast(s) {
+        const nombreNodo = `node_${this.line}_${this.column}_`;
+        return `
+        ${nombreNodo};
+        ${nombreNodo}[label="LENGTH"];
+        ${nombreNodo}->${this.expresion.ast(s)}
+        `;
+    }
 }
 exports.LENGTH = LENGTH;
