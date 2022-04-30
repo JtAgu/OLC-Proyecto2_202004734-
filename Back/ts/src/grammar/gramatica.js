@@ -111,7 +111,7 @@ case 25: case 30: case 66: case 68:
 $$[$0-2].push($$[$0]); this.$=$$[$0-2];
 break;
 case 27:
-this.$= new Declaracion($$[$0],$$[$0-1],null,_$[$0-1].first_line,_$[$0-1].first_column);
+this.$= new Declaracion([$$[$0]],$$[$0-1],null,_$[$0-1].first_line,_$[$0-1].first_column);
 break;
 case 28:
 this.$=new LLAMADA($$[$0-3],$$[$0-1],_$[$0-3].first_line,_$[$0-3].first_column);
@@ -225,28 +225,28 @@ case 88:
 this.$=new SWITCH($$[$0-4],null,$$[$0-1] ,_$[$0-6].first_line, _$[$0-6].first_column)
 break;
 case 89:
-$$[$0-6].push(new SWITCHCASE($$[$0-4],$$[$0-2],$$[$0-1])); this.$=$$[$0-6];
+$$[$0-6].push(new SWITCHCASE($$[$0-4],$$[$0-2],$$[$0-1],_$[$0-5].first_line, _$[$0-5].first_column)); this.$=$$[$0-6];
 break;
 case 90:
-$$[$0-5].push(new SWITCHCASE($$[$0-3],$$[$0-1],$$[$0])); this.$=$$[$0-5];
+$$[$0-5].push(new SWITCHCASE($$[$0-3],$$[$0-1],$$[$0],_$[$0-4].first_line, _$[$0-4].first_column)); this.$=$$[$0-5];
 break;
 case 91:
-$$[$0-4].push(new SWITCHCASE($$[$0-2],$$[$0],null)); this.$=$$[$0-4];
+$$[$0-4].push(new SWITCHCASE($$[$0-2],$$[$0],null,_$[$0-3].first_line, _$[$0-3].first_column)); this.$=$$[$0-4];
 break;
 case 92:
-$$[$0-3].push(new SWITCHCASE($$[$0-1],null,null)); this.$=$$[$0-3];
+$$[$0-3].push(new SWITCHCASE($$[$0-1],null,null,_$[$0-2].first_line, _$[$0-2].first_column)); this.$=$$[$0-3];
 break;
 case 93:
-this.$=[new SWITCHCASE($$[$0-2],$$[$0],null)]
+this.$=[new SWITCHCASE($$[$0-2],$$[$0],null,_$[$0-3].first_line, _$[$0-3].first_column)]
 break;
 case 94:
-this.$=[new SWITCHCASE($$[$0-1],null,null)]
+this.$=[new SWITCHCASE($$[$0-1],null,null,_$[$0-2].first_line, _$[$0-2].first_column)]
 break;
 case 95:
-this.$=[new SWITCHCASE($$[$0-4],$$[$0-2],$$[$0-1])]
+this.$=[new SWITCHCASE($$[$0-4],$$[$0-2],$$[$0-1],_$[$0-5].first_line, _$[$0-5].first_column)]
 break;
 case 96:
-this.$=[new SWITCHCASE($$[$0-3],null,$$[$0])]
+this.$=[new SWITCHCASE($$[$0-3],null,$$[$0],_$[$0-4].first_line, _$[$0-4].first_column)]
 break;
 case 97:
 this.$=$$[$0-2];

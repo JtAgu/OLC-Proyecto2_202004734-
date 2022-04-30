@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Singleton = void 0;
 const Error_1 = require("../instruccion/Error");
+const Type_1 = require("../simbolos/Type");
 class Singleton {
     constructor() {
         this.message = "";
@@ -45,6 +46,16 @@ class Singleton {
         ${this.error}
         `;
     }
+    clear() {
+        this.message = "";
+        this.ast = "";
+        this.error = "";
+        this.entorno = [];
+        this.consola = "";
+        this.pila = [];
+        this.c = 1;
+        console.log("Vacie todo");
+    }
     add_ast(data) {
         this.ast += data;
     }
@@ -75,7 +86,7 @@ class Singleton {
             for (const v of tablaS) {
                 cadena += "<tr>\n" +
                     "<td>" + v[1].id + "</td>\n" +
-                    "<td>" + v[1].tipo + "</td>\n";
+                    "<td>" + (0, Type_1.getType)(v[1].tipo) + "</td>\n";
                 if (v[1].Instrucciones != null) {
                     cadena += "<td>Funcion</td>\n";
                 }
@@ -90,8 +101,7 @@ class Singleton {
                 }
                 cadena += "<td>" + Env.nombre + "</td>\n"
                     + "<td>" + v[1].line + "</td>\n"
-                    + "<td>" + v[1].column + "</td>\n";
-                "</tr>\n";
+                    + "<td>" + v[1].column + "</td>\n</tr>\n";
             }
         }
         return cadena;

@@ -4,6 +4,8 @@ const { Funcion } = require('./ts/src/Instruccion/Funcion');
 const { RUN } = require('./ts/src/Instruccion/Run');
 var fs = require("fs");
 var exec = require("child_process");
+var singleton_1 = require("./ts/src/patrondiseno/singleton");
+var salida = new singleton_1.Singleton();
 //import { saveAs } from 'file-saver';
 const routes = express.Router()
 var entrada = '';
@@ -11,8 +13,7 @@ var salidaMSG = '';
 var Errores = ""
 var Ambientes = ""
 var AST = ""
-const singleton_1 = require("./ts/src/patrondiseno/singleton");
-var salida = new singleton_1.Singleton();
+
 
 
 routes.get('/', function (req, res) {
@@ -21,24 +22,28 @@ routes.get('/', function (req, res) {
 
 routes.post('/SetFile', function (req, res) {
     entrada = req.body.msg
+    var nombre="C:/Users/justin/Desktop/Entrada.cst"
+    createHTML(nombre,entrada);
     res.send(req.body.msg)
 })
 
 routes.get('/Ejecutar', function (req, res) {
-    const Environment_1 = require("./ts/src/simbolos/Environment");
-    const parser = require("./ts/src/grammar/gramatica");
-    const ast = parser.parse(entrada.toString());
-    const env = new Environment_1.Environment(null, "PRINCIPAL");
+    var Environment_1 = require("./ts/src/simbolos/Environment");
+    var parser = require("./ts/src/grammar/gramatica");
+    var ast = parser.parse(entrada.toString());
+    var env = new Environment_1.Environment(null, "PRINCIPAL");
 
 
 
     //recorrer las instrucciones y ejecutarlas
     var i = 0, j = [];
     //console.log(salida.getError());
-    console.log(ast[1]);
+    salida.clear();
+    console.log(salida.get_ast());
     for (const error of ast[1]) {
         salida.addError(error);
     }
+
     salida.add_ast(`nodeOriginal[label="<\\Lista_Instrucciones\\>"];`)
     for (const instr of ast[0]) {
 
@@ -119,10 +124,11 @@ routes.get('/Ejecutar', function (req, res) {
 })
 
 routes.get('/Nuevo', function (req, res) {
+    salida.clear();
     entrada = "";
-    salida.clear()
-    Errores = [];
-    Ambientes = [];
+    salidaMSG = '';
+    Errores = '';
+    Ambientes = '';
     res.json({ msg: "Valores reiniciados" })
 })
 

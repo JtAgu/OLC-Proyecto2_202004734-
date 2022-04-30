@@ -4,7 +4,6 @@ exports.LLAMADA = void 0;
 const Instruccion_1 = require("../abstract/Instruccion");
 const Environment_1 = require("../simbolos/Environment");
 const Type_1 = require("../simbolos/Type");
-const Asignacion_1 = require("./Asignacion");
 const Error_1 = require("./Error");
 class LLAMADA extends Instruccion_1.Instruccion {
     constructor(NomFuncion, ListaParam, line, column) {
@@ -25,17 +24,11 @@ class LLAMADA extends Instruccion_1.Instruccion {
             let Ins = env.getIns_variable(this.NomFuncion);
             const envFc = new Environment_1.Environment(env, "AMBIENTE FUNCION " + this.NomFuncion);
             if (Param != null && this.ListaParam != null && Ins != null) {
+                console.log(Param);
                 if (Param.length == this.ListaParam.length) {
                     for (var i = 0; i < Param.length; i++) {
-                        if (!envFc.buscar_variable(Param[i].nombre[0] + "")) {
-                            Param[i].expresion = this.ListaParam[i];
-                            Param[i].execute(envFc, sn);
-                        }
-                        else {
-                            var s = new Asignacion_1.Asignacion(Param[i].nombre[0], this.ListaParam[i].execute(envFc, sn).value, Param[i].line, Param[i].column);
-                            s.execute(envFc, sn);
-                            console.log(Param[i].nombre[0], envFc.getValue_variable(Param[i].nombre[0]));
-                        }
+                        Param[i].expresion = this.ListaParam[i];
+                        Param[i].execute(envFc, sn);
                         //console.log(this.ListaParam[i].execute(envFc,sn));
                     }
                     for (const Instruccion of Ins) {

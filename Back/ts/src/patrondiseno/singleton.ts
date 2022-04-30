@@ -69,6 +69,7 @@ export class Singleton{
         this.consola="";
         this.pila= [];
         this.c=1;
+        console.log("Vacie todo");
     }
 
     public add_ast(data: string) {

@@ -477,7 +477,7 @@ PARAMETROS
 ;
 
 DECLARACION_VACIO
-    : TIPO_DATO 'id' {$$= new Declaracion($2,$1,null,@1.first_line,@1.first_column);}
+    : TIPO_DATO 'id' {$$= new Declaracion([$2],$1,null,@1.first_line,@1.first_column);}
 ;
 
 LLAMADA
@@ -608,17 +608,17 @@ SWITCH
 ;
 
 TIPO_SW
-    : TIPO_SW  'case' EXPRESION 'DosPuntos' I_SWITCH 'break' 'PuntoComa'     {$1.push(new SWITCHCASE($3,$5,$6)); $$=$1;}
-    | TIPO_SW  'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'                 {$1.push(new SWITCHCASE($3,$5,$6)); $$=$1;}
+    : TIPO_SW  'case' EXPRESION 'DosPuntos' I_SWITCH 'break' 'PuntoComa'     {$1.push(new SWITCHCASE($3,$5,$6,@2.first_line, @2.first_column)); $$=$1;}
+    | TIPO_SW  'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'                 {$1.push(new SWITCHCASE($3,$5,$6,@2.first_line, @2.first_column)); $$=$1;}
 
-    | TIPO_SW 'case' EXPRESION 'DosPuntos' I_SWITCH                          {$1.push(new SWITCHCASE($3,$5,null)); $$=$1;}
-    | TIPO_SW 'case' EXPRESION 'DosPuntos'                                      {$1.push(new SWITCHCASE($3,null,null)); $$=$1;}
+    | TIPO_SW 'case' EXPRESION 'DosPuntos' I_SWITCH                          {$1.push(new SWITCHCASE($3,$5,null,@2.first_line, @2.first_column)); $$=$1;}
+    | TIPO_SW 'case' EXPRESION 'DosPuntos'                                      {$1.push(new SWITCHCASE($3,null,null,@2.first_line, @2.first_column)); $$=$1;}
 
-    | 'case' EXPRESION 'DosPuntos' I_SWITCH                                  {$$=[new SWITCHCASE($2,$4,null)]}
-    | 'case' EXPRESION 'DosPuntos'                                              {$$=[new SWITCHCASE($2,null,null)]}
+    | 'case' EXPRESION 'DosPuntos' I_SWITCH                                  {$$=[new SWITCHCASE($2,$4,null,@1.first_line, @1.first_column)]}
+    | 'case' EXPRESION 'DosPuntos'                                              {$$=[new SWITCHCASE($2,null,null,@1.first_line, @1.first_column)]}
 
-    | 'case' EXPRESION 'DosPuntos' I_SWITCH 'break' 'PuntoComa'              {$$=[new SWITCHCASE($2,$4,$5)]}
-    | 'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'                          {$$=[new SWITCHCASE($2,null,$5)]}
+    | 'case' EXPRESION 'DosPuntos' I_SWITCH 'break' 'PuntoComa'              {$$=[new SWITCHCASE($2,$4,$5,@1.first_line, @1.first_column)]}
+    | 'case' EXPRESION 'DosPuntos' 'break' 'PuntoComa'                          {$$=[new SWITCHCASE($2,null,$5,@1.first_line, @1.first_column)]}
 ;
 
 DEFAULT

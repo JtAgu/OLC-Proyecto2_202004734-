@@ -70,11 +70,12 @@ export class SWITCH extends Instruccion {
     }
     if(this.Default!=null){
       s.add_ast(`
-            ${name_node}->${name_node}Default_;            
+            ${name_node}->${name_node}Default_;
+            ${name_node}Default_[label="\\<Instruccion\\>\\nDEFAULT"];
       `)
       for(const x of this.Default){
         s.add_ast(`
-          ${name_node}Default_ -> node_${x.line}_${x.column}_;        
+          ${name_node}Default_ -> node_${x.line}_${x.column}_;
         `)
         x.ast(s)
     }
